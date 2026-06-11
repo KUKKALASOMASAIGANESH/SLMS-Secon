@@ -1,3 +1,4 @@
+using SLMS.WebAPI.Mappings;
 using Microsoft.EntityFrameworkCore;
 using SLMS.DAL.Data;
 
@@ -23,12 +24,26 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 // Repository Registration
+
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
+
+
 // Service Registration
+
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(
+    typeof(MappingProfile));
 
 var app = builder.Build();
 
