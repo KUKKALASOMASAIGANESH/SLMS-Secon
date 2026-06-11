@@ -72,71 +72,47 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 // Repositories
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<ICustodyHistoryRepository, CustodyHistoryRepository>();
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
-builder.Services.AddScoped<ICustodyHistoryRepository,
-    CustodyHistoryRepository>();
+// Catalog
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
 
-builder.Services.AddScoped<IAuditLogRepository,
-    AuditLogRepository>();
-
-builder.Services.AddScoped<IInventoryRepository,
-    InventoryRepository>();
-
-// Digital Library Repositories
-builder.Services.AddScoped<IDigitalContentRepository,
-    DigitalContentRepository>();
-
-builder.Services.AddScoped<IDigitalContentRequestRepository,
-    DigitalContentRequestRepository>();
-
-builder.Services.AddScoped<IPolicyRepository,
-    PolicyRepository>();
-
-builder.Services.AddScoped<IDownloadHistoryRepository,
-    DownloadHistoryRepository>();
-
+// Digital Library
+builder.Services.AddScoped<IDigitalContentRepository, DigitalContentRepository>();
+builder.Services.AddScoped<IDigitalContentRequestRepository, DigitalContentRequestRepository>();
+builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
+builder.Services.AddScoped<IDownloadHistoryRepository, DownloadHistoryRepository>();
 
 // Services
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<ICustodyHistoryService, CustodyHistoryService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
-builder.Services.AddScoped<IDepartmentService,
-    DepartmentService>();
+// Catalog
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
 
-builder.Services.AddScoped<ICustodyHistoryService,
-    CustodyHistoryService>();
-
-builder.Services.AddScoped<IEmployeeService,
-    EmployeeService>();
-
-builder.Services.AddScoped<IAuditLogService,
-    AuditLogService>();
-
-builder.Services.AddScoped<IInventoryService,
-    InventoryService>();
-
-// Digital Library Services
-builder.Services.AddScoped<IDigitalContentService,
-    DigitalContentService>();
-
-builder.Services.AddScoped<IDigitalContentRequestService,
-    DigitalContentRequestService>();
-
-builder.Services.AddScoped<IPolicyService,
-    PolicyService>();
-
-builder.Services.AddScoped<IDownloadHistoryService,
-    DownloadHistoryService>();
-
+// Digital Library
+builder.Services.AddScoped<IDigitalContentService, DigitalContentService>();
+builder.Services.AddScoped<IDigitalContentRequestService, DigitalContentRequestService>();
+builder.Services.AddScoped<IPolicyService, PolicyService>();
+builder.Services.AddScoped<IDownloadHistoryService, DownloadHistoryService>();
 
 // JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();
-
 
 // JWT Authentication
 builder.Services.AddAuthentication(
@@ -151,11 +127,8 @@ builder.Services.AddAuthentication(
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            ValidIssuer =
-                builder.Configuration["Jwt:Issuer"],
-
-            ValidAudience =
-                builder.Configuration["Jwt:Audience"],
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
 
             IssuerSigningKey =
                 new SymmetricSecurityKey(
