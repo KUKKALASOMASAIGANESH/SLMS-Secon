@@ -39,6 +39,15 @@ public class LibraryResourceController : ControllerBase
 
         return Ok(result);
     }
+    [HttpGet("search/{keyword}")]
+    public async Task<IActionResult>
+    Search(string keyword)
+    {
+        var result =
+            await _service.SearchAsync(keyword);
+
+        return Ok(result);
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create(
@@ -48,5 +57,31 @@ public class LibraryResourceController : ControllerBase
             await _service.CreateAsync(dto);
 
         return Ok(result);
+    }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(
+    int id,
+    LibraryResourceUpdateDto dto)
+    {
+        var result =
+            await _service.UpdateAsync(id, dto);
+
+        if (result == null)
+            return NotFound();
+
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(
+        int id)
+    {
+        var result =
+            await _service.DeleteAsync(id);
+
+        if (!result)
+            return NotFound();
+
+        return Ok("Library Resource Deleted");
     }
 }

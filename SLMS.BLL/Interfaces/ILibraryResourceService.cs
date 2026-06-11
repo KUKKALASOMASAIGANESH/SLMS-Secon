@@ -13,4 +13,15 @@ public interface ILibraryResourceService
     Task<LibraryResourceResponseDto>
         CreateAsync(
             LibraryResourceCreateDto dto);
+
+    Task<LibraryResourceResponseDto?>
+        UpdateAsync(
+            int id,
+            LibraryResourceUpdateDto dto);
+
+    Task<bool>
+        DeleteAsync(int id);
+
+    Task<IEnumerable<LibraryResourceResponseDto>>
+        SearchAsync(string keyword);
 }

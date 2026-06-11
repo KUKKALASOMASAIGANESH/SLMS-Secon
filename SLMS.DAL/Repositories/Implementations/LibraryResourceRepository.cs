@@ -1,4 +1,6 @@
-﻿using SLMS.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+
+using SLMS.DAL.Data;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
 
@@ -12,5 +14,17 @@ public class LibraryResourceRepository
         SLMSDbContext context)
         : base(context)
     {
+    }
+
+    public async Task<
+        IEnumerable<LibraryResource>>
+        SearchAsync(string keyword)
+    {
+        return await _context.LibraryResources
+            .Where(x =>
+                x.Title.Contains(keyword) ||
+                x.Author.Contains(keyword) ||
+                x.Publisher.Contains(keyword))
+            .ToListAsync();
     }
 }
