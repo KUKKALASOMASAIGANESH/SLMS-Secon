@@ -43,4 +43,25 @@ public class CustodyHistoryController : ControllerBase
 
         return Ok("Custody History Created");
     }
+    [HttpGet("inventory/{inventoryItemId}")]
+    public async Task<IActionResult>
+    GetByInventoryItem(int inventoryItemId)
+    {
+        var data = await _service
+            .GetByInventoryItemAsync(inventoryItemId);
+
+        return Ok(data);
+    }
+    [HttpGet("current/{inventoryItemId}")]
+    public async Task<IActionResult>
+    GetCurrentCustodian(int inventoryItemId)
+    {
+        var data = await _service
+            .GetCurrentCustodianAsync(inventoryItemId);
+
+        if (data == null)
+            return NotFound();
+
+        return Ok(data);
+    }
 }

@@ -19,6 +19,13 @@ public class CustodyHistoryService : ICustodyHistoryService
         return await _repository.GetAllAsync();
     }
 
+    public async Task<IEnumerable<CustodyHistory>>
+        GetByInventoryItemAsync(int inventoryItemId)
+    {
+        return await _repository
+            .GetByInventoryItemAsync(inventoryItemId);
+    }
+
     public async Task<CustodyHistory?> GetByIdAsync(int id)
     {
         return await _repository.GetByIdAsync(id);
@@ -27,7 +34,12 @@ public class CustodyHistoryService : ICustodyHistoryService
     public async Task AddAsync(CustodyHistory custodyHistory)
     {
         await _repository.AddAsync(custodyHistory);
-
         await _repository.SaveChangesAsync();
+    }
+    public async Task<CustodyHistory?>
+    GetCurrentCustodianAsync(int inventoryItemId)
+    {
+        return await _repository
+            .GetCurrentCustodianAsync(inventoryItemId);
     }
 }
