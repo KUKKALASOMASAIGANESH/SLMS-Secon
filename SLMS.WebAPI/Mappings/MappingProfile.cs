@@ -23,5 +23,7 @@ public class MappingProfile : Profile
         CreateMap<LibraryResourceCreateDto, LibraryResource>();
 
         CreateMap<LibraryResource, LibraryResourceResponseDto>();
+
+        CreateMap<LibraryResourceUpdateDto, LibraryResource>();
     }
 }

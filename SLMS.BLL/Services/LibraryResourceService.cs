@@ -69,4 +69,60 @@ public class LibraryResourceService
             LibraryResourceResponseDto>
             (entity);
     }
+
+    public async Task<
+        LibraryResourceResponseDto?>
+        UpdateAsync(
+            int id,
+            LibraryResourceUpdateDto dto)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        entity.CategoryId = dto.CategoryId;
+        entity.Title = dto.Title;
+        entity.Author = dto.Author;
+        entity.Publisher = dto.Publisher;
+        entity.ISBN = dto.ISBN;
+        entity.PublicationYear = dto.PublicationYear;
+
+        _repository.Update(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<
+            LibraryResourceResponseDto>
+            (entity);
+    }
+
+    public async Task<bool>
+        DeleteAsync(int id)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return false;
+
+        _repository.Delete(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<
+        IEnumerable<LibraryResourceResponseDto>>
+        SearchAsync(string keyword)
+    {
+        var entities =
+            await _repository.SearchAsync(keyword);
+
+        return _mapper.Map<
+            IEnumerable<LibraryResourceResponseDto>>
+            (entities);
+    }
 }
