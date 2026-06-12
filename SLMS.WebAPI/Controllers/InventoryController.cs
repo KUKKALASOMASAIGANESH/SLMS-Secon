@@ -1,5 +1,5 @@
 ﻿
-
+using SLMS.Shared.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
 using SLMS.Shared.DTOs.Inventory;
@@ -19,12 +19,17 @@ public class InventoryController : ControllerBase
     }
 
     [HttpGet]
-   public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll()
     {
-     var result = await _inventoryService.GetAllAsync();
+        var result = await _inventoryService.GetAllAsync();
 
-     return Ok(result);
-     }
+        return Ok(new ApiResponse<IEnumerable<InventoryItemDto>>
+        {
+            Success = true,
+            Message = "Inventory items retrieved successfully",
+            Data = result
+        });
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create(
@@ -32,7 +37,11 @@ public class InventoryController : ControllerBase
     {
         await _inventoryService.CreateAsync(dto);
 
-        return Ok("Inventory Item Created Successfully");
+        return Ok(new ApiResponse<object>
+        {
+            Success = true,
+            Message = "Inventory Item Created Successfully"
+        });
     }
 
     [HttpGet("{id}")]
@@ -41,9 +50,20 @@ public class InventoryController : ControllerBase
         var inventoryItem = await _inventoryService.GetByIdAsync(id);
 
         if (inventoryItem == null)
-            return NotFound();
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Inventory Item Not Found"
+            });
+        }
 
-        return Ok(inventoryItem);
+        return Ok(new ApiResponse<InventoryItemDto>
+        {
+            Success = true,
+            Message = "Inventory Item Retrieved Successfully",
+            Data = inventoryItem
+        });
     }
 
 
@@ -56,9 +76,19 @@ public class InventoryController : ControllerBase
             await _inventoryService.UpdateAsync(id, dto);
 
         if (!updated)
-            return NotFound();
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Inventory Item Not Found"
+            });
+        }
 
-        return Ok("Inventory Item Updated Successfully");
+        return Ok(new ApiResponse<object>
+        {
+            Success = true,
+            Message = "Inventory Item Updated Successfully"
+        });
     }
 
 
@@ -69,9 +99,19 @@ public class InventoryController : ControllerBase
             await _inventoryService.DeleteAsync(id);
 
         if (!deleted)
-            return NotFound();
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Inventory Item Not Found"
+            });
+        }
 
-        return Ok("Inventory Item Deleted Successfully");
+        return Ok(new ApiResponse<object>
+        {
+            Success = true,
+            Message = "Inventory Item Deleted Successfully"
+        });
     }
 
 
