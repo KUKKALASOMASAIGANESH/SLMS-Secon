@@ -29,12 +29,19 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<
     ICustodyHistoryRepository,
     CustodyHistoryRepository>();
+builder.Services.AddScoped<
+    IEmployeeRepository,
+    EmployeeRepository>();
 // Service Registration
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<
     ICustodyHistoryService,
     CustodyHistoryService>();
+builder.Services.AddScoped<
+    IEmployeeService,
+    EmployeeService>();
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -22,7 +22,7 @@ public class Employee : BaseEntity
 
     public int DepartmentId { get; set; }
 
-    public Department Department { get; set; } = null!;
+    public Department? Department { get; set; } 
     public ICollection<BookIssue> BookIssues { get; set; }
     = new List<BookIssue>();
     public ICollection<Request> Requests { get; set; }
