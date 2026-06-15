@@ -32,7 +32,12 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IEmployeeRepository,
     EmployeeRepository>();
+builder.Services.AddScoped<
+    IAuditLogRepository,
+    AuditLogRepository>();
+
 // Service Registration
+
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<
     ICustodyHistoryService,
@@ -40,10 +45,14 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IEmployeeService,
     EmployeeService>();
+builder.Services.AddScoped<
+    IAuditLogService,
+    AuditLogService>();
 var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
