@@ -1,66 +1,127 @@
-﻿using SLMS.BLL.Interfaces;
+﻿using AutoMapper;
+
+using SLMS.BLL.Interfaces;
+
 using SLMS.DAL.Repositories.Interfaces;
+
 using SLMS.DOL.Entities;
+
 using SLMS.Shared.DTOs.Employee;
+
 namespace SLMS.BLL.Services;
 
-public class EmployeeService : IEmployeeService
+public class EmployeeService
+    : IEmployeeService
 {
-    private readonly IEmployeeRepository _repository;
-    private readonly IAuditLogService _auditLogService;
+    private readonly IEmployeeRepository
+        _repository;
+
+    private readonly IMapper _mapper;
+
     public EmployeeService(
-    IEmployeeRepository repository,
-    IAuditLogService auditLogService)
+        IEmployeeRepository repository,
+        IMapper mapper)
     {
         _repository = repository;
-        _auditLogService = auditLogService;
+        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Employee>> GetAllAsync()
+    public async Task<
+        IEnumerable<EmployeeResponseDto>>
+        GetAllAsync()
     {
-        return await _repository.GetAllAsync();
+        var entities =
+            await _repository.GetAllAsync();
+
+        return _mapper.Map<
+            IEnumerable<EmployeeResponseDto>>
+            (entities);
     }
 
-    public async Task<Employee?> GetByIdAsync(int id)
+    public async Task<
+        EmployeeResponseDto?>
+        GetByIdAsync(int id)
     {
-        return await _repository.GetByIdAsync(id);
-    }
-    
-    public async Task AddAsync(Employee employee)
-    {
-        await _repository.AddAsync(employee);
-        await _repository.SaveChangesAsync();
-        await _auditLogService.AddAsync(
-        new AuditLog
-        {
-            UserId = 3,
-            Module = "Employee",
-            Action = "Create",
-            NewValue = employee.FullName
-        });
-    }
-    public async Task<IEnumerable<Employee>>
-    SearchByNameAsync(string name)
-    {
-        return await _repository
-            .SearchByNameAsync(name);
-    }
-    public async Task UpdateAsync(Employee employee)
-    {
-        _repository.Update(employee);
-        await _repository.SaveChangesAsync();
-    }
-    
-    public async Task DeleteAsync(int id)
-    {
-        var employee =
+        var entity =
             await _repository.GetByIdAsync(id);
 
-        if (employee != null)
-        {
-            _repository.Delete(employee);
+        if (entity == null)
+            return null;
 
-            await _repository.SaveChangesAsync();
-        }
+        return _mapper.Map<
+            EmployeeResponseDto>
+            (entity);
+    }
+
+    public async Task<
+        EmployeeResponseDto>
+        CreateAsync(
+            EmployeeCreateDto dto)
+    {
+        var entity =
+            _mapper.Map<Employee>(dto);
+
+        await _repository.AddAsync(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<
+            EmployeeResponseDto>
+            (entity);
+    }
+
+    public async Task<
+        EmployeeResponseDto?>
+        UpdateAsync(
+            int id,
+            EmployeeUpdateDto dto)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        entity.EmployeeNumber =
+            dto.EmployeeNumber;
+
+        entity.FullName =
+            dto.FullName;
+
+        entity.Email =
+            dto.Email;
+
+        entity.Phone =
+            dto.Phone;
+
+        entity.Designation =
+            dto.Designation;
+
+        entity.DepartmentId =
+            dto.DepartmentId;
+
+        _repository.Update(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<
+            EmployeeResponseDto>
+            (entity);
+    }
+
+    public async Task<bool>
+        DeleteAsync(int id)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return false;
+
+        _repository.Delete(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return true;
     }
 }

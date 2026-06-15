@@ -1,20 +1,24 @@
-﻿using SLMS.DOL.Entities;
-using SLMS.Shared.DTOs.Employee;
+﻿using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.BLL.Interfaces;
 
 public interface IEmployeeService
 {
-    Task<IEnumerable<Employee>> GetAllAsync();
+    Task<IEnumerable<EmployeeResponseDto>>
+        GetAllAsync();
 
-    Task<Employee?> GetByIdAsync(int id);
+    Task<EmployeeResponseDto?>
+        GetByIdAsync(int id);
 
-    Task AddAsync(Employee employee);
+    Task<EmployeeResponseDto>
+        CreateAsync(
+            EmployeeCreateDto dto);
 
-    Task<IEnumerable<Employee>>
-    SearchByNameAsync(string name);
+    Task<EmployeeResponseDto?>
+        UpdateAsync(
+            int id,
+            EmployeeUpdateDto dto);
 
-    Task UpdateAsync(Employee employee);
-
-    Task DeleteAsync(int id);
+    Task<bool>
+        DeleteAsync(int id);
 }

@@ -54,12 +54,11 @@ builder.Services.AddSwaggerGen(options =>
             {
                 new OpenApiSecurityScheme
                 {
-                    Reference =
-                        new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
                 },
                 Array.Empty<string>()
             }
@@ -73,7 +72,7 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Repositories
+#region Repositories
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -85,6 +84,14 @@ builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 // Catalog
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
+builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
+builder.Services.AddScoped<IBookIssueRepository, BookIssueRepository>();
+
+// Requests / Roles
+builder.Services.AddScoped<IRequestRepository, RequestRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
 // Digital Library
 builder.Services.AddScoped<IDigitalContentRepository, DigitalContentRepository>();
@@ -92,7 +99,9 @@ builder.Services.AddScoped<IDigitalContentRequestRepository, DigitalContentReque
 builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
 builder.Services.AddScoped<IDownloadHistoryRepository, DownloadHistoryRepository>();
 
-// Services
+#endregion
+
+#region Services
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
@@ -104,12 +113,23 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 // Catalog
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
+builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
+builder.Services.AddScoped<IBookIssueService, BookIssueService>();
+
+// Requests / Roles
+builder.Services.AddScoped<IRequestService, RequestService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
 
 // Digital Library
 builder.Services.AddScoped<IDigitalContentService, DigitalContentService>();
 builder.Services.AddScoped<IDigitalContentRequestService, DigitalContentRequestService>();
 builder.Services.AddScoped<IPolicyService, PolicyService>();
 builder.Services.AddScoped<IDownloadHistoryService, DownloadHistoryService>();
+
+#endregion
 
 // JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();
@@ -139,26 +159,20 @@ builder.Services.AddAuthentication(
 
 var app = builder.Build();
 
-// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Global Exception Middleware
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-// HTTPS
 app.UseHttpsRedirection();
 
-// Authentication
 app.UseAuthentication();
 
-// Authorization
 app.UseAuthorization();
 
-// Controllers
 app.MapControllers();
 
 app.Run();

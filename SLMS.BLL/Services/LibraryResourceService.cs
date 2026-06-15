@@ -83,6 +83,7 @@ public class LibraryResourceService
             return null;
 
         entity.CategoryId = dto.CategoryId;
+        entity.ResourceType = dto.ResourceType;
         entity.Title = dto.Title;
         entity.Author = dto.Author;
         entity.Publisher = dto.Publisher;
