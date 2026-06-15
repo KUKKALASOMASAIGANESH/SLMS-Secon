@@ -22,11 +22,14 @@ public class InventoryService : IInventoryService
 
     public async Task<IEnumerable<InventoryItemDto>> GetAllAsync()
     {
-       var inventoryItems = await _repository.GetAllAsync();
-    
-       return _mapper.Map<IEnumerable<InventoryItemDto>>(inventoryItems);
-   }
-  
+        var inventoryItems =
+            (await _repository.GetAllAsync())
+            .Where(x => x.IsActive);
+
+        return _mapper.Map<IEnumerable<InventoryItemDto>>(
+            inventoryItems);
+    }
+
 
 
 
@@ -34,8 +37,11 @@ public class InventoryService : IInventoryService
     {
         var inventoryItem = await _repository.GetByIdAsync(id);
 
-        if (inventoryItem == null)
+        if (inventoryItem == null ||
+    !inventoryItem.IsActive)
+        {
             return null;
+        }
 
         return _mapper.Map<InventoryItemDto>(inventoryItem);
     }
@@ -54,6 +60,9 @@ public class InventoryService : IInventoryService
                 searchDto.Publisher,
                 searchDto.MinPrice,
                 searchDto.MaxPrice);
+
+        inventoryItems =
+    inventoryItems.Where(x => x.IsActive);
 
         return _mapper.Map<IEnumerable<InventoryItemDto>>(
             inventoryItems);
@@ -120,8 +129,11 @@ public class InventoryService : IInventoryService
         var inventoryItem =
             await _repository.GetByIdAsync(id);
 
-        if (inventoryItem == null)
+        if (inventoryItem == null ||
+    !inventoryItem.IsActive)
+        {
             return false;
+        }
 
         inventoryItem.AccessionNumber =
             dto.AccessionNumber;
@@ -151,7 +163,9 @@ public class InventoryService : IInventoryService
         if (inventoryItem == null)
             return false;
 
-        _repository.Delete(inventoryItem);
+        inventoryItem.IsActive = false;
+
+        _repository.Update(inventoryItem);
 
         await _repository.SaveChangesAsync();
 
@@ -184,7 +198,8 @@ public class InventoryService : IInventoryService
         InventoryPaginationDto paginationDto)
     {
         var inventoryItems =
-            await _repository.GetAllAsync();
+    (await _repository.GetAllAsync())
+    .Where(x => x.IsActive);
 
         var totalCount =
             inventoryItems.Count();
@@ -217,7 +232,8 @@ public class InventoryService : IInventoryService
         InventorySortDto sortDto)
     {
         var inventoryItems =
-            await _repository.GetAllAsync();
+    (await _repository.GetAllAsync())
+    .Where(x => x.IsActive);
 
         if (!string.IsNullOrWhiteSpace(
                 sortDto.SortBy))
