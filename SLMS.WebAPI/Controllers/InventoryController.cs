@@ -1,4 +1,38 @@
-﻿
+﻿/*
+ * InventoryController
+ *
+ * Purpose:
+ * Exposes REST API endpoints for inventory management.
+ *
+ * Responsibilities:
+ * - Receive HTTP requests
+ * - Validate request models
+ * - Invoke InventoryService methods
+ * - Return standardized API responses
+ *
+ * API Features:
+ * - CRUD Operations
+ * - Search and Filtering
+ * - Pagination
+ * - Sorting
+ * - Shelf Management
+ * - Availability Tracking
+ * - Inventory Reports
+ * - Soft Delete and Restore
+ *
+ * Flow:
+ * Client/Swagger/Postman
+ *    ↓
+ * InventoryController
+ *    ↓
+ * InventoryService
+ *    ↓
+ * InventoryRepository
+ *    ↓
+ * PostgreSQL Database
+ */
+
+
 using SLMS.Shared.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
@@ -6,6 +40,8 @@ using SLMS.Shared.DTOs.Inventory;
 
 namespace SLMS.WebAPI.Controllers;
 
+// REST API controller for managing inventory items,
+// inventory reporting, shelf tracking and availability operations.
 [ApiController]
 [Route("api/[controller]")]
 public class InventoryController : ControllerBase
@@ -18,6 +54,8 @@ public class InventoryController : ControllerBase
         _inventoryService = inventoryService;
     }
 
+
+    // Retrieves all active inventory items
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -31,6 +69,10 @@ public class InventoryController : ControllerBase
         });
     }
 
+
+    // Search inventory items using filters such as
+    // accession number, inventory number, shelf, title,
+    // author, publisher and price range
     [HttpGet("search")]
     public async Task<IActionResult> Search(
     [FromQuery] InventorySearchDto searchDto)
@@ -41,6 +83,8 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+
+    // Retrieves inventory items available on a specific shelf
     [HttpGet("shelf/{shelfNumber}")]
     public async Task<IActionResult>
     GetByShelf(string shelfNumber)
@@ -52,6 +96,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    // Generates shelf-wise inventory summary report
     [HttpGet("report/shelf")]
     public async Task<IActionResult>
     GetShelfSummary()
@@ -63,6 +108,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    // Updates inventory details for an existing item
     [HttpPost]
     public async Task<IActionResult> Create(
     CreateInventoryItemDto dto)
@@ -99,6 +145,7 @@ public class InventoryController : ControllerBase
     }
 
 
+    // Updates inventory details for an existing item
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
     int id,
@@ -124,6 +171,7 @@ public class InventoryController : ControllerBase
     }
 
 
+    // Performs soft delete by marking the inventory item inactive
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -146,6 +194,7 @@ public class InventoryController : ControllerBase
         });
     }
 
+    // Inventory reporting endpoints
     [HttpGet("report/summary")]
     public async Task<IActionResult>
     GetInventorySummary()
@@ -179,6 +228,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    // Returns paginated inventory data
     [HttpGet("paged")]
     public async Task<IActionResult> GetPaged(
     [FromQuery]
@@ -192,6 +242,7 @@ public class InventoryController : ControllerBase
         return Ok(result);
     }
 
+    // Returns inventory items sorted by supported fields
     [HttpGet("sorted")]
     public async Task<IActionResult>
     GetSorted(
@@ -201,6 +252,67 @@ public class InventoryController : ControllerBase
         var result =
             await _inventoryService
                 .GetSortedAsync(sortDto);
+
+        return Ok(result);
+    }
+
+    // Availability tracking endpoints
+    [HttpGet("available")]
+    public async Task<IActionResult>
+    GetAvailableBooks()
+    {
+        var result =
+            await _inventoryService
+                .GetAvailableBooksAsync();
+
+        return Ok(result);
+    }
+
+    [HttpGet("unavailable")]
+    public async Task<IActionResult>
+    GetUnavailableBooks()
+    {
+        var result =
+            await _inventoryService
+                .GetUnavailableBooksAsync();
+
+        return Ok(result);
+    }
+
+    [HttpGet("report/availability")]
+    public async Task<IActionResult>
+    GetAvailabilityReport()
+    {
+        var result =
+            await _inventoryService
+                .GetAvailabilityReportAsync();
+
+        return Ok(result);
+    }
+
+    // Restores a previously soft deleted inventory item
+    [HttpPut("restore/{id}")]
+    public async Task<IActionResult> Restore(int id)
+    {
+        var restored =
+            await _inventoryService
+                .RestoreAsync(id);
+
+        if (!restored)
+            return NotFound();
+
+        return Ok(
+            "Inventory Item Restored Successfully");
+    }
+
+    // Retrieves all inactive (soft deleted) inventory items
+    [HttpGet("inactive")]
+    public async Task<IActionResult>
+    GetInactive()
+    {
+        var result =
+            await _inventoryService
+                .GetInactiveAsync();
 
         return Ok(result);
     }

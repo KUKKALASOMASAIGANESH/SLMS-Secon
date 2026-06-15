@@ -1,4 +1,33 @@
-﻿using AutoMapper;
+﻿/*
+ * InventoryService
+ *
+ * Purpose:
+ * Implements business logic for the Inventory module.
+ *
+ * Responsibilities:
+ * - Inventory item management
+ * - Business rule validation
+ * - Inventory search and filtering
+ * - Pagination and sorting
+ * - Shelf management
+ * - Availability tracking
+ * - Inventory reporting
+ * - Soft delete and restore operations
+ *
+ * Flow:
+ * Controller
+ *    ↓
+ * InventoryService
+ *    ↓
+ * InventoryRepository
+ *    ↓
+ * Database
+ *
+ * This layer validates business rules before interacting
+ * with the repository layer.
+ */
+
+using AutoMapper;
 using SLMS.BLL.Interfaces;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
@@ -7,6 +36,8 @@ using SLMS.Shared.DTOs.Inventory;
 
 namespace SLMS.BLL.Services;
 
+// Implements inventory business logic including validation,
+// search, reporting, availability tracking and inventory lifecycle management.
 public class InventoryService : IInventoryService
 {
     private readonly IInventoryRepository _repository;
@@ -20,6 +51,7 @@ public class InventoryService : IInventoryService
         _mapper = mapper;
     }
 
+    // Retrieves all active inventory items and excludes soft deleted records.
     public async Task<IEnumerable<InventoryItemDto>> GetAllAsync()
     {
         var inventoryItems =
@@ -32,7 +64,7 @@ public class InventoryService : IInventoryService
 
 
 
-
+    // Retrieves a specific inventory item if it is active.
     public async Task<InventoryItemDto?> GetByIdAsync(int id)
     {
         var inventoryItem = await _repository.GetByIdAsync(id);
@@ -46,6 +78,7 @@ public class InventoryService : IInventoryService
         return _mapper.Map<InventoryItemDto>(inventoryItem);
     }
 
+    // Searches inventory items using the supplied filter criteria.
     public async Task<IEnumerable<InventoryItemDto>> SearchAsync(
      InventorySearchDto searchDto)
     {
@@ -68,6 +101,8 @@ public class InventoryService : IInventoryService
             inventoryItems);
     }
 
+
+    // Retrieves all inventory items assigned to a specific shelf.
     public async Task<IEnumerable<InventoryItemDto>>
     GetByShelfAsync(string shelfNumber)
     {
@@ -80,6 +115,7 @@ public class InventoryService : IInventoryService
                 inventoryItems);
     }
 
+    // Generates a shelf-wise summary report showing inventory distribution.
     public async Task<IEnumerable<ShelfSummaryDto>>
     GetShelfSummaryAsync()
     {
@@ -87,6 +123,7 @@ public class InventoryService : IInventoryService
             .GetShelfSummaryAsync();
     }
 
+    // Creates a new inventory item after validating business rules.
     public async Task CreateAsync(CreateInventoryItemDto dto)
     {
 
@@ -121,7 +158,7 @@ public class InventoryService : IInventoryService
         await _repository.SaveChangesAsync();
     }
 
-
+    // Updates inventory details for an existing active inventory item.
     public async Task<bool> UpdateAsync(
     int id,
     UpdateInventoryItemDto dto)
@@ -154,7 +191,7 @@ public class InventoryService : IInventoryService
         return true;
     }
 
-
+    // Performs a soft delete by marking the inventory item as inactive.
     public async Task<bool> DeleteAsync(int id)
     {
         var inventoryItem =
@@ -172,6 +209,8 @@ public class InventoryService : IInventoryService
         return true;
     }
 
+
+    // Generates a summary report containing overall inventory statistics.
     public async Task<InventorySummaryDto>
     GetInventorySummaryAsync()
     {
@@ -179,6 +218,7 @@ public class InventoryService : IInventoryService
             .GetInventorySummaryAsync();
     }
 
+    // Generates a resource-wise inventory report showing copy distribution.
     public async Task<IEnumerable<ResourceInventoryReportDto>>
     GetResourceInventoryReportAsync()
     {
@@ -186,6 +226,7 @@ public class InventoryService : IInventoryService
             .GetResourceInventoryReportAsync();
     }
 
+    // Generates an inventory cost analysis report.
     public async Task<InventoryCostReportDto>
     GetInventoryCostReportAsync()
     {
@@ -193,6 +234,7 @@ public class InventoryService : IInventoryService
             .GetInventoryCostReportAsync();
     }
 
+    // Returns inventory records using pagination.
     public async Task<PagedResultDto<InventoryItemDto>>
     GetPagedAsync(
         InventoryPaginationDto paginationDto)
@@ -227,6 +269,7 @@ public class InventoryService : IInventoryService
         };
     }
 
+    // Returns inventory records sorted by the requested field.
     public async Task<IEnumerable<InventoryItemDto>>
     GetSortedAsync(
         InventorySortDto sortDto)
@@ -274,6 +317,70 @@ public class InventoryService : IInventoryService
                     break;
             }
         }
+
+        return _mapper.Map<
+            IEnumerable<InventoryItemDto>>(
+                inventoryItems);
+    }
+
+
+    // Retrieves inventory items that are currently available for issue.
+    public async Task<IEnumerable<InventoryItemDto>>
+    GetAvailableBooksAsync()
+    {
+        var books =
+            await _repository.GetAvailableBooksAsync();
+
+        return _mapper.Map<
+            IEnumerable<InventoryItemDto>>(books);
+    }
+
+    // Retrieves inventory items that are currently unavailable.
+    public async Task<IEnumerable<InventoryItemDto>>
+    GetUnavailableBooksAsync()
+    {
+        var books =
+            await _repository.GetUnavailableBooksAsync();
+
+        return _mapper.Map<
+            IEnumerable<InventoryItemDto>>(books);
+    }
+
+    // Generates a summary report of available and unavailable inventory items.
+    public async Task<AvailabilityReportDto>
+    GetAvailabilityReportAsync()
+    {
+        return await _repository
+            .GetAvailabilityReportAsync();
+    }
+
+
+    // Restores a previously soft deleted inventory item.
+    public async Task<bool> RestoreAsync(int id)
+    {
+        var inventoryItem =
+            await _repository.GetByIdAsync(id);
+
+        if (inventoryItem == null)
+            return false;
+
+        inventoryItem.IsActive = true;
+
+        _repository.Update(inventoryItem);
+
+        await _repository.SaveChangesAsync();
+
+        return true;
+    }
+
+
+    // Retrieves all inactive (soft deleted) inventory items.
+    public async Task<IEnumerable<InventoryItemDto>>
+    GetInactiveAsync()
+    {
+        var inventoryItems =
+            (await _repository.GetAllAsync())
+            .Where(x => !x.IsActive);
 
         return _mapper.Map<
             IEnumerable<InventoryItemDto>>(

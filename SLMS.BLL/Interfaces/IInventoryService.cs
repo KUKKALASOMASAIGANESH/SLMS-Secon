@@ -1,8 +1,38 @@
-﻿using SLMS.Shared.DTOs.Inventory;
+﻿/*
+ * IInventoryService
+ *
+ * Purpose:
+ * Defines the business operations available for the Inventory module.
+ *
+ * Responsibilities:
+ * - Inventory item management (CRUD)
+ * - Inventory search and filtering
+ * - Shelf management operations
+ * - Inventory reporting
+ * - Availability tracking
+ * - Pagination and sorting
+ * - Soft delete and restore functionality
+ *
+ * Architecture Flow:
+ * InventoryController
+ *        ↓
+ * IInventoryService
+ *        ↓
+ * InventoryService
+ *        ↓
+ * InventoryRepository
+ *        ↓
+ * Database
+ *
+ * This interface acts as a contract between the API layer
+ * and the business logic layer, promoting loose coupling
+ * and dependency injection.
+ */
 
-namespace SLMS.BLL.Interfaces;
+using SLMS.Shared.DTOs.Inventory;
 using SLMS.Shared.DTOs.Common;
 
+namespace SLMS.BLL.Interfaces;
 public interface IInventoryService
 {
     Task<IEnumerable<InventoryItemDto>> GetAllAsync();
@@ -42,4 +72,18 @@ public interface IInventoryService
     Task<IEnumerable<InventoryItemDto>>
     GetSortedAsync(
         InventorySortDto sortDto);
+
+    Task<IEnumerable<InventoryItemDto>>
+    GetAvailableBooksAsync();
+
+    Task<IEnumerable<InventoryItemDto>>
+        GetUnavailableBooksAsync();
+
+    Task<AvailabilityReportDto>
+        GetAvailabilityReportAsync();
+
+    Task<bool> RestoreAsync(int id);
+
+    Task<IEnumerable<InventoryItemDto>>
+    GetInactiveAsync();
 }
