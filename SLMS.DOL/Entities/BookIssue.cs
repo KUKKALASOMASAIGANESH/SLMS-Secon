@@ -4,6 +4,7 @@ namespace SLMS.DOL.Entities;
 
 public class BookIssue : BaseEntity
 {
+   
     public int InventoryItemId { get; set; }
 
     public int EmployeeId { get; set; }
@@ -22,4 +23,6 @@ public class BookIssue : BaseEntity
     public Employee Employee { get; set; } = null!;
 
     public User IssuedByUser { get; set; } = null!;
+      // ✅ FIXED
+    public int ResourceId { get; set; }   // ✅ FIXED
 }

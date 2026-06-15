@@ -36,30 +36,7 @@ public class TransactionService
             return ex.InnerException?.Message ?? ex.Message;
         }
     }
-    public string ReturnBook(int bookIssueId)
-    {
-        try
-        {
-            var issue = _context.BookIssues
-                .FirstOrDefault(x => x.Id == bookIssueId);
-
-            if (issue == null)
-            {
-                return "Record not found"; // 👈 IMPORTANT
-            }
-
-            issue.IsReturned = true;
-            
-
-            _context.SaveChanges();
-
-            return "Book Returned Successfully";
-        }
-        catch (Exception ex)
-        {
-            return ex.Message; // 👈 will show real error
-        }
-    }
+   
     public List<BookIssue> GetOverdueBooks()
     {
         return _context.BookIssues
@@ -72,5 +49,39 @@ public class TransactionService
         _context.Requests.Add(req);
         _context.SaveChanges();
         return req;
+    }
+    public object ReturnBook(int bookIssueId)
+    {
+        try
+        {
+            var issue = _context.BookIssues
+                .FirstOrDefault(x => x.Id == bookIssueId);
+
+            if (issue == null)
+                return "Record not found";
+
+            issue.IsReturned = true;
+
+            DateTime returnDate = DateTime.UtcNow;
+            int fine = 0;
+
+            if (returnDate > issue.DueDate)
+            {
+                int daysLate = (returnDate - issue.DueDate).Days;
+                fine = daysLate * 10;
+            }
+
+            _context.SaveChanges();
+
+            return new
+            {
+                message = "Book Returned Successfully",
+                fine = fine
+            };
+        }
+        catch (Exception ex)
+        {
+            return ex.Message;
+        }
     }
 }

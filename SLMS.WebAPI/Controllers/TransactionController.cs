@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SLMS.DOL.Entities;   // ✅ Correct namespace
 using SLMS.BLL.Services;   // (Assuming you have service layer)
+using SLMS.DOL.Entities;   // ✅ Correct namespace
 
 namespace SLMS.WebAPI.Controllers
 {
@@ -9,11 +9,15 @@ namespace SLMS.WebAPI.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly IRequestService _requestService;
+        private readonly TransactionService _transactionService;
 
         // ✅ Constructor
-        public TransactionController(IRequestService requestService)
+        public TransactionController(
+         IRequestService requestService,
+         TransactionService transactionService)
         {
             _requestService = requestService;
+            _transactionService = transactionService;
         }
 
         // ✅ CREATE REQUEST
@@ -94,6 +98,35 @@ namespace SLMS.WebAPI.Controllers
             _requestService.DeleteRequest(id);
 
             return Ok("Request deleted successfully");
+
         }
+        [HttpPost("issue")]
+        public IActionResult IssueBook(int bookId, int userId)
+        {
+            var result = _transactionService.IssueBook(bookId, userId);
+
+            if (result == "SUCCESS")
+                return Ok("Book Issued");
+
+            return BadRequest(result);
+        }
+        [HttpPost("return")]
+        public IActionResult ReturnBook(int issueId)
+        {
+            var result = _transactionService.ReturnBook(issueId);
+
+            if (result is string)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+        [HttpGet("overdue")]
+        public IActionResult GetOverdueBooks()
+        {
+            var data = _transactionService.GetOverdueBooks();
+            return Ok(data);
+        }
+
+
     }
 }
