@@ -39,14 +39,54 @@ public class LibraryResourceController : ControllerBase
 
         return Ok(result);
     }
+
     [HttpGet("search/{keyword}")]
-    public async Task<IActionResult>
-    Search(string keyword)
+    public async Task<IActionResult> Search(
+        string keyword)
     {
         var result =
             await _service.SearchAsync(keyword);
 
         return Ok(result);
+    }
+
+    // BOOKS
+
+    [HttpGet("books")]
+    public async Task<IActionResult> GetBooks()
+    {
+        var resources =
+            await _service.GetAllAsync();
+
+        return Ok(
+            resources.Where(x =>
+                x.ResourceType == "Book"));
+    }
+
+    // JOURNALS
+
+    [HttpGet("journals")]
+    public async Task<IActionResult> GetJournals()
+    {
+        var resources =
+            await _service.GetAllAsync();
+
+        return Ok(
+            resources.Where(x =>
+                x.ResourceType == "Journal"));
+    }
+
+    // MAGAZINES
+
+    [HttpGet("magazines")]
+    public async Task<IActionResult> GetMagazines()
+    {
+        var resources =
+            await _service.GetAllAsync();
+
+        return Ok(
+            resources.Where(x =>
+                x.ResourceType == "Magazine"));
     }
 
     [HttpPost]
@@ -58,10 +98,11 @@ public class LibraryResourceController : ControllerBase
 
         return Ok(result);
     }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
-    int id,
-    LibraryResourceUpdateDto dto)
+        int id,
+        LibraryResourceUpdateDto dto)
     {
         var result =
             await _service.UpdateAsync(id, dto);

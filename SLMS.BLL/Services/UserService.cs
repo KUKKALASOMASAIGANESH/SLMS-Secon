@@ -6,20 +6,21 @@ using SLMS.DAL.Repositories.Interfaces;
 
 using SLMS.DOL.Entities;
 
-using SLMS.Shared.DTOs.LibraryResource;
+using SLMS.Shared.DTOs.User;
 
 namespace SLMS.BLL.Services;
 
-public class LibraryResourceService
-    : ILibraryResourceService
+public class UserService
+    : IUserService
 {
-    private readonly ILibraryResourceRepository
+    private readonly IUserRepository
         _repository;
 
-    private readonly IMapper _mapper;
+    private readonly IMapper
+        _mapper;
 
-    public LibraryResourceService(
-        ILibraryResourceRepository repository,
+    public UserService(
+        IUserRepository repository,
         IMapper mapper)
     {
         _repository = repository;
@@ -27,19 +28,19 @@ public class LibraryResourceService
     }
 
     public async Task<
-        IEnumerable<LibraryResourceResponseDto>>
+        IEnumerable<UserResponseDto>>
         GetAllAsync()
     {
         var entities =
             await _repository.GetAllAsync();
 
         return _mapper.Map<
-            IEnumerable<LibraryResourceResponseDto>>
+            IEnumerable<UserResponseDto>>
             (entities);
     }
 
     public async Task<
-        LibraryResourceResponseDto?>
+        UserResponseDto?>
         GetByIdAsync(int id)
     {
         var entity =
@@ -49,32 +50,32 @@ public class LibraryResourceService
             return null;
 
         return _mapper.Map<
-            LibraryResourceResponseDto>
+            UserResponseDto>
             (entity);
     }
 
     public async Task<
-        LibraryResourceResponseDto>
+        UserResponseDto>
         CreateAsync(
-            LibraryResourceCreateDto dto)
+            UserCreateDto dto)
     {
         var entity =
-            _mapper.Map<LibraryResource>(dto);
+            _mapper.Map<User>(dto);
 
         await _repository.AddAsync(entity);
 
         await _repository.SaveChangesAsync();
 
         return _mapper.Map<
-            LibraryResourceResponseDto>
+            UserResponseDto>
             (entity);
     }
 
     public async Task<
-        LibraryResourceResponseDto?>
+        UserResponseDto?>
         UpdateAsync(
             int id,
-            LibraryResourceUpdateDto dto)
+            UserUpdateDto dto)
     {
         var entity =
             await _repository.GetByIdAsync(id);
@@ -82,20 +83,21 @@ public class LibraryResourceService
         if (entity == null)
             return null;
 
-        entity.CategoryId = dto.CategoryId;
-        entity.ResourceType = dto.ResourceType;
-        entity.Title = dto.Title;
-        entity.Author = dto.Author;
-        entity.Publisher = dto.Publisher;
-        entity.ISBN = dto.ISBN;
-        entity.PublicationYear = dto.PublicationYear;
+        entity.EmployeeId =
+            dto.EmployeeId;
+
+        entity.Username =
+            dto.Username;
+
+        entity.PasswordHash =
+            dto.PasswordHash;
 
         _repository.Update(entity);
 
         await _repository.SaveChangesAsync();
 
         return _mapper.Map<
-            LibraryResourceResponseDto>
+            UserResponseDto>
             (entity);
     }
 
@@ -113,17 +115,5 @@ public class LibraryResourceService
         await _repository.SaveChangesAsync();
 
         return true;
-    }
-
-    public async Task<
-        IEnumerable<LibraryResourceResponseDto>>
-        SearchAsync(string keyword)
-    {
-        var entities =
-            await _repository.SearchAsync(keyword);
-
-        return _mapper.Map<
-            IEnumerable<LibraryResourceResponseDto>>
-            (entities);
     }
 }

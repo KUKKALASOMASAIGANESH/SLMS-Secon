@@ -1,25 +1,22 @@
 ﻿using AutoMapper;
 
 using SLMS.BLL.Interfaces;
-
 using SLMS.DAL.Repositories.Interfaces;
-
 using SLMS.DOL.Entities;
-
-using SLMS.Shared.DTOs.LibraryResource;
+using SLMS.Shared.DTOs.Request;
 
 namespace SLMS.BLL.Services;
 
-public class LibraryResourceService
-    : ILibraryResourceService
+public class RequestService
+    : IRequestService
 {
-    private readonly ILibraryResourceRepository
+    private readonly IRequestRepository
         _repository;
 
     private readonly IMapper _mapper;
 
-    public LibraryResourceService(
-        ILibraryResourceRepository repository,
+    public RequestService(
+        IRequestRepository repository,
         IMapper mapper)
     {
         _repository = repository;
@@ -27,19 +24,19 @@ public class LibraryResourceService
     }
 
     public async Task<
-        IEnumerable<LibraryResourceResponseDto>>
+        IEnumerable<RequestResponseDto>>
         GetAllAsync()
     {
         var entities =
             await _repository.GetAllAsync();
 
         return _mapper.Map<
-            IEnumerable<LibraryResourceResponseDto>>
+            IEnumerable<RequestResponseDto>>
             (entities);
     }
 
     public async Task<
-        LibraryResourceResponseDto?>
+        RequestResponseDto?>
         GetByIdAsync(int id)
     {
         var entity =
@@ -49,32 +46,32 @@ public class LibraryResourceService
             return null;
 
         return _mapper.Map<
-            LibraryResourceResponseDto>
+            RequestResponseDto>
             (entity);
     }
 
     public async Task<
-        LibraryResourceResponseDto>
+        RequestResponseDto>
         CreateAsync(
-            LibraryResourceCreateDto dto)
+            RequestCreateDto dto)
     {
         var entity =
-            _mapper.Map<LibraryResource>(dto);
+            _mapper.Map<Request>(dto);
 
         await _repository.AddAsync(entity);
 
         await _repository.SaveChangesAsync();
 
         return _mapper.Map<
-            LibraryResourceResponseDto>
+            RequestResponseDto>
             (entity);
     }
 
     public async Task<
-        LibraryResourceResponseDto?>
+        RequestResponseDto?>
         UpdateAsync(
             int id,
-            LibraryResourceUpdateDto dto)
+            RequestUpdateDto dto)
     {
         var entity =
             await _repository.GetByIdAsync(id);
@@ -82,20 +79,19 @@ public class LibraryResourceService
         if (entity == null)
             return null;
 
-        entity.CategoryId = dto.CategoryId;
-        entity.ResourceType = dto.ResourceType;
-        entity.Title = dto.Title;
-        entity.Author = dto.Author;
-        entity.Publisher = dto.Publisher;
-        entity.ISBN = dto.ISBN;
-        entity.PublicationYear = dto.PublicationYear;
+        entity.EmployeeId = dto.EmployeeId;
+        entity.ResourceId = dto.ResourceId;
+        entity.RequestType = dto.RequestType;
+        entity.Status = dto.Status;
+        entity.RequestDate = dto.RequestDate;
+        entity.Remarks = dto.Remarks;
 
         _repository.Update(entity);
 
         await _repository.SaveChangesAsync();
 
         return _mapper.Map<
-            LibraryResourceResponseDto>
+            RequestResponseDto>
             (entity);
     }
 
@@ -113,17 +109,5 @@ public class LibraryResourceService
         await _repository.SaveChangesAsync();
 
         return true;
-    }
-
-    public async Task<
-        IEnumerable<LibraryResourceResponseDto>>
-        SearchAsync(string keyword)
-    {
-        var entities =
-            await _repository.SearchAsync(keyword);
-
-        return _mapper.Map<
-            IEnumerable<LibraryResourceResponseDto>>
-            (entities);
     }
 }
