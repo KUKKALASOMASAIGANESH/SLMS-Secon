@@ -2,6 +2,7 @@
 using SLMS.BLL.Interfaces;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
+using SLMS.Shared.DTOs.Common;
 using SLMS.Shared.DTOs.Inventory;
 
 namespace SLMS.BLL.Services;
@@ -37,6 +38,44 @@ public class InventoryService : IInventoryService
             return null;
 
         return _mapper.Map<InventoryItemDto>(inventoryItem);
+    }
+
+    public async Task<IEnumerable<InventoryItemDto>> SearchAsync(
+     InventorySearchDto searchDto)
+    {
+        var inventoryItems =
+            await _repository.SearchAsync(
+                searchDto.AccessionNumber,
+                searchDto.InventoryNumber,
+                searchDto.ShelfNumber,
+                searchDto.ResourceId,
+                searchDto.Title,
+                searchDto.Author,
+                searchDto.Publisher,
+                searchDto.MinPrice,
+                searchDto.MaxPrice);
+
+        return _mapper.Map<IEnumerable<InventoryItemDto>>(
+            inventoryItems);
+    }
+
+    public async Task<IEnumerable<InventoryItemDto>>
+    GetByShelfAsync(string shelfNumber)
+    {
+        var inventoryItems =
+            await _repository.GetByShelfAsync(
+                shelfNumber);
+
+        return _mapper.Map<
+            IEnumerable<InventoryItemDto>>(
+                inventoryItems);
+    }
+
+    public async Task<IEnumerable<ShelfSummaryDto>>
+    GetShelfSummaryAsync()
+    {
+        return await _repository
+            .GetShelfSummaryAsync();
     }
 
     public async Task CreateAsync(CreateInventoryItemDto dto)
@@ -117,5 +156,111 @@ public class InventoryService : IInventoryService
         await _repository.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<InventorySummaryDto>
+    GetInventorySummaryAsync()
+    {
+        return await _repository
+            .GetInventorySummaryAsync();
+    }
+
+    public async Task<IEnumerable<ResourceInventoryReportDto>>
+    GetResourceInventoryReportAsync()
+    {
+        return await _repository
+            .GetResourceInventoryReportAsync();
+    }
+
+    public async Task<InventoryCostReportDto>
+    GetInventoryCostReportAsync()
+    {
+        return await _repository
+            .GetInventoryCostReportAsync();
+    }
+
+    public async Task<PagedResultDto<InventoryItemDto>>
+    GetPagedAsync(
+        InventoryPaginationDto paginationDto)
+    {
+        var inventoryItems =
+            await _repository.GetAllAsync();
+
+        var totalCount =
+            inventoryItems.Count();
+
+        var pagedItems =
+            inventoryItems
+                .Skip(
+                    (paginationDto.Page - 1)
+                    * paginationDto.PageSize)
+                .Take(
+                    paginationDto.PageSize);
+
+        return new PagedResultDto<InventoryItemDto>
+        {
+            Items =
+                _mapper.Map<
+                    IEnumerable<InventoryItemDto>>(
+                        pagedItems),
+
+            TotalCount = totalCount,
+
+            Page = paginationDto.Page,
+
+            PageSize = paginationDto.PageSize
+        };
+    }
+
+    public async Task<IEnumerable<InventoryItemDto>>
+    GetSortedAsync(
+        InventorySortDto sortDto)
+    {
+        var inventoryItems =
+            await _repository.GetAllAsync();
+
+        if (!string.IsNullOrWhiteSpace(
+                sortDto.SortBy))
+        {
+            switch (sortDto.SortBy.ToLower())
+            {
+                case "price":
+
+                    inventoryItems =
+                        sortDto.Descending
+                        ? inventoryItems.OrderByDescending(
+                            x => x.Price)
+                        : inventoryItems.OrderBy(
+                            x => x.Price);
+
+                    break;
+
+                case "accessionnumber":
+
+                    inventoryItems =
+                        sortDto.Descending
+                        ? inventoryItems.OrderByDescending(
+                            x => x.AccessionNumber)
+                        : inventoryItems.OrderBy(
+                            x => x.AccessionNumber);
+
+                    break;
+
+                case "shelfnumber":
+
+                    inventoryItems =
+                        sortDto.Descending
+                        ? inventoryItems.OrderByDescending(
+                            x => x.ShelfNumber)
+                        : inventoryItems.OrderBy(
+                            x => x.ShelfNumber);
+
+                    break;
+            }
+        }
+
+        return _mapper.Map<
+            IEnumerable<InventoryItemDto>>(
+                inventoryItems);
     }
 }

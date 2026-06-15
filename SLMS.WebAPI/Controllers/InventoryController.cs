@@ -31,6 +31,38 @@ public class InventoryController : ControllerBase
         });
     }
 
+    [HttpGet("search")]
+    public async Task<IActionResult> Search(
+    [FromQuery] InventorySearchDto searchDto)
+    {
+        var result =
+            await _inventoryService.SearchAsync(searchDto);
+
+        return Ok(result);
+    }
+
+    [HttpGet("shelf/{shelfNumber}")]
+    public async Task<IActionResult>
+    GetByShelf(string shelfNumber)
+    {
+        var result =
+            await _inventoryService
+                .GetByShelfAsync(shelfNumber);
+
+        return Ok(result);
+    }
+
+    [HttpGet("report/shelf")]
+    public async Task<IActionResult>
+    GetShelfSummary()
+    {
+        var result =
+            await _inventoryService
+                .GetShelfSummaryAsync();
+
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(
     CreateInventoryItemDto dto)
@@ -114,5 +146,62 @@ public class InventoryController : ControllerBase
         });
     }
 
+    [HttpGet("report/summary")]
+    public async Task<IActionResult>
+    GetInventorySummary()
+    {
+        var result =
+            await _inventoryService
+                .GetInventorySummaryAsync();
 
+        return Ok(result);
+    }
+
+    [HttpGet("report/resource")]
+    public async Task<IActionResult>
+    GetResourceInventoryReport()
+    {
+        var result =
+            await _inventoryService
+                .GetResourceInventoryReportAsync();
+
+        return Ok(result);
+    }
+
+    [HttpGet("report/cost")]
+    public async Task<IActionResult>
+    GetInventoryCostReport()
+    {
+        var result =
+            await _inventoryService
+                .GetInventoryCostReportAsync();
+
+        return Ok(result);
+    }
+
+    [HttpGet("paged")]
+    public async Task<IActionResult> GetPaged(
+    [FromQuery]
+    InventoryPaginationDto paginationDto)
+    {
+        var result =
+            await _inventoryService
+                .GetPagedAsync(
+                    paginationDto);
+
+        return Ok(result);
+    }
+
+    [HttpGet("sorted")]
+    public async Task<IActionResult>
+    GetSorted(
+        [FromQuery]
+        InventorySortDto sortDto)
+    {
+        var result =
+            await _inventoryService
+                .GetSortedAsync(sortDto);
+
+        return Ok(result);
+    }
 }
