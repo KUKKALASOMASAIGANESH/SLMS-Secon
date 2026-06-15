@@ -41,6 +41,31 @@ public class InventoryService : IInventoryService
 
     public async Task CreateAsync(CreateInventoryItemDto dto)
     {
+
+        if (!await _repository.ResourceExistsAsync(dto.ResourceId))
+        {
+            throw new Exception("Resource does not exist.");
+        }
+
+        if (await _repository.AccessionNumberExistsAsync(
+                dto.AccessionNumber))
+        {
+            throw new Exception(
+                "Accession Number already exists.");
+        }
+
+        if (await _repository.InventoryNumberExistsAsync(
+                dto.InventoryNumber))
+        {
+            throw new Exception(
+                "Inventory Number already exists.");
+        }
+
+        if (dto.Price < 0)
+        {
+            throw new Exception(
+                "Price cannot be negative.");
+        }
         var inventoryItem = _mapper.Map<InventoryItem>(dto);
 
         await _repository.AddAsync(inventoryItem);
