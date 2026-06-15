@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SLMS.DOL.Common;
-
-namespace SLMS.DOL.Entities;
+﻿using SLMS.DOL.Common;
+using SLMS.DOL.Entities;
+using System.Text.Json.Serialization;
 
 public class Employee : BaseEntity
 {
@@ -23,8 +17,12 @@ public class Employee : BaseEntity
     public int DepartmentId { get; set; }
 
     public Department Department { get; set; } = null!;
+
+    [JsonIgnore] // 🔥 BREAK cycle
     public ICollection<BookIssue> BookIssues { get; set; }
-    = new List<BookIssue>();
+        = new List<BookIssue>();
+
+    [JsonIgnore] // 🔥 BREAK cycle
     public ICollection<Request> Requests { get; set; }
-    = new List<Request>();
+        = new List<Request>();
 }

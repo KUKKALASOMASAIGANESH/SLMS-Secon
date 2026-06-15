@@ -13,6 +13,7 @@ public class SLMSDbContext : DbContext
     // Master Tables
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Employee> Employees => Set<Employee>();
+    public DbSet<TempTest> TempTests { get; set; }
 
     // Security
     public DbSet<User> Users => Set<User>();

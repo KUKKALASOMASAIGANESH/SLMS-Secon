@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SLMS.DAL.Data;
@@ -11,9 +12,11 @@ using SLMS.DAL.Data;
 namespace SLMS.DAL.Migrations
 {
     [DbContext(typeof(SLMSDbContext))]
-    partial class SLMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612084014_TempTestTable")]
+    partial class TempTestTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,9 +160,6 @@ namespace SLMS.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("EmployeeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Fine")
                         .HasColumnType("integer");
 
                     b.Property<int>("InventoryItemId")

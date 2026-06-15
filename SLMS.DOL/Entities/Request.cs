@@ -4,6 +4,9 @@ namespace SLMS.DOL.Entities;
 
 public class Request : BaseEntity
 {
+    // Remove Id if BaseEntity already has it
+    // public int Id { get; set; }
+
     public int EmployeeId { get; set; }
 
     public int ResourceId { get; set; }
@@ -16,7 +19,7 @@ public class Request : BaseEntity
 
     public string? Remarks { get; set; }
 
-    public Employee Employee { get; set; } = null!;
+    public Employee? Employee { get; set; } 
 
-    public LibraryResource Resource { get; set; } = null!;
+    public LibraryResource? Resource { get; set; }
 }

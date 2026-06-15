@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SLMS.BLL\SLMS.BLL.csproj" />
     <ProjectReference Include="..\SLMS.Shared\SLMS.Shared.csproj" />
   </ItemGroup>
 

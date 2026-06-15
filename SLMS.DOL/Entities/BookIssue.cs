@@ -16,6 +16,7 @@ public class BookIssue : BaseEntity
 
     public string Status { get; set; } = "Issued";
 
+    public int Fine { get; set; }
     public InventoryItem InventoryItem { get; set; } = null!;
 
     public Employee Employee { get; set; } = null!;
