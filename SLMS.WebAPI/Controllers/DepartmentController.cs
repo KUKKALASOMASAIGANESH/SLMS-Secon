@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
 using SLMS.DOL.Entities;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace SLMS.WebAPI.Controllers;
 
+
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DepartmentController : ControllerBase
