@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
+using SLMS.DOL.DTOs.Employee;
 using SLMS.DOL.Entities;
 
 namespace SLMS.WebAPI.Controllers;
@@ -19,9 +20,22 @@ public class EmployeeController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
-    }
+        var employees =
+            await _service.GetAllAsync();
 
+        var result = employees.Select(e =>
+            new EmployeeDto
+            {
+                Id = e.Id,
+                EmployeeNumber = e.EmployeeNumber,
+                FullName = e.FullName,
+                Email = e.Email,
+                Designation = e.Designation,
+                DepartmentId = e.DepartmentId
+            });
+
+        return Ok(result);
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -30,12 +44,32 @@ public class EmployeeController : ControllerBase
         if (data == null)
             return NotFound();
 
-        return Ok(data);
-    }
+        var dto = new EmployeeDto
+        {
+            Id = data.Id,
+            EmployeeNumber = data.EmployeeNumber,
+            FullName = data.FullName,
+            Email = data.Email,
+            Designation = data.Designation,
+            DepartmentId = data.DepartmentId
+        };
 
+        return Ok(dto);
+    }
     [HttpPost]
-    public async Task<IActionResult> Create(Employee employee)
+    public async Task<IActionResult>
+    Create(EmployeeCreateDto dto)
     {
+        var employee = new Employee
+        {
+            EmployeeNumber = dto.EmployeeNumber,
+            FullName = dto.FullName,
+            Email = dto.Email,
+            Phone = dto.Phone,
+            Designation = dto.Designation,
+            DepartmentId = dto.DepartmentId
+        };
+
         await _service.AddAsync(employee);
 
         return Ok("Employee Created");
@@ -47,11 +81,33 @@ public class EmployeeController : ControllerBase
         var data = await _service
             .SearchByNameAsync(name);
 
-        return Ok(data);
+        var result = data.Select(e => new EmployeeDto
+        {
+            Id = e.Id,
+            EmployeeNumber = e.EmployeeNumber,
+            FullName = e.FullName,
+            Email = e.Email,
+            Designation = e.Designation,
+            DepartmentId = e.DepartmentId
+        });
+
+        return Ok(result);
     }
     [HttpPut]
-    public async Task<IActionResult> Update(Employee employee)
+    public async Task<IActionResult>
+Update(EmployeeUpdateDto dto)
     {
+        var employee = new Employee
+        {
+            Id = dto.Id,
+            EmployeeNumber = dto.EmployeeNumber,
+            FullName = dto.FullName,
+            Email = dto.Email,
+            Phone = dto.Phone,
+            Designation = dto.Designation,
+            DepartmentId = dto.DepartmentId
+        };
+
         await _service.UpdateAsync(employee);
 
         return Ok("Employee Updated");

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
+using SLMS.DOL.DTOs.AuditLog;
 
 namespace SLMS.WebAPI.Controllers;
 
@@ -18,19 +19,41 @@ public class AuditLogController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        var data = await _service.GetAllAsync();
+
+        var result = data.Select(a => new AuditLogDto
+        {
+            Id = a.Id,
+            UserId = a.UserId,
+            Module = a.Module,
+            Action = a.Action,
+            OldValue = a.OldValue,
+            NewValue = a.NewValue,
+            IPAddress = a.IPAddress
+        });
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult>
-        GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var data =
-            await _service.GetByIdAsync(id);
+        var data = await _service.GetByIdAsync(id);
 
         if (data == null)
             return NotFound();
 
-        return Ok(data);
+        var dto = new AuditLogDto
+        {
+            Id = data.Id,
+            UserId = data.UserId,
+            Module = data.Module,
+            Action = data.Action,
+            OldValue = data.OldValue,
+            NewValue = data.NewValue,
+            IPAddress = data.IPAddress
+        };
+
+        return Ok(dto);
     }
 }

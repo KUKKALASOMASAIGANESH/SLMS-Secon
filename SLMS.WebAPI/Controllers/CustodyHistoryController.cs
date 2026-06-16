@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
+using SLMS.DOL.DTOs.CustodyHistory;
 using SLMS.DOL.Entities;
 
 namespace SLMS.WebAPI.Controllers;
@@ -21,7 +22,19 @@ public class CustodyHistoryController : ControllerBase
     {
         var data = await _service.GetAllAsync();
 
-        return Ok(data);
+        var result = data.Select(c => new CustodyHistoryDto
+        {
+            Id = c.Id,
+            InventoryItemId = c.InventoryItemId,
+            FromDepartmentId = c.FromDepartmentId,
+            ToDepartmentId = c.ToDepartmentId,
+            TransferDate = c.TransferDate,
+            TransferReason = c.TransferReason,
+            Remarks = c.Remarks,
+            TransferredByUserId = c.TransferredByUserId
+        });
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
@@ -32,29 +45,64 @@ public class CustodyHistoryController : ControllerBase
         if (data == null)
             return NotFound();
 
-        return Ok(data);
+        var dto = new CustodyHistoryDto
+        {
+            Id = data.Id,
+            InventoryItemId = data.InventoryItemId,
+            FromDepartmentId = data.FromDepartmentId,
+            ToDepartmentId = data.ToDepartmentId,
+            TransferDate = data.TransferDate,
+            TransferReason = data.TransferReason,
+            Remarks = data.Remarks,
+            TransferredByUserId = data.TransferredByUserId
+        };
+
+        return Ok(dto);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        CustodyHistory custodyHistory)
+     CustodyHistoryCreateDto dto)
     {
-        await _service.AddAsync(custodyHistory);
+        var custody = new CustodyHistory
+        {
+            InventoryItemId = dto.InventoryItemId,
+            FromDepartmentId = dto.FromDepartmentId,
+            ToDepartmentId = dto.ToDepartmentId,
+            TransferDate = DateTime.UtcNow,
+            TransferReason = dto.TransferReason,
+            Remarks = dto.Remarks,
+            TransferredByUserId = dto.TransferredByUserId
+        };
 
-        return Ok("Custody History Created");
+        await _service.AddAsync(custody);
+
+        return Ok("Custody Created");
     }
+
     [HttpGet("inventory/{inventoryItemId}")]
-    public async Task<IActionResult>
-    GetByInventoryItem(int inventoryItemId)
+    public async Task<IActionResult> GetByInventoryItem(int inventoryItemId)
     {
         var data = await _service
             .GetByInventoryItemAsync(inventoryItemId);
 
-        return Ok(data);
+        var result = data.Select(c => new CustodyHistoryDto
+        {
+            Id = c.Id,
+            InventoryItemId = c.InventoryItemId,
+            FromDepartmentId = c.FromDepartmentId,
+            ToDepartmentId = c.ToDepartmentId,
+            TransferDate = c.TransferDate,
+            TransferReason = c.TransferReason,
+            Remarks = c.Remarks,
+            TransferredByUserId = c.TransferredByUserId
+        });
+
+        return Ok(result);
     }
+
     [HttpGet("current/{inventoryItemId}")]
-    public async Task<IActionResult>
-    GetCurrentCustodian(int inventoryItemId)
+    public async Task<IActionResult> GetCurrentCustodian(int inventoryItemId)
     {
         var data = await _service
             .GetCurrentCustodianAsync(inventoryItemId);
