@@ -1,0 +1,57 @@
+﻿@model SLMS.WebApp.Models.CustodyHistoryViewModel
+
+@{
+    ViewData["Title"] = "Create Custody";
+}
+
+<h2>Create Custody</h2>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label asp-for="InventoryItemId"></label>
+        <input asp-for="InventoryItemId"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FromDepartmentId"></label>
+        <input asp-for="FromDepartmentId"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ToDepartmentId"></label>
+        <input asp-for="ToDepartmentId"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TransferReason"></label>
+        <input asp-for="TransferReason"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Remarks"></label>
+        <input asp-for="Remarks"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TransferredByUserId"></label>
+        <input asp-for="TransferredByUserId"
+               class="form-control" />
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Save
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

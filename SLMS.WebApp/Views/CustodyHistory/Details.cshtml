@@ -1,0 +1,49 @@
+﻿@model SLMS.WebApp.Models.CustodyHistoryViewModel
+
+@{
+    ViewData["Title"] = "Custody Details";
+}
+
+<h2>Custody Details</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Inventory Item</th>
+        <td>@Model.InventoryItemId</td>
+    </tr>
+
+    <tr>
+        <th>From Department</th>
+        <td>@Model.FromDepartmentId</td>
+    </tr>
+
+    <tr>
+        <th>To Department</th>
+        <td>@Model.ToDepartmentId</td>
+    </tr>
+
+    <tr>
+        <th>Transfer Date</th>
+        <td>@Model.TransferDate</td>
+    </tr>
+
+    <tr>
+        <th>Transfer Reason</th>
+        <td>@Model.TransferReason</td>
+    </tr>
+
+    <tr>
+        <th>Remarks</th>
+        <td>@Model.Remarks</td>
+    </tr>
+
+    <tr>
+        <th>Transferred By User</th>
+        <td>@Model.TransferredByUserId</td>
+    </tr>
+</table>
+
+<a asp-action="Index"
+   class="btn btn-secondary">
+    Back
+</a>

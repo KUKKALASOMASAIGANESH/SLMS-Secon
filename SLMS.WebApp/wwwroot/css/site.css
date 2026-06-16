@@ -20,3 +20,103 @@ html {
 body {
   margin-bottom: 60px;
 }
+/* Company Theme */
+
+body {
+    background-color: #f4f6f9;
+}
+
+.navbar {
+    background-color: #1e3a8a !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #dbeafe !important;
+    }
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.table {
+    background: white;
+}
+
+footer {
+    background: white;
+}
+.navbar {
+    background-color: #1e3a8a !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #dbeafe !important;
+    }
+body {
+    background-color: #f4f6f9;
+}
+
+.navbar {
+    background-color: #1e3a8a !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 700;
+}
+
+    .navbar-brand small {
+        color: #dbeafe;
+    }
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #dbeafe !important;
+    }
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.table {
+    background-color: white;
+}
+
+.footer {
+    padding: 15px 0;
+    background-color: white;
+}

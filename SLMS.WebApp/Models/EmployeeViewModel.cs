@@ -1,4 +1,6 @@
-﻿public class EmployeeDto
+﻿namespace SLMS.WebApp.Models;
+
+public class EmployeeViewModel
 {
     public int Id { get; set; }
 

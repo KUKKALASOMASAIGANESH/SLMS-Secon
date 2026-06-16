@@ -30,6 +30,7 @@ public class EmployeeController : ControllerBase
                 EmployeeNumber = e.EmployeeNumber,
                 FullName = e.FullName,
                 Email = e.Email,
+                Phone = e.Phone,
                 Designation = e.Designation,
                 DepartmentId = e.DepartmentId
             });
@@ -50,6 +51,7 @@ public class EmployeeController : ControllerBase
             EmployeeNumber = data.EmployeeNumber,
             FullName = data.FullName,
             Email = data.Email,
+            Phone = data.Phone,
             Designation = data.Designation,
             DepartmentId = data.DepartmentId
         };

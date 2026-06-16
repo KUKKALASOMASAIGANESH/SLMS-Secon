@@ -1,0 +1,38 @@
+﻿@model IEnumerable<SLMS.WebApp.Models.CustodyHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Inventory History";
+}
+
+<h2>Inventory History</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Inventory</th>
+            <th>From Dept</th>
+            <th>To Dept</th>
+            <th>Date</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.InventoryItemId</td>
+                <td>@item.FromDepartmentId</td>
+                <td>@item.ToDepartmentId</td>
+                <td>@item.TransferDate</td>
+                <td>@item.TransferReason</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Back
+</a>
