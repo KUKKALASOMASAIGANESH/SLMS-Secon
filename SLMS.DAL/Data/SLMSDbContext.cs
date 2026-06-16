@@ -52,6 +52,26 @@ public class SLMSDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        //Digitalcontent Request
+        modelBuilder.Entity<DigitalContentRequest>()
+        .HasOne(x => x.Employee)
+        .WithMany()
+        .HasForeignKey(x => x.EmployeeId);
+
+        modelBuilder.Entity<DigitalContentRequest>()
+            .HasOne(x => x.DigitalContent)
+            .WithMany(x => x.Requests)
+            .HasForeignKey(x => x.DigitalContentId);
+        modelBuilder.Entity<DownloadHistory>()
+            .HasOne(x => x.Employee)
+            .WithMany()
+            .HasForeignKey(x => x.EmployeeId);
+
+        modelBuilder.Entity<DownloadHistory>()
+            .HasOne(x => x.DigitalContent)
+            .WithMany()
+            .HasForeignKey(x => x.DigitalContentId);
+
         // UserRole Composite Key
         modelBuilder.Entity<UserRole>()
             .HasKey(x => new { x.UserId, x.RoleId });
