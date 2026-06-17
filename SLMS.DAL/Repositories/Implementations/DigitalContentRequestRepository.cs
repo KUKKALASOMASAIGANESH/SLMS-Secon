@@ -4,11 +4,11 @@ using SLMS.DOL.Entities;
 
 namespace SLMS.DAL.Repositories.Implementations;
 
-public class DigitalContentRepository
-    : Repository<DigitalContent>,
-      IDigitalContentRepository
+public class DigitalContentRequestRepository
+    : Repository<DigitalContentRequest>,
+      IDigitalContentRequestRepository
 {
-    public DigitalContentRepository(
+    public DigitalContentRequestRepository(
         SLMSDbContext context)
         : base(context)
     {

@@ -72,7 +72,6 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -88,6 +87,21 @@ builder.Services.AddScoped<IAuditLogRepository,
 
 builder.Services.AddScoped<IInventoryRepository,
     InventoryRepository>();
+
+// Digital Library Repositories
+builder.Services.AddScoped<IDigitalContentRepository,
+    DigitalContentRepository>();
+
+builder.Services.AddScoped<IDigitalContentRequestRepository,
+    DigitalContentRequestRepository>();
+
+builder.Services.AddScoped<IPolicyRepository,
+    PolicyRepository>();
+
+builder.Services.AddScoped<IDownloadHistoryRepository,
+    DownloadHistoryRepository>();
+
+
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -106,8 +120,23 @@ builder.Services.AddScoped<IAuditLogService,
 builder.Services.AddScoped<IInventoryService,
     InventoryService>();
 
+// Digital Library Services
+builder.Services.AddScoped<IDigitalContentService,
+    DigitalContentService>();
+
+builder.Services.AddScoped<IDigitalContentRequestService,
+    DigitalContentRequestService>();
+
+builder.Services.AddScoped<IPolicyService,
+    PolicyService>();
+
+builder.Services.AddScoped<IDownloadHistoryService,
+    DownloadHistoryService>();
+
+
 // JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();
+
 
 // JWT Authentication
 builder.Services.AddAuthentication(

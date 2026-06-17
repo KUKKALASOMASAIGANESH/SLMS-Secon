@@ -2,7 +2,7 @@
 
 namespace SLMS.DAL.Repositories.Interfaces;
 
-public interface IDigitalContentRepository
-    : IRepository<DigitalContent>
+public interface IPolicyRepository
+    : IRepository<Policy>
 {
 }
