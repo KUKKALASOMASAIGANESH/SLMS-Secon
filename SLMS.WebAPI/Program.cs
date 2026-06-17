@@ -10,7 +10,6 @@ using SLMS.DAL.Repositories.Implementations;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -24,11 +23,57 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Repository Registration
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+#region Repository Registration
 
-// Service Registration
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+// Department
+builder.Services.AddScoped<
+    IDepartmentRepository,
+    DepartmentRepository>();
+
+// Digital Library
+builder.Services.AddScoped<
+    IDigitalContentRepository,
+    DigitalContentRepository>();
+
+builder.Services.AddScoped<
+    IDigitalContentRequestRepository,
+    DigitalContentRequestRepository>();
+
+builder.Services.AddScoped<
+    IPolicyRepository,
+    PolicyRepository>();
+
+builder.Services.AddScoped<
+    IDownloadHistoryRepository,
+    DownloadHistoryRepository>();
+
+#endregion
+
+#region Service Registration
+
+// Department
+builder.Services.AddScoped<
+    IDepartmentService,
+    DepartmentService>();
+
+// Digital Library
+builder.Services.AddScoped<
+    IDigitalContentService,
+    DigitalContentService>();
+
+builder.Services.AddScoped<
+    IDigitalContentRequestService,
+    DigitalContentRequestService>();
+
+builder.Services.AddScoped<
+    IPolicyService,
+    PolicyService>();
+
+builder.Services.AddScoped<
+    IDownloadHistoryService,
+    DownloadHistoryService>();
+
+#endregion
 
 var app = builder.Build();
 
