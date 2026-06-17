@@ -16,10 +16,21 @@ public class CustodyHistoryController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var data =
-            await _service.GetAllAsync();
+        try
+        {
+            var data =
+                await _service.GetAllAsync();
 
-        return View(data);
+            return View(data);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "Unable to load custody records.";
+
+            return View(
+                new List<CustodyHistoryViewModel>());
+        }
     }
 
     [HttpGet]
@@ -29,49 +40,103 @@ public class CustodyHistoryController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-     CustodyHistoryViewModel model)
+        CustodyHistoryViewModel model)
     {
-        var result =
-            await _service.CreateAsync(model);
+        try
+        {
+            if (!ModelState.IsValid)
+                return View(model);
 
-        if (result)
-            return RedirectToAction(nameof(Index));
+            var result =
+                await _service.CreateAsync(model);
 
-        return View(model);
+            if (result)
+            {
+                TempData["Success"] =
+                    "Custody record created successfully.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["Error"] =
+                "Unable to create custody record.";
+
+            return View(model);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "An unexpected error occurred.";
+
+            return View(model);
+        }
     }
+
     [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
-        var data = await _service.GetByIdAsync(id);
+        try
+        {
+            var data =
+                await _service.GetByIdAsync(id);
 
-        if (data == null)
-            return NotFound();
+            if (data == null)
+                return NotFound();
 
-        return View(data);
+            return View(data);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "Unable to load custody details.";
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult>
-    SearchByInventory(int inventoryItemId)
+        SearchByInventory(int inventoryItemId)
     {
-        var data = await _service
-            .GetByInventoryItemAsync(inventoryItemId);
+        try
+        {
+            var data = await _service
+                .GetByInventoryItemAsync(inventoryItemId);
 
-        return View(data);
+            return View(data);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "Search operation failed.";
+
+            return View(
+                new List<CustodyHistoryViewModel>());
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult>
-    CurrentCustodian(int inventoryItemId)
+        CurrentCustodian(int inventoryItemId)
     {
-        var data = await _service
-            .GetCurrentCustodianAsync(inventoryItemId);
+        try
+        {
+            var data = await _service
+                .GetCurrentCustodianAsync(inventoryItemId);
 
-        if (data == null)
-            return NotFound();
+            if (data == null)
+                return NotFound();
 
-        return View(data);
+            return View(data);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "Unable to load current custodian.";
+
+            return RedirectToAction(nameof(Index));
+        }
     }
-
 }

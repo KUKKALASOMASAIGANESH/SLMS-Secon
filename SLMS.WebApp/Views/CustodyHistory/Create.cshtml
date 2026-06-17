@@ -4,54 +4,95 @@
     ViewData["Title"] = "Create Custody";
 }
 
-<h2>Create Custody</h2>
+<div class="card shadow-sm">
 
-<form asp-action="Create" method="post">
+    <div class="card-body">
 
-    <div class="mb-3">
-        <label asp-for="InventoryItemId"></label>
-        <input asp-for="InventoryItemId"
-               class="form-control" />
+        <h2>Create Custody</h2>
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="InventoryItemId"></label>
+                <input asp-for="InventoryItemId"
+                       class="form-control"
+                       tabindex="1" />
+                <span asp-validation-for="InventoryItemId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FromDepartmentId"></label>
+                <input asp-for="FromDepartmentId"
+                       class="form-control"
+                       tabindex="2" />
+                <span asp-validation-for="FromDepartmentId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ToDepartmentId"></label>
+                <input asp-for="ToDepartmentId"
+                       class="form-control"
+                       tabindex="3" />
+                <span asp-validation-for="ToDepartmentId"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TransferReason"></label>
+                <input asp-for="TransferReason"
+                       class="form-control"
+                       tabindex="4" />
+                <span asp-validation-for="TransferReason"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Remarks"></label>
+                <input asp-for="Remarks"
+                       class="form-control"
+                       tabindex="5" />
+                <span asp-validation-for="Remarks"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TransferredByUserId"></label>
+                <input asp-for="TransferredByUserId"
+                       class="form-control"
+                       tabindex="6" />
+                <span asp-validation-for="TransferredByUserId"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success"
+                    tabindex="7">
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary"
+               tabindex="8">
+                Cancel
+            </a>
+
+        </form>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="FromDepartmentId"></label>
-        <input asp-for="FromDepartmentId"
-               class="form-control" />
-    </div>
+</div>
 
-    <div class="mb-3">
-        <label asp-for="ToDepartmentId"></label>
-        <input asp-for="ToDepartmentId"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="TransferReason"></label>
-        <input asp-for="TransferReason"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Remarks"></label>
-        <input asp-for="Remarks"
-               class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="TransferredByUserId"></label>
-        <input asp-for="TransferredByUserId"
-               class="form-control" />
-    </div>
-
-    <button type="submit"
-            class="btn btn-success">
-        Save
-    </button>
-
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        Cancel
-    </a>
-
-</form>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

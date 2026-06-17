@@ -5,46 +5,95 @@
     ViewData["Title"] = "Create Employee";
 }
 
-<h2>Create Employee</h2>
+<div class="card shadow-sm">
 
-<form asp-action="Create" method="post">
+    <div class="card-body">
 
-    <div class="mb-3">
-        <label asp-for="EmployeeNumber"></label>
-        <input asp-for="EmployeeNumber" class="form-control" />
+        <h2>Create Employee</h2>
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EmployeeNumber"></label>
+                <input asp-for="EmployeeNumber"
+                       class="form-control"
+                       tabindex="1" />
+                <span asp-validation-for="EmployeeNumber"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName"
+                       class="form-control"
+                       tabindex="2" />
+                <span asp-validation-for="FullName"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email"
+                       class="form-control"
+                       tabindex="3" />
+                <span asp-validation-for="Email"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Phone"></label>
+                <input asp-for="Phone"
+                       class="form-control"
+                       tabindex="4" />
+                <span asp-validation-for="Phone"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Designation"></label>
+                <input asp-for="Designation"
+                       class="form-control"
+                       tabindex="5" />
+                <span asp-validation-for="Designation"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DepartmentId"></label>
+                <input asp-for="DepartmentId"
+                       class="form-control"
+                       tabindex="6" />
+                <span asp-validation-for="DepartmentId"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success"
+                    tabindex="7">
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary"
+               tabindex="8">
+                Cancel
+            </a>
+
+        </form>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="FullName"></label>
-        <input asp-for="FullName" class="form-control" />
-    </div>
+</div>
 
-    <div class="mb-3">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Phone"></label>
-        <input asp-for="Phone" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Designation"></label>
-        <input asp-for="Designation" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="DepartmentId"></label>
-        <input asp-for="DepartmentId" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-success">
-        Save
-    </button>
-
-    <a asp-action="Index" class="btn btn-secondary">
-        Cancel
-    </a>
-
-</form>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}           
