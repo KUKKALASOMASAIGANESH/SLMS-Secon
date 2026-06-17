@@ -15,9 +15,16 @@ namespace SLMS.BLL.Services
 
         public void AddRequest(Request request)
         {
-            request.RequestDate = request.RequestDate.ToUniversalTime();
+            request.RequestDate = DateTime.UtcNow;
+            request.CreatedDate = DateTime.UtcNow;
+            request.Status = "Pending";
+            request.RequestType = string.IsNullOrEmpty(request.RequestType)
+                                  ? "Issue"
+                                  : request.RequestType;
+            request.IsActive = true;
+
             _context.Requests.Add(request);
-            _context.SaveChanges(); // 🔥 THIS SAVES TO DB
+            _context.SaveChanges();
         }
 
         public List<Request> GetAllRequests()

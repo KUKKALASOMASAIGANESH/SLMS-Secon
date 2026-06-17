@@ -6,11 +6,14 @@ using SLMS.BLL.Services;
 
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DAL.Repositories.Implementations;
-
+using SLMS.WebAPI.Mappings;
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddScoped<TransactionService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 
