@@ -1,0 +1,62 @@
+﻿@model SLMS.WebApp.Models.Inventory.InventoryViewModel
+
+@{
+    ViewData["Title"] = "Inventory Details";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3 class="mb-4">
+            Inventory Details
+        </h3>
+
+        @* Displays complete inventory information in read-only mode *@
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th>Resource Id</th>
+                <td>@Model.ResourceId</td>
+            </tr>
+
+            <tr>
+                <th>Accession Number</th>
+                <td>@Model.AccessionNumber</td>
+            </tr>
+
+            <tr>
+                <th>Inventory Number</th>
+                <td>@Model.InventoryNumber</td>
+            </tr>
+
+            <tr>
+                <th>Shelf Number</th>
+                <td>@Model.ShelfNumber</td>
+            </tr>
+
+            <tr>
+                <th>Price</th>
+                <td>@Model.Price</td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+                <td>
+                    @(Model.IsActive
+                        ? "Active"
+                        : "Inactive")
+                </td>
+            </tr>
+
+        </table>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back To List
+        </a>
+
+    </div>
+
+</div>

@@ -1,9 +1,37 @@
 using SLMS.WebApp.Services;
+using SLMS.WebApp.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // MVC
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddHttpClient<EmployeeService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
+
+builder.Services.AddHttpClient<CustodyHistoryService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
+
+builder.Services.AddHttpClient<AuditLogService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
+
+builder.Services.AddScoped<
+    IInventoryService,
+    InventoryService>();
 
 // HttpClient
 builder.Services.AddHttpClient<AuthService>(client =>

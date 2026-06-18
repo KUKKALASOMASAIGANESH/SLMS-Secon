@@ -1,0 +1,46 @@
+﻿@model SLMS.WebApp.Models.AuditLogViewModel
+
+@{
+    ViewData["Title"] = "Audit Log Details";
+}
+
+<h2>Audit Log Details</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>User Id</th>
+        <td>@Model.UserId</td>
+    </tr>
+
+    <tr>
+        <th>Module</th>
+        <td>@Model.Module</td>
+    </tr>
+
+    <tr>
+        <th>Action</th>
+        <td>@Model.Action</td>
+    </tr>
+
+    <tr>
+        <th>Old Value</th>
+        <td>@Model.OldValue</td>
+    </tr>
+
+    <tr>
+        <th>New Value</th>
+        <td>@Model.NewValue</td>
+    </tr>
+
+    <tr>
+        <th>IP Address</th>
+        <td>@Model.IPAddress</td>
+    </tr>
+
+</table>
+
+<a asp-action="Index"
+   class="btn btn-secondary">
+    Back
+</a>

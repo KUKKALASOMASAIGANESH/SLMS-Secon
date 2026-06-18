@@ -1,4 +1,4 @@
-﻿namespace SLMS.Shared.DTOs.Employee;
+namespace SLMS.Shared.DTOs.Employee;
 
 public class EmployeeCreateDto
 {
@@ -10,7 +10,7 @@ public class EmployeeCreateDto
 
     public string Phone { get; set; } = string.Empty;
 
-    public int DepartmentId { get; set; }
-
     public string Designation { get; set; } = string.Empty;
+
+    public int DepartmentId { get; set; }
 }

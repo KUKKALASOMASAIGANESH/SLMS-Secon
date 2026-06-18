@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SLMS.DAL.Data;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
@@ -5,11 +6,19 @@ using SLMS.DOL.Entities;
 namespace SLMS.DAL.Repositories.Implementations;
 
 public class EmployeeRepository
-	: Repository<Employee>, IEmployeeRepository
+    : Repository<Employee>, IEmployeeRepository
 {
-	public EmployeeRepository(
-		SLMSDbContext context)
-		: base(context)
-	{
-	}
+    public EmployeeRepository(
+        SLMSDbContext context)
+        : base(context)
+    {
+    }
+
+    public async Task<IEnumerable<Employee>>
+        SearchByNameAsync(string name)
+    {
+        return await _dbSet
+            .Where(x => x.FullName.Contains(name))
+            .ToListAsync();
+    }
 }

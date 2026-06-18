@@ -22,6 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 
@@ -72,16 +75,36 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
+builder.Services.AddScoped<ICustodyHistoryRepository,
+    CustodyHistoryRepository>();
+
+builder.Services.AddScoped<IAuditLogRepository,
+    AuditLogRepository>();
+
+builder.Services.AddScoped<IInventoryRepository,
+    InventoryRepository>();
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
-// AutoMapper
-builder.Services.AddAutoMapper(
-    typeof(MappingProfile));
+builder.Services.AddScoped<IDepartmentService,
+    DepartmentService>();
+
+builder.Services.AddScoped<ICustodyHistoryService,
+    CustodyHistoryService>();
+
+builder.Services.AddScoped<IEmployeeService,
+    EmployeeService>();
+
+builder.Services.AddScoped<IAuditLogService,
+    AuditLogService>();
+
+builder.Services.AddScoped<IInventoryService,
+    InventoryService>();
 
 // JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();

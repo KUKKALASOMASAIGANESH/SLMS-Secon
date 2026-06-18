@@ -18,11 +18,11 @@ public class CustodyHistory : BaseEntity
 
     public int? TransferredByUserId { get; set; }
 
-    public InventoryItem InventoryItem { get; set; } = null!;
+    public InventoryItem? InventoryItem { get; set; } 
 
     public Department? FromDepartment { get; set; }
 
-    public Department ToDepartment { get; set; } = null!;
+    public Department? ToDepartment { get; set; } 
 
     public User? TransferredByUser { get; set; }
 }

@@ -1,0 +1,70 @@
+﻿@model List<SLMS.WebApp.Models.Inventory.InventoryViewModel>
+
+@{
+    ViewData["Title"] = "Inactive Inventory";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3 class="mb-4">
+            Inactive Inventory
+        </h3>
+
+        <table class="table table-bordered table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>Accession Number</th>
+
+                    <th>Inventory Number</th>
+
+                    <th>Shelf Number</th>
+
+                    <th>Price</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.AccessionNumber</td>
+
+                        <td>@item.InventoryNumber</td>
+
+                        <td>@item.ShelfNumber</td>
+
+                        <td>@item.Price</td>
+
+                        <td>
+
+                            <a asp-action="Restore"
+                               asp-route-id="@item.Id"
+                               class="btn btn-success btn-sm"
+                               onclick="return confirm(
+                                   'Restore this inventory item?');">
+                                Restore
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
