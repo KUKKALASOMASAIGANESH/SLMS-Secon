@@ -22,6 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 
@@ -82,6 +85,9 @@ builder.Services.AddScoped<ICustodyHistoryRepository,
 
 builder.Services.AddScoped<IAuditLogRepository,
     AuditLogRepository>();
+
+builder.Services.AddScoped<IInventoryRepository,
+    InventoryRepository>();
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -97,9 +103,8 @@ builder.Services.AddScoped<IEmployeeService,
 builder.Services.AddScoped<IAuditLogService,
     AuditLogService>();
 
-// AutoMapper
-builder.Services.AddAutoMapper(
-    typeof(MappingProfile));
+builder.Services.AddScoped<IInventoryService,
+    InventoryService>();
 
 // JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();

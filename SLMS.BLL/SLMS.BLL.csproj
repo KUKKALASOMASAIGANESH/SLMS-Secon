@@ -16,6 +16,7 @@
 		<Folder Include="Validators\" />
 	</ItemGroup>
 
+<<<<<<< HEAD
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
 		<PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
@@ -24,3 +25,10 @@
 	</ItemGroup>
 
 </Project>
+=======
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>
+>>>>>>> feature-inventory
