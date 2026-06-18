@@ -43,9 +43,14 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> LoginAsync(LoginDto dto)
     {
-        var user = (await _userRepository.FindAsync(u => u.Username == dto.Username))
+
+        dto.Username = dto.Username.Trim();
+
+        var user = (await _userRepository.FindAsync(
+            u => u.Username.ToLower() == dto.Username))
             .FirstOrDefault();
 
+        
         if (user == null)
         {
             return new AuthResponse
@@ -84,6 +89,8 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponse> RegisterAsync(RegisterDto dto)
     {
+        dto.Username = dto.Username.Trim().ToLower();
+
         var employee = (await _employeeRepository.FindAsync(
             e => e.EmployeeNumber == dto.EmployeeNumber))
             .FirstOrDefault();
@@ -97,8 +104,23 @@ public class AuthService : IAuthService
             };
         }
 
+        // Password Validation
+        if (string.IsNullOrWhiteSpace(dto.Password) ||
+            dto.Password.Length < 8 ||
+            !dto.Password.Any(char.IsUpper) ||
+            !dto.Password.Any(char.IsLower) ||
+            !dto.Password.Any(char.IsDigit) ||
+            !dto.Password.Any(ch => !char.IsLetterOrDigit(ch)))
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                Message = "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+            };
+        }
+
         var existingUser = (await _userRepository.FindAsync(
-            u => u.Username == dto.Username))
+            u => u.Username.ToLower() == dto.Username))
             .FirstOrDefault();
 
         if (existingUser != null)
@@ -107,6 +129,20 @@ public class AuthService : IAuthService
             {
                 Success = false,
                 Message = "Username already exists"
+            };
+        }
+
+        // Prevent same employee from registering twice
+        var employeeAlreadyRegistered = (await _userRepository.FindAsync(
+            u => u.EmployeeId == employee.Id))
+            .FirstOrDefault();
+
+        if (employeeAlreadyRegistered != null)
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                Message = "Employee is already registered"
             };
         }
 
@@ -124,6 +160,47 @@ public class AuthService : IAuthService
         {
             Success = true,
             Message = "Registration successful"
+        };
+    }
+
+    public async Task<AuthResponse> ForgotPasswordAsync(ForgotPasswordDto dto)
+    {
+        dto.Username = dto.Username.Trim().ToLower();
+
+        var user = (await _userRepository.FindAsync(
+            u => u.Username.ToLower() == dto.Username))
+            .FirstOrDefault();
+
+        if (user == null)
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                Message = "User not found"
+            };
+        }
+
+        var employee = await _employeeRepository.GetByIdAsync(user.EmployeeId);
+
+        if (employee == null ||
+            employee.EmployeeNumber != dto.EmployeeNumber)
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                Message = "Employee verification failed"
+            };
+        }
+
+        user.PasswordHash =
+            BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+        await _userRepository.SaveChangesAsync();
+
+        return new AuthResponse
+        {
+            Success = true,
+            Message = "Password reset successful"
         };
     }
 }

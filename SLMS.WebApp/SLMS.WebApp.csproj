@@ -13,5 +13,9 @@
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
-
+	
+	<ItemGroup>
+		<ProjectReference Include="..\SLMS.Shared\SLMS.Shared.csproj" />
+	</ItemGroup>
+	
 </Project>
