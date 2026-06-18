@@ -9,4 +9,7 @@ public interface IDownloadHistoryService
     Task<DownloadHistory?> GetByIdAsync(int id);
 
     Task AddAsync(DownloadHistory downloadHistory);
+
+    Task<IEnumerable<DownloadHistory>>
+    GetAllWithContentAsync();  
 }

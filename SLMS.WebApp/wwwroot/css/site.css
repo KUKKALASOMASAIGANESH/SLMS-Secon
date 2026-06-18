@@ -1,22 +1,43 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+    background-color: #f4f6f9;
+}
+
+.navbar {
+    background-color: #1e3a8a !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 700;
+}
+
+    .navbar-brand small {
+        color: #dbeafe;
+    }
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #dbeafe !important;
+    }
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.table {
+    background-color: white;
+}
+
+.footer {
+    padding: 15px 0;
+    background-color: white;
 }

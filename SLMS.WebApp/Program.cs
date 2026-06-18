@@ -1,7 +1,16 @@
+using SLMS.WebApp.Services.DigitalLibrary;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<
+    IDigitalLibraryService,
+    DigitalLibraryService>();
 
 var app = builder.Build();
 

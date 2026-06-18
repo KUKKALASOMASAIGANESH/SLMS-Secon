@@ -32,4 +32,10 @@ public class DownloadHistoryService
 
         await _repository.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<DownloadHistory>>
+    GetAllWithContentAsync()
+    {
+        return await _repository.GetAllWithContentAsync();
+    }
 }

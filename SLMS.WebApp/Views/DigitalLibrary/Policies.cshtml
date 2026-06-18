@@ -1,0 +1,48 @@
+﻿@model List<SLMS.WebApp.Models.DigitalLibrary.PolicyViewModel>
+
+@{
+    ViewData["Title"] = "Policies";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3>Library Policies</h3>
+
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Title</th>
+
+                    <th>Description</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.Title</td>
+
+                        <td>@item.Description</td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        </div>
+
+    </div>
+
+</div>

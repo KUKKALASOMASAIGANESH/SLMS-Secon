@@ -1,0 +1,48 @@
+﻿@model List<SLMS.WebApp.Models.DigitalLibrary.DownloadHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Download History";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3>Download History</h3>
+
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Content</th>
+
+                    <th>Downloaded On</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.ContentTitle</td>
+
+                        <td>@item.DownloadedOn</td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        </div>
+
+    </div>
+
+</div>

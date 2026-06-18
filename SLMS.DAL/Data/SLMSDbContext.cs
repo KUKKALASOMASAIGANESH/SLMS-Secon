@@ -38,6 +38,8 @@ public class SLMSDbContext : DbContext
 
     // Digital Library
     public DbSet<DigitalContent> DigitalContents => Set<DigitalContent>();
+
+
     public DbSet<DigitalContentRequest> DigitalContentRequests => Set<DigitalContentRequest>();
 
     // Notifications

@@ -1,0 +1,132 @@
+﻿@model List<SLMS.WebApp.Models.DigitalLibrary.DigitalContentViewModel>
+
+@{
+    ViewData["Title"] = "Digital Library";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-3">
+
+            <h3 class="mb-0">Digital Library</h3>
+
+            <p class="text-muted">
+                Browse available digital content and request access.
+            </p>
+
+        </div>
+
+        <div class="mb-3">
+
+            <input type="text"
+                   id="searchBox"
+                   class="form-control"
+                   placeholder="Search by title, category or description..." />
+
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+
+            <a asp-action="Policies"
+               class="btn btn-info">
+
+                Policies
+
+            </a>
+
+            <a asp-action="Downloads"
+               class="btn btn-success">
+
+                Download History
+
+            </a>
+
+        </div>
+
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>Title</th>
+
+                    <th>Category</th>
+
+                    <th>Description</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="contentTable">
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.Title</td>
+
+                        <td>@item.Category</td>
+
+                        <td>@item.Description</td>
+
+                        <td>
+
+                            <a asp-action="Request"
+                               asp-route-id="@item.Id"
+                               class="btn btn-primary btn-sm">
+
+                                Request Access
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        document
+            .getElementById("searchBox")
+            .addEventListener("keyup", function () {
+
+                let filter =
+                    this.value.toLowerCase();
+
+                let rows =
+                    document.querySelectorAll(
+                        "#contentTable tr");
+
+                rows.forEach(function (row) {
+
+                    let text =
+                        row.innerText.toLowerCase();
+
+                    row.style.display =
+                        text.includes(filter)
+                            ? ""
+                            : "none";
+                });
+            });
+
+    </script>
+
+}
