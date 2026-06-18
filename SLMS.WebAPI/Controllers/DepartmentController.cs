@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-using SLMS.BLL.Interfaces;
-<<<<<<< HEAD
-using SLMS.DOL.Entities;
 using Microsoft.AspNetCore.Authorization;
 
-=======
+using SLMS.BLL.Interfaces;
 
 using SLMS.Shared.DTOs.Department;
 using SLMS.Shared.Responses;
->>>>>>> a184551 (Completed Department Module V2 with DTOs AutoMapper Middleware)
 
 namespace SLMS.WebAPI.Controllers;
-
 
 [Authorize]
 [ApiController]
@@ -36,21 +30,26 @@ public class DepartmentController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _service.GetAllAsync();
+        var result =
+            await _service.GetAllAsync();
 
         return Ok(
-            new ApiResponse<IEnumerable<DepartmentResponseDto>>
+            new ApiResponse<
+                IEnumerable<DepartmentResponseDto>>
             {
                 Success = true,
-                Message = "Departments retrieved successfully",
+                Message =
+                    "Departments retrieved successfully",
                 Data = result
             });
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        int id)
     {
-        var result = await _service.GetByIdAsync(id);
+        var result =
+            await _service.GetByIdAsync(id);
 
         if (result == null)
         {
@@ -58,15 +57,18 @@ public class DepartmentController : ControllerBase
                 new ApiResponse<object>
                 {
                     Success = false,
-                    Message = "Department not found"
+                    Message =
+                        "Department not found"
                 });
         }
 
         return Ok(
-            new ApiResponse<DepartmentResponseDto>
+            new ApiResponse<
+                DepartmentResponseDto>
             {
                 Success = true,
-                Message = "Department retrieved successfully",
+                Message =
+                    "Department retrieved successfully",
                 Data = result
             });
     }
@@ -75,13 +77,16 @@ public class DepartmentController : ControllerBase
     public async Task<IActionResult> Create(
         [FromBody] DepartmentCreateDto dto)
     {
-        var result = await _service.CreateAsync(dto);
+        var result =
+            await _service.CreateAsync(dto);
 
         return Ok(
-            new ApiResponse<DepartmentResponseDto>
+            new ApiResponse<
+                DepartmentResponseDto>
             {
                 Success = true,
-                Message = "Department created successfully",
+                Message =
+                    "Department created successfully",
                 Data = result
             });
     }
