@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
-﻿using Microsoft.EntityFrameworkCore;
->>>>>>> feature-custody
+using Microsoft.EntityFrameworkCore;
 using SLMS.DAL.Data;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
@@ -9,15 +6,6 @@ using SLMS.DOL.Entities;
 namespace SLMS.DAL.Repositories.Implementations;
 
 public class EmployeeRepository
-<<<<<<< HEAD
-	: Repository<Employee>, IEmployeeRepository
-{
-	public EmployeeRepository(
-		SLMSDbContext context)
-		: base(context)
-	{
-	}
-=======
     : Repository<Employee>, IEmployeeRepository
 {
     public EmployeeRepository(
@@ -25,12 +13,12 @@ public class EmployeeRepository
         : base(context)
     {
     }
+
     public async Task<IEnumerable<Employee>>
-    SearchByNameAsync(string name)
+        SearchByNameAsync(string name)
     {
         return await _dbSet
             .Where(x => x.FullName.Contains(name))
             .ToListAsync();
     }
->>>>>>> feature-custody
 }

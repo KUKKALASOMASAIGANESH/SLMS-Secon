@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
-using SLMS.DOL.DTOs.CustodyHistory;
+using SLMS.Shared.DTOs.Custody;
 using SLMS.DOL.Entities;
 
 namespace SLMS.WebAPI.Controllers;

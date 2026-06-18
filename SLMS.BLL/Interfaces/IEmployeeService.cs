@@ -1,4 +1,5 @@
 ﻿using SLMS.DOL.Entities;
+using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.BLL.Interfaces;
 

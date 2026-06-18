@@ -1,4 +1,4 @@
-﻿namespace SLMS.DOL.DTOs.CustodyHistory;
+﻿namespace SLMS.Shared.DTOs.Custody;
 
 public class CustodyHistoryDto
 {

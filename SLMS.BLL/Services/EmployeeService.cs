@@ -1,7 +1,7 @@
 ﻿using SLMS.BLL.Interfaces;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
-
+using SLMS.Shared.DTOs.Employee;
 namespace SLMS.BLL.Services;
 
 public class EmployeeService : IEmployeeService

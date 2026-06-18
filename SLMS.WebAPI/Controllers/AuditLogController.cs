@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
-using SLMS.DOL.DTOs.AuditLog;
+using SLMS.Shared.DTOs.Custody;
 
 namespace SLMS.WebAPI.Controllers;
 

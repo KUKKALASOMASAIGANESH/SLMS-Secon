@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
-using SLMS.DOL.DTOs.Employee;
 using SLMS.DOL.Entities;
+using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.WebAPI.Controllers;
 

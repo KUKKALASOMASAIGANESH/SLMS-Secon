@@ -1,4 +1,4 @@
-﻿namespace SLMS.DOL.DTOs.AuditLog;
+﻿namespace SLMS.Shared.DTOs.Custody;
 
 public class AuditLogDto
 {
