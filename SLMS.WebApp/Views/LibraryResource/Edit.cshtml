@@ -1,0 +1,87 @@
+﻿@model SLMS.WebApp.Models.LibraryResourceViewModel
+
+@{
+    ViewData["Title"] = "Edit Resource";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h3>Edit Resource</h3>
+        <hr />
+
+        <form asp-action="Edit" method="post">
+
+            <input asp-for="Id" type="hidden" />
+
+            <div class="mb-3">
+                <label>Category</label>
+
+                <select asp-for="CategoryId"
+                        asp-items="Model.CategoryList"
+                        class="form-control">
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Resource Type</label>
+
+                <select asp-for="ResourceType"
+                        class="form-control">
+
+                    <option value="Book">Book</option>
+                    <option value="Journal">Journal</option>
+                    <option value="Magazine">Magazine</option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Title</label>
+                <input asp-for="Title"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Author</label>
+                <input asp-for="Author"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Publisher</label>
+                <input asp-for="Publisher"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>ISBN</label>
+                <input asp-for="ISBN"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Publication Year</label>
+                <input asp-for="PublicationYear"
+                       class="form-control" />
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Update
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model SLMS.WebApp.Models.BookIssueViewModel
+
+@{
+    ViewData["Title"] = "Issue Book";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h3>Issue Book</h3>
+        <hr />
+
+        <form asp-action="Create" method="post">
+
+            <div class="mb-3">
+                <label>Inventory Item Id</label>
+                <input asp-for="InventoryItemId"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Employee Id</label>
+                <input asp-for="EmployeeId"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Issue Date</label>
+                <input asp-for="IssueDate"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Due Date</label>
+                <input asp-for="DueDate"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Issued By User Id</label>
+                <input asp-for="IssuedByUserId"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Status</label>
+
+                <select asp-for="Status"
+                        class="form-control">
+
+                    <option value="Issued">
+                        Issued
+                    </option>
+
+                    <option value="Returned">
+                        Returned
+                    </option>
+
+                </select>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Issue Book
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>

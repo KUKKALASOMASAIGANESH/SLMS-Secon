@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-
 using SLMS.BLL.Interfaces;
-
 using SLMS.DAL.Repositories.Interfaces;
-
 using SLMS.DOL.Entities;
-
 using SLMS.Shared.DTOs.Category;
 
 namespace SLMS.BLL.Services;
@@ -13,7 +9,6 @@ namespace SLMS.BLL.Services;
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repository;
-
     private readonly IMapper _mapper;
 
     public CategoryService(
@@ -61,5 +56,41 @@ public class CategoryService : ICategoryService
 
         return _mapper.Map<
             CategoryResponseDto>(entity);
+    }
+
+    public async Task<CategoryResponseDto?>
+        UpdateAsync(
+            int id,
+            CategoryUpdateDto dto)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        entity.Name = dto.Name;
+        entity.Description = dto.Description;
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<
+            CategoryResponseDto>(entity);
+    }
+
+    public async Task<bool>
+        DeleteAsync(int id)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return false;
+
+        _repository.Delete(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return true;
     }
 }

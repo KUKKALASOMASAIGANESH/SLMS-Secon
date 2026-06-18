@@ -5,7 +5,7 @@
 namespace SLMS.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class AddResourceTypeToLibraryResource : Migration
+    public partial class AddCatalogAndBookIssueTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

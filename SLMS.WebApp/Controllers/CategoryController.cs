@@ -1,0 +1,130 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using SLMS.WebApp.Models;
+using SLMS.WebApp.Services;
+
+namespace SLMS.WebApp.Controllers;
+
+public class CategoryController : Controller
+{
+    private readonly CategoryService _service;
+
+    public CategoryController(CategoryService service)
+    {
+        _service = service;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var categories = await _service.GetAllAsync();
+
+        return View(categories);
+    }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CategoryViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _service.CreateAsync(model);
+
+            TempData["SuccessMessage"] =
+                "Category Added Successfully";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            TempData["ErrorMessage"] =
+                "Something went wrong while saving category.";
+
+            return View(model);
+        }
+        finally
+        {
+            Console.WriteLine(
+                $"Create Category Request Completed At {DateTime.Now}");
+        }
+    }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var category =
+            await _service.GetByIdAsync(id);
+
+        if (category == null)
+            return NotFound();
+
+        return View(category);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(
+        CategoryViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            await _service.UpdateAsync(model);
+
+            TempData["SuccessMessage"] =
+                "Category Updated Successfully";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            TempData["ErrorMessage"] =
+                "Failed to update category";
+
+            return View(model);
+        }
+    }
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _service.DeleteAsync(id);
+
+            TempData["SuccessMessage"] =
+                "Category Deleted Successfully";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            TempData["ErrorMessage"] =
+                "Failed to delete category";
+
+            return RedirectToAction(nameof(Index));
+        }
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var category =
+            await _service.GetByIdAsync(id);
+
+        if (category == null)
+            return NotFound();
+
+        return View(category);
+    }
+}

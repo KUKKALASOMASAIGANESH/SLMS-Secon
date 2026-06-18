@@ -12,8 +12,8 @@ using SLMS.DAL.Data;
 namespace SLMS.DAL.Migrations
 {
     [DbContext(typeof(SLMSDbContext))]
-    [Migration("20260615034148_AddResourceTypeToLibraryResource")]
-    partial class AddResourceTypeToLibraryResource
+    [Migration("20260615120008_AddCatalogAndBookIssueTables")]
+    partial class AddCatalogAndBookIssueTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

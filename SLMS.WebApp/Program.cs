@@ -7,38 +7,44 @@ var builder = WebApplication.CreateBuilder(args);
 // MVC
 builder.Services.AddControllersWithViews();
 
+// Common HttpClient
 builder.Services.AddHttpClient();
 
-builder.Services.AddHttpClient<EmployeeService>(
-    client =>
-    {
-        client.BaseAddress =
-            new Uri("https://localhost:7277/");
-    });
+// Existing Services
+builder.Services.AddHttpClient<EmployeeService>(client =>
+{
+    client.BaseAddress =
+        new Uri("https://localhost:7277/");
+});
 
-builder.Services.AddHttpClient<CustodyHistoryService>(
-    client =>
-    {
-        client.BaseAddress =
-            new Uri("https://localhost:7277/");
-    });
+builder.Services.AddHttpClient<CustodyHistoryService>(client =>
+{
+    client.BaseAddress =
+        new Uri("https://localhost:7277/");
+});
 
-builder.Services.AddHttpClient<AuditLogService>(
-    client =>
-    {
-        client.BaseAddress =
-            new Uri("https://localhost:7277/");
-    });
+builder.Services.AddHttpClient<AuditLogService>(client =>
+{
+    client.BaseAddress =
+        new Uri("https://localhost:7277/");
+});
 
+// Catalog Services
+builder.Services.AddHttpClient<CategoryService>();
+builder.Services.AddHttpClient<LibraryResourceService>();
+builder.Services.AddHttpClient<BookIssueService>();
+
+// Inventory
 builder.Services.AddScoped<
     IInventoryService,
     InventoryService>();
 
+// Digital Library
 builder.Services.AddScoped<
     IDigitalLibraryService,
     DigitalLibraryService>();
 
-// Auth HttpClient
+// Auth
 builder.Services.AddHttpClient<AuthService>(client =>
 {
     client.BaseAddress =
@@ -50,7 +56,9 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout =
+        TimeSpan.FromMinutes(30);
+
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -68,10 +76,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Session
 app.UseSession();
 
-// Authorization
 // app.UseAuthorization();
 
 app.MapControllerRoute(
