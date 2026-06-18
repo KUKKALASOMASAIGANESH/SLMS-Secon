@@ -1,0 +1,258 @@
+﻿@model SLMS.WebApp.Models.Inventory.InventoryDashboardViewModel
+
+@{
+    ViewData["Title"] = "Inventory Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>
+        Inventory Dashboard
+    </h2>
+
+    <a asp-controller="Inventory"
+       asp-action="Inactive"
+       class="btn btn-warning">
+        Inactive Inventory
+    </a>
+
+</div>
+
+<!-- Summary Section -->
+
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow-sm text-center">
+            <div class="card-body">
+                <h6>Total Items</h6>
+                <h2>
+                    @Model.Summary.TotalInventoryItems
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow-sm text-center">
+            <div class="card-body">
+                <h6>Active Items</h6>
+                <h2>
+                    @Model.Summary.ActiveInventoryItems
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow-sm text-center">
+            <div class="card-body">
+                <h6>Inactive Items</h6>
+                <h2>
+                    @Model.Summary.InactiveInventoryItems
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow-sm text-center">
+            <div class="card-body">
+                <h6>Total Shelves</h6>
+                <h2>
+                    @Model.Summary.TotalShelves
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<!-- Cost Summary Section -->
+
+<h3 class="mb-3">
+    Inventory Cost Summary
+</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center bg-info text-white">
+            <div class="card-body">
+                <h6>Total Value</h6>
+                <h2>
+                    ₹@Model.CostReport.TotalInventoryValue
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center bg-secondary text-white">
+            <div class="card-body">
+                <h6>Average Value</h6>
+                <h2>
+                    ₹@Model.CostReport.AverageInventoryValue
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center bg-success text-white">
+            <div class="card-body">
+                <h6>Highest Price</h6>
+                <h2>
+                    ₹@Model.CostReport.HighestPrice
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm text-center bg-danger text-white">
+            <div class="card-body">
+                <h6>Lowest Price</h6>
+                <h2>
+                    ₹@Model.CostReport.LowestPrice
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+<!-- Availability report -->
+
+<hr />
+
+<h3 class="mb-3">
+    Availability Report
+</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+
+        <div class="card bg-success text-white shadow-sm text-center">
+
+            <div class="card-body">
+
+                <h5>Available Books</h5>
+
+                <h2>
+                    @Model.AvailabilityReport.AvailableBooks
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card bg-danger text-white shadow-sm text-center">
+
+            <div class="card-body">
+
+                <h5>Unavailable Books</h5>
+
+                <h2>
+                    @Model.AvailabilityReport.UnavailableBooks
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Resource Report Section -->
+
+<h3 class="mb-3">
+    Resource Inventory Report
+</h3>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-striped">
+
+            <thead>
+                <tr>
+                    <th>Resource Id</th>
+                    <th>Title</th>
+                    <th>Total Copies</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.ResourceReport)
+                {
+                    <tr>
+                        <td>@item.ResourceId</td>
+                        <td>@item.Title</td>
+                        <td>@item.TotalCopies</td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<hr />
+
+<h3 class="mb-3">
+    Shelf Distribution Report
+</h3>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>Shelf Number</th>
+
+                    <th>Book Count</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.ShelfReport)
+                {
+                    <tr>
+
+                        <td>@item.ShelfNumber</td>
+
+                        <td>@item.BookCount</td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

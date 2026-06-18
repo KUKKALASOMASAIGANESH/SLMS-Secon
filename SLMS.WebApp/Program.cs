@@ -1,7 +1,16 @@
+using SLMS.WebApp.Services;
+using SLMS.WebApp.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<
+    IInventoryService,
+    InventoryService>();
 
 var app = builder.Build();
 

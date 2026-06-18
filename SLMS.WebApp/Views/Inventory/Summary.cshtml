@@ -1,0 +1,81 @@
+﻿@model SLMS.WebApp.Models.Inventory.InventorySummaryViewModel
+
+@{
+    ViewData["Title"] = "Inventory Summary";
+}
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h5>Total Items</h5>
+
+                <h2>
+                    @Model.TotalInventoryItems
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h5>Active Items</h5>
+
+                <h2>
+                    @Model.ActiveInventoryItems
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h5>Inactive Items</h5>
+
+                <h2>
+                    @Model.InactiveInventoryItems
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card text-center shadow-sm">
+
+            <div class="card-body">
+
+                <h5>Total Shelves</h5>
+
+                <h2>
+                    @Model.TotalShelves
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

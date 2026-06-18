@@ -2,6 +2,7 @@
 
 public class UpdateInventoryItemDto
 {
+    public int ResourceId { get; set; }
     public string AccessionNumber { get; set; } = string.Empty;
 
     public string InventoryNumber { get; set; } = string.Empty;

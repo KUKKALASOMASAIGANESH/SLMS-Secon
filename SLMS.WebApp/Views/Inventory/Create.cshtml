@@ -1,0 +1,87 @@
+﻿@model SLMS.WebApp.Models.Inventory.CreateInventoryViewModel
+
+@{
+    ViewData["Title"] = "Create Inventory Item";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3 class="mb-4">
+            Create Inventory Item
+        </h3>
+
+        <form asp-action="Create"
+              method="post">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Resource Id
+                </label>
+
+                <input asp-for="ResourceId"
+                       class="form-control" />
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Accession Number
+                </label>
+
+                <input asp-for="AccessionNumber"
+                       class="form-control" />
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Inventory Number
+                </label>
+
+                <input asp-for="InventoryNumber"
+                       class="form-control" />
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Shelf Number
+                </label>
+
+                <input asp-for="ShelfNumber"
+                       class="form-control" />
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Price
+                </label>
+
+                <input asp-for="Price"
+                       class="form-control" />
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

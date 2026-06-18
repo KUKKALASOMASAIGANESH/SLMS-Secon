@@ -1,0 +1,95 @@
+﻿@model SLMS.WebApp.Models.Inventory.UpdateInventoryViewModel
+
+@{
+    ViewData["Title"] = "Edit Inventory Item";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3 class="mb-4">
+            Edit Inventory Item
+        </h3>
+
+        @* Form used to update existing inventory information *@
+        <form method="post">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="form-label">
+                        Resource Id
+                    </label>
+
+                    <input asp-for="ResourceId"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="form-label">
+                        Accession Number
+                    </label>
+
+                    <input asp-for="AccessionNumber"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="form-label">
+                        Inventory Number
+                    </label>
+
+                    <input asp-for="InventoryNumber"
+                           class="form-control" />
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Shelf Number
+                    </label>
+
+                    <input asp-for="ShelfNumber"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Price
+                    </label>
+
+                    <input asp-for="Price"
+                           class="form-control" />
+
+                </div>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Update
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,26 @@
+﻿namespace SLMS.WebApp.Models.Inventory;
+
+public class InventoryPagedViewModel
+{
+    public List<InventoryViewModel> Items
+    { get; set; } = new();
+
+    public int TotalCount { get; set; }
+
+    public int Page { get; set; }
+
+    public int PageSize { get; set; }
+
+    public int TotalPages =>
+        (int)Math.Ceiling(
+            (double)TotalCount / PageSize);
+
+    public string? SearchTerm
+    { get; set; }
+
+    public string? SortBy
+    { get; set; }
+
+    public bool Descending
+    { get; set; }
+}
