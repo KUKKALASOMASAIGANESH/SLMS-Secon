@@ -10,5 +10,7 @@ namespace SLMS.BLL.Services
         Request GetRequestById(int id);
         void UpdateRequest(Request request);
         void DeleteRequest(int id);
+        bool ResourceExists(int resourceId);
+        bool EmployeeExists(int employeeId);
     }
 }

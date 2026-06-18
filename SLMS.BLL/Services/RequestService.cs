@@ -13,6 +13,7 @@ namespace SLMS.BLL.Services
             _context = context;
         }
 
+        // ================= ADD REQUEST =================
         public void AddRequest(Request request)
         {
             request.RequestDate = DateTime.UtcNow;
@@ -27,6 +28,7 @@ namespace SLMS.BLL.Services
             _context.SaveChanges();
         }
 
+        // ================= GET ALL =================
         public List<Request> GetAllRequests()
         {
             return _context.Requests
@@ -35,6 +37,7 @@ namespace SLMS.BLL.Services
                 .ToList();
         }
 
+        // ================= GET BY ID =================
         public Request GetRequestById(int id)
         {
             return _context.Requests
@@ -43,12 +46,14 @@ namespace SLMS.BLL.Services
                 .FirstOrDefault(r => r.Id == id);
         }
 
+        // ================= UPDATE =================
         public void UpdateRequest(Request request)
         {
             _context.Requests.Update(request);
             _context.SaveChanges();
         }
 
+        // ================= DELETE =================
         public void DeleteRequest(int id)
         {
             var request = _context.Requests.Find(id);
@@ -57,6 +62,18 @@ namespace SLMS.BLL.Services
                 _context.Requests.Remove(request);
                 _context.SaveChanges();
             }
+        }
+
+        // ================= ✅ NEW METHODS (VERY IMPORTANT) =================
+
+        public bool ResourceExists(int resourceId)
+        {
+            return _context.LibraryResources.Any(r => r.Id == resourceId);
+        }
+
+        public bool EmployeeExists(int employeeId)
+        {
+            return _context.Employees.Any(e => e.Id == employeeId);
         }
     }
 }
