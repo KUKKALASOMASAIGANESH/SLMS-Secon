@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 using SLMS.WebApp.Services;
 using SLMS.WebApp.Services.Interfaces;
+=======
+using SLMS.WebApp.Services.DigitalLibrary;
+
+>>>>>>> ed08efc (Completed Frontend)
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +13,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient();
 
+<<<<<<< HEAD
 builder.Services.AddHttpClient<EmployeeService>(
     client =>
     {
@@ -48,6 +54,11 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+=======
+builder.Services.AddScoped<
+    IDigitalLibraryService,
+    DigitalLibraryService>();
+>>>>>>> ed08efc (Completed Frontend)
 
 var app = builder.Build();
 

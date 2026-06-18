@@ -21,7 +21,8 @@ public class DownloadHistoryController
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        return Ok(
+            await _service.GetAllWithContentAsync());
     }
 
     [HttpGet("{id}")]

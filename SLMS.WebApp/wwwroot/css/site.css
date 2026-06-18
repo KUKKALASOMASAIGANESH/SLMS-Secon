@@ -102,9 +102,8 @@ body {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(30,58,138,.25);
 }
 
-
-
 /* SECON Background Watermark */
+
 .auth-background {
     background-image: url('/images/secon-logo.jpg');
     background-repeat: no-repeat;

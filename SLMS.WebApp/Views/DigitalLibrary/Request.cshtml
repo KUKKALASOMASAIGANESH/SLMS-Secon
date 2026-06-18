@@ -1,0 +1,50 @@
+﻿@model SLMS.WebApp.Models.DigitalLibrary.DigitalContentRequestViewModel
+
+@{
+    ViewData["Title"] = "Request Content";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3>Request Content</h3>
+
+        <form asp-action="Request" method="post">
+
+            <input type="hidden"
+                   asp-for="DigitalContentId" />
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Reason
+
+                </label>
+
+                <textarea asp-for="Reason"
+                          class="form-control">
+                </textarea>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary d-flex flex-wrap gap-2 mb-3">
+
+                Submit Request
+
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary ">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
