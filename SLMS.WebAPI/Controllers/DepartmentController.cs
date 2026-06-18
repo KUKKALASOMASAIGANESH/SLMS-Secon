@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SLMS.BLL.Interfaces;
-using SLMS.DOL.Entities;
 using Microsoft.AspNetCore.Authorization;
 
+using SLMS.BLL.Interfaces;
+
+using SLMS.Shared.DTOs.Department;
+using SLMS.Shared.Responses;
 
 namespace SLMS.WebAPI.Controllers;
-
 
 [Authorize]
 [ApiController]
@@ -20,30 +21,73 @@ public class DepartmentController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok("Department Controller Working");
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var data = await _service.GetAllAsync();
-        return Ok(data);
+        var result =
+            await _service.GetAllAsync();
+
+        return Ok(
+            new ApiResponse<
+                IEnumerable<DepartmentResponseDto>>
+            {
+                Success = true,
+                Message =
+                    "Departments retrieved successfully",
+                Data = result
+            });
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(
+        int id)
     {
-        var data = await _service.GetByIdAsync(id);
+        var result =
+            await _service.GetByIdAsync(id);
 
-        if (data == null)
-            return NotFound();
+        if (result == null)
+        {
+            return NotFound(
+                new ApiResponse<object>
+                {
+                    Success = false,
+                    Message =
+                        "Department not found"
+                });
+        }
 
-        return Ok(data);
+        return Ok(
+            new ApiResponse<
+                DepartmentResponseDto>
+            {
+                Success = true,
+                Message =
+                    "Department retrieved successfully",
+                Data = result
+            });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        Department department)
+        [FromBody] DepartmentCreateDto dto)
     {
-        await _service.AddAsync(department);
+        var result =
+            await _service.CreateAsync(dto);
 
-        return Ok("Department Created");
+        return Ok(
+            new ApiResponse<
+                DepartmentResponseDto>
+            {
+                Success = true,
+                Message =
+                    "Department created successfully",
+                Data = result
+            });
     }
 }
