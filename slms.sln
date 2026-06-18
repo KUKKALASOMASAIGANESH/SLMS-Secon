@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "slms", "slms\slms.csproj", "{B9D143F6-D902-4038-AE6E-7079BEFD52A7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLMS.WebApp", "SLMS.WebApp\SLMS.WebApp.csproj", "{E8BE502A-2AA6-4B0E-B857-838DA94F52A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLMS.WebAPI", "SLMS.WebAPI\SLMS.WebAPI.csproj", "{EB78BA8A-3B3A-41E7-ABAC-9EC674CE8B9F}"
@@ -23,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B9D143F6-D902-4038-AE6E-7079BEFD52A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9D143F6-D902-4038-AE6E-7079BEFD52A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9D143F6-D902-4038-AE6E-7079BEFD52A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9D143F6-D902-4038-AE6E-7079BEFD52A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8BE502A-2AA6-4B0E-B857-838DA94F52A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8BE502A-2AA6-4B0E-B857-838DA94F52A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8BE502A-2AA6-4B0E-B857-838DA94F52A3}.Release|Any CPU.ActiveCfg = Release|Any CPU

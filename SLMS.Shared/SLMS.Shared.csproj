@@ -7,10 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\Category\" />
+    <Folder Include="DTOs\LibraryResource\" />
+    <Folder Include="DTOs\Inventory\" />
+    <Folder Include="DTOs\Custody\" />
+    <Folder Include="DTOs\DigitalContent\" />
+    <Folder Include="DTOs\Reports\" />
+    <Folder Include="DTOs\Transaction\" />
+
     <Folder Include="Enums\" />
     <Folder Include="Constants\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Responses\" />
   </ItemGroup>
 
 </Project>

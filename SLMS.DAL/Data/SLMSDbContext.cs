@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SLMS.DOL.Entities;
 
 namespace SLMS.DAL.Data;

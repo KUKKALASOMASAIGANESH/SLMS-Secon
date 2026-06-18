@@ -1,5 +1,6 @@
 namespace SLMS.WebAPI
 {
+    
     public class WeatherForecast
     {
         public DateOnly Date { get; set; }
