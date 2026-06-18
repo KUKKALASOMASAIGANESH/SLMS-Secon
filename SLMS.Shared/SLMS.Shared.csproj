@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="DTOs\Category\" />
     <Folder Include="DTOs\LibraryResource\" />
     <Folder Include="DTOs\Inventory\" />
@@ -14,6 +15,8 @@
     <Folder Include="DTOs\DigitalContent\" />
     <Folder Include="DTOs\Reports\" />
     <Folder Include="DTOs\Transaction\" />
+=======
+>>>>>>> feature-custody
     <Folder Include="Enums\" />
     <Folder Include="Constants\" />
     <Folder Include="Helpers\" />

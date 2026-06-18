@@ -1,8 +1,71 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="mb-4">
+    Smart Library Management System
+</h2>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h5>Employees</h5>
+
+                <p>
+                    Manage employee records.
+                </p>
+
+                <a asp-controller="Employee"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Open
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h5>Custody History</h5>
+
+                <p>
+                    Manage custody transfers.
+                </p>
+
+                <a asp-controller="CustodyHistory"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Open
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h5>Audit Logs</h5>
+
+                <p>
+                    View system activities.
+                </p>
+
+                <a asp-controller="AuditLog"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Open
+                </a>
+
+            </div>
+        </div>
+    </div>
+
 </div>

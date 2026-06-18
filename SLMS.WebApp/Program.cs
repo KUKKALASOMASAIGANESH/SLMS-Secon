@@ -1,8 +1,27 @@
+using SLMS.WebApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient<EmployeeService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
+builder.Services.AddHttpClient<CustodyHistoryService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
+builder.Services.AddHttpClient<AuditLogService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

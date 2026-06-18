@@ -1,6 +1,4 @@
-namespace SLMS.Shared.DTOs.Employee;
-
-public class EmployeeUpdateDto
+﻿public class EmployeeDto
 {
     public int Id { get; set; }
 

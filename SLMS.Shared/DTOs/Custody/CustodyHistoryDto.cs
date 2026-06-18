@@ -1,9 +1,9 @@
-﻿using SLMS.DOL.Common;
+﻿namespace SLMS.DOL.DTOs.CustodyHistory;
 
-namespace SLMS.DOL.Entities;
-
-public class CustodyHistory : BaseEntity
+public class CustodyHistoryDto
 {
+    public int Id { get; set; }
+
     public int InventoryItemId { get; set; }
 
     public int? FromDepartmentId { get; set; }
@@ -17,12 +17,4 @@ public class CustodyHistory : BaseEntity
     public string? Remarks { get; set; }
 
     public int? TransferredByUserId { get; set; }
-
-    public InventoryItem? InventoryItem { get; set; } 
-
-    public Department? FromDepartment { get; set; }
-
-    public Department? ToDepartment { get; set; } 
-
-    public User? TransferredByUser { get; set; }
 }
