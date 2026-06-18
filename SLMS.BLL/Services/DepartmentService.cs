@@ -1,6 +1,12 @@
-﻿using SLMS.BLL.Interfaces;
+﻿using AutoMapper;
+
+using SLMS.BLL.Interfaces;
+
 using SLMS.DAL.Repositories.Interfaces;
+
 using SLMS.DOL.Entities;
+
+using SLMS.Shared.DTOs.Department;
 
 namespace SLMS.BLL.Services;
 
@@ -8,25 +14,51 @@ public class DepartmentService : IDepartmentService
 {
     private readonly IDepartmentRepository _repository;
 
+    private readonly IMapper _mapper;
+
     public DepartmentService(
-        IDepartmentRepository repository)
+        IDepartmentRepository repository,
+        IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<Department>> GetAllAsync()
+    public async Task<IEnumerable<DepartmentResponseDto>>
+        GetAllAsync()
     {
-        return await _repository.GetAllAsync();
+        var entities =
+            await _repository.GetAllAsync();
+
+        return _mapper.Map<
+            IEnumerable<DepartmentResponseDto>>
+            (entities);
     }
 
-    public async Task<Department?> GetByIdAsync(int id)
+    public async Task<DepartmentResponseDto?>
+        GetByIdAsync(int id)
     {
-        return await _repository.GetByIdAsync(id);
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        return _mapper.Map<
+            DepartmentResponseDto>(entity);
     }
 
-    public async Task AddAsync(Department department)
+    public async Task<DepartmentResponseDto>
+        CreateAsync(DepartmentCreateDto dto)
     {
-        await _repository.AddAsync(department);
+        var entity =
+            _mapper.Map<Department>(dto);
+
+        await _repository.AddAsync(entity);
+
         await _repository.SaveChangesAsync();
+
+        return _mapper.Map<
+            DepartmentResponseDto>(entity);
     }
 }

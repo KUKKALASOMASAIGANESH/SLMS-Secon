@@ -1,12 +1,13 @@
-﻿using SLMS.DOL.Entities;
+﻿using SLMS.Shared.DTOs.Department;
 
 namespace SLMS.BLL.Interfaces;
 
 public interface IDepartmentService
 {
-    Task<IEnumerable<Department>> GetAllAsync();
+    Task<IEnumerable<DepartmentResponseDto>> GetAllAsync();
 
-    Task<Department?> GetByIdAsync(int id);
+    Task<DepartmentResponseDto?> GetByIdAsync(int id);
 
-    Task AddAsync(Department department);
+    Task<DepartmentResponseDto> CreateAsync(
+        DepartmentCreateDto dto);
 }

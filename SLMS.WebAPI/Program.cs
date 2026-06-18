@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+
 using SLMS.DAL.Data;
 using SLMS.BLL.Interfaces;
 using SLMS.BLL.Services;
@@ -11,14 +12,29 @@ using SLMS.DAL.Repositories.Implementations;
 using Microsoft.OpenApi.Models;
 
 
+using SLMS.WebAPI.Mappings;
+using SLMS.WebAPI.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
+<<<<<<< HEAD
 // ===================== SERVICES =====================
 
 // Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
+=======
+// Controllers
+builder.Services.AddControllers();
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Database
+builder.Services.AddDbContext<SLMSDbContext>(options =>
+>>>>>>> a184551 (Completed Department Module V2 with DTOs AutoMapper Middleware)
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -54,6 +70,7 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 
+<<<<<<< HEAD
 
 
 
@@ -75,6 +92,21 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+=======
+// Repositories
+builder.Services.AddScoped<
+    IDepartmentRepository,
+    DepartmentRepository>();
+
+// Services
+builder.Services.AddScoped<
+    IDepartmentService,
+    DepartmentService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(
+    typeof(MappingProfile));
+>>>>>>> a184551 (Completed Department Module V2 with DTOs AutoMapper Middleware)
 
 // JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();
@@ -99,18 +131,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // ===================== APP BUILD =====================
 var app = builder.Build();
 
+<<<<<<< HEAD
 // ===================== PIPELINE =====================
+=======
+// Swagger
+>>>>>>> a184551 (Completed Department Module V2 with DTOs AutoMapper Middleware)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Global Exception Middleware
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
+// HTTPS
 app.UseHttpsRedirection();
 
+<<<<<<< HEAD
 app.UseAuthentication();   // MUST be before Authorization
+=======
+// Authorization
+>>>>>>> a184551 (Completed Department Module V2 with DTOs AutoMapper Middleware)
 app.UseAuthorization();
 
+// Controllers
 app.MapControllers();
 
 app.Run();
