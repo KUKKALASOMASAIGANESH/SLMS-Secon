@@ -1,0 +1,174 @@
+﻿@model List<SLMS.WebApp.Models.LibraryResourceViewModel>
+
+@{
+    ViewData["Title"] = "Library Resource Management";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-3">
+            <h3>Library Resource Management</h3>
+
+            <a asp-action="Create"
+               class="btn btn-primary">
+                Add Resource
+            </a>
+        </div>
+
+        <div class="mb-3">
+            <input type="text"
+                   id="searchBox"
+                   class="form-control"
+                   placeholder="Search Resource..."
+                   onkeyup="searchResource()" />
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Type</th>
+                    <th>Publisher</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.CategoryId</td>
+                            <td>@item.Title</td>
+                            <td>@item.Author</td>
+                            <td>@item.ResourceType</td>
+                            <td>@item.Publisher</td>
+                            <td>@item.PublicationYear</td>
+
+                            <td>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+                                    Details
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <a href="#"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="deleteResource(@item.Id)">
+                                    Delete
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8"
+                            class="text-center">
+                            No Resources Found
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        function deleteResource(id)
+        {
+            Swal.fire({
+                title: 'Delete Resource?',
+                text: 'You will not be able to recover this record!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Delete'
+            }).then((result) => {
+
+                if (result.isConfirmed)
+                {
+                    window.location.href =
+                        '/LibraryResource/Delete/' + id;
+                }
+
+            });
+        }
+
+        function searchResource()
+        {
+            let input =
+                document.getElementById("searchBox");
+
+            let filter =
+                input.value.toLowerCase();
+
+            let table =
+                document.querySelector("table");
+
+            let rows =
+                table.getElementsByTagName("tr");
+
+            for (let i = 1; i < rows.length; i++)
+            {
+                let rowText =
+                    rows[i].innerText.toLowerCase();
+
+                rows[i].style.display =
+                    rowText.includes(filter)
+                    ? ""
+                    : "none";
+            }
+        }
+
+    </script>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '@TempData["SuccessMessage"]',
+                timer: 2500,
+                showConfirmButton: false
+            });
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '@TempData["ErrorMessage"]'
+            });
+        </script>
+    }
+}

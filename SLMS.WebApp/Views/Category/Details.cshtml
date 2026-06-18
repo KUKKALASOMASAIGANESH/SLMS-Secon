@@ -1,0 +1,35 @@
+﻿@model SLMS.WebApp.Models.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h3>Category Details</h3>
+
+        <hr />
+
+        <div class="mb-3">
+            <label class="fw-bold">ID</label>
+            <p>@Model.Id</p>
+        </div>
+
+        <div class="mb-3">
+            <label class="fw-bold">Category Name</label>
+            <p>@Model.Name</p>
+        </div>
+
+        <div class="mb-3">
+            <label class="fw-bold">Description</label>
+            <p>@Model.Description</p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+</div>

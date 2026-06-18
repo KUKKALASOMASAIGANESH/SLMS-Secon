@@ -1,22 +1,95 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #f4f6f9;
+}
+
+/* Navbar */
+
+.navbar {
+    background-color: #1e3a8a !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 700;
+}
+
+    .navbar-brand small {
+        color: #dbeafe;
+    }
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #dbeafe !important;
+    }
+
+/* Cards */
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* Tables */
+
+.table {
+    background-color: white;
+}
+
+/* Footer */
+
+.footer {
+    padding: 15px 0;
+    background-color: white;
+}
+
+/* Forms */
+
+.form-control {
+    border-radius: 6px;
+}
+
+/* Buttons */
+
+.btn-primary {
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+
+    .btn-primary:hover {
+        background-color: #1a3273;
+        border-color: #1a3273;
+    }
+
+/* Focus */
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(30,58,138,.25);
 }

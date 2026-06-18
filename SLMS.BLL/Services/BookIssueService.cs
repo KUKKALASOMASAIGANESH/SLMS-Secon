@@ -52,6 +52,16 @@ public class BookIssueService
     public async Task<BookIssueResponseDto>
         CreateAsync(BookIssueCreateDto dto)
     {
+        dto.IssueDate =
+            DateTime.SpecifyKind(
+                dto.IssueDate,
+                DateTimeKind.Utc);
+
+        dto.DueDate =
+            DateTime.SpecifyKind(
+                dto.DueDate,
+                DateTimeKind.Utc);
+
         var entity =
             _mapper.Map<BookIssue>(dto);
 
@@ -81,10 +91,14 @@ public class BookIssueService
             dto.EmployeeId;
 
         entity.IssueDate =
-            dto.IssueDate;
+            DateTime.SpecifyKind(
+                dto.IssueDate,
+                DateTimeKind.Utc);
 
         entity.DueDate =
-            dto.DueDate;
+            DateTime.SpecifyKind(
+                dto.DueDate,
+                DateTimeKind.Utc);
 
         entity.IssuedByUserId =
             dto.IssuedByUserId;

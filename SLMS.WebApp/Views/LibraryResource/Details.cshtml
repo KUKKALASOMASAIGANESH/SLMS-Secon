@@ -1,0 +1,59 @@
+﻿@model SLMS.WebApp.Models.LibraryResourceViewModel
+
+@{
+    ViewData["Title"] = "Resource Details";
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h3>Resource Details</h3>
+        <hr />
+
+        <div class="mb-3">
+            <strong>ID:</strong>
+            @Model.Id
+        </div>
+
+        <div class="mb-3">
+            <strong>Category ID:</strong>
+            @Model.CategoryId
+        </div>
+
+        <div class="mb-3">
+            <strong>Resource Type:</strong>
+            @Model.ResourceType
+        </div>
+
+        <div class="mb-3">
+            <strong>Title:</strong>
+            @Model.Title
+        </div>
+
+        <div class="mb-3">
+            <strong>Author:</strong>
+            @Model.Author
+        </div>
+
+        <div class="mb-3">
+            <strong>Publisher:</strong>
+            @Model.Publisher
+        </div>
+
+        <div class="mb-3">
+            <strong>ISBN:</strong>
+            @Model.ISBN
+        </div>
+
+        <div class="mb-3">
+            <strong>Publication Year:</strong>
+            @Model.PublicationYear
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+</div>
