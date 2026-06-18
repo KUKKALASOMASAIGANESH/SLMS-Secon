@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 using SLMS.WebApp.Services;
 using SLMS.WebApp.Services.Interfaces;
-=======
 using SLMS.WebApp.Services.DigitalLibrary;
-
->>>>>>> ed08efc (Completed Frontend)
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +9,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient();
 
-<<<<<<< HEAD
 builder.Services.AddHttpClient<EmployeeService>(
     client =>
     {
@@ -39,10 +34,15 @@ builder.Services.AddScoped<
     IInventoryService,
     InventoryService>();
 
-// HttpClient
+builder.Services.AddScoped<
+    IDigitalLibraryService,
+    DigitalLibraryService>();
+
+// Auth HttpClient
 builder.Services.AddHttpClient<AuthService>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5062/");
+    client.BaseAddress =
+        new Uri("http://localhost:5062/");
 });
 
 // Session
@@ -54,11 +54,6 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-=======
-builder.Services.AddScoped<
-    IDigitalLibraryService,
-    DigitalLibraryService>();
->>>>>>> ed08efc (Completed Frontend)
 
 var app = builder.Build();
 
@@ -73,10 +68,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Session only
+// Session
 app.UseSession();
 
-//app.UseAuthorization();
+// Authorization
+// app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
