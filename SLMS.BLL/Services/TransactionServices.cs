@@ -3,11 +3,11 @@ using SLMS.DAL;
 using SLMS.DAL.Data;
 using SLMS.DOL.Entities;
 
-public class TransactionService
+public class TransactionServices
 {
     private readonly SLMSDbContext _context;
 
-    public TransactionService(SLMSDbContext context)
+    public TransactionServices(SLMSDbContext context)
     {
         _context = context;
     }

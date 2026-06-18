@@ -1,0 +1,27 @@
+﻿@model List<SLMS.WebApp.Models.TransactionViewModel>
+
+<h2>Transactions</h2>
+
+<a asp-action="Create" class="btn btn-primary">Add Transaction</a>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>EmployeeId</th>
+            <th>ResourceId</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.EmployeeId</td>
+                <td>@item.ResourceId</td>
+                <td>@item.IssueDate.ToShortDateString()</td>
+                <td>@item.DueDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

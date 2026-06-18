@@ -11,13 +11,13 @@ namespace SLMS.WebAPI.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly IRequestService _requestService;
-        private readonly TransactionService _transactionService;
+        private readonly TransactionServices _transactionService;
         private readonly IMapper _mapper;
 
         // ✅ Constructor
         public TransactionController(
             IRequestService requestService,
-            TransactionService transactionService,
+            TransactionServices transactionService,
             IMapper mapper)
         {
             _requestService = requestService;
