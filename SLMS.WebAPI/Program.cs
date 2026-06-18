@@ -72,34 +72,29 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<
-    ICustodyHistoryRepository,
-    CustodyHistoryRepository>();
-builder.Services.AddScoped<
-    IEmployeeRepository,
-    EmployeeRepository>();
-builder.Services.AddScoped<
-    IAuditLogRepository,
-    AuditLogRepository>();
 
-<<<<<<< HEAD
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
+builder.Services.AddScoped<ICustodyHistoryRepository,
+    CustodyHistoryRepository>();
+
+builder.Services.AddScoped<IAuditLogRepository,
+    AuditLogRepository>();
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IDepartmentService,
+    DepartmentService>();
 
-builder.Services.AddScoped<
-    ICustodyHistoryService,
+builder.Services.AddScoped<ICustodyHistoryService,
     CustodyHistoryService>();
 
-builder.Services.AddScoped<
-    IEmployeeService,
+builder.Services.AddScoped<IEmployeeService,
     EmployeeService>();
 
-builder.Services.AddScoped<
-    IAuditLogService,
+builder.Services.AddScoped<IAuditLogService,
     AuditLogService>();
 
 // AutoMapper
@@ -138,25 +133,6 @@ builder.Services.AddAuthentication(
 var app = builder.Build();
 
 // Swagger
-=======
-// Service Registration
-
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-builder.Services.AddScoped<
-    ICustodyHistoryService,
-    CustodyHistoryService>();
-builder.Services.AddScoped<
-    IEmployeeService,
-    EmployeeService>();
-builder.Services.AddScoped<
-    IAuditLogService,
-    AuditLogService>();
-var app = builder.Build();
-
-
-// Configure the HTTP request pipeline.
-
->>>>>>> feature-custody
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
