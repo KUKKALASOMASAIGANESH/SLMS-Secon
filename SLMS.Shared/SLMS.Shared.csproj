@@ -6,7 +6,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-<<<<<<< HEAD
 	<ItemGroup>
 		<Folder Include="DTOs\Category\" />
 		<Folder Include="DTOs\LibraryResource\" />
@@ -19,13 +18,5 @@
 		<Folder Include="Constants\" />
 		<Folder Include="Helpers\" />
 	</ItemGroup>
-=======
-  <ItemGroup>
-    <Folder Include="Enums\" />
-    <Folder Include="Constants\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Responses\" />
-  </ItemGroup>
->>>>>>> 1bf6ceb (Completed Digital Library module)
 
 </Project>
