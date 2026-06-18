@@ -25,19 +25,19 @@ public class EmployeeService : IEmployeeService
     {
         return await _repository.GetByIdAsync(id);
     }
-    
+
     public async Task AddAsync(Employee employee)
     {
-        await _repository.AddAsync(employee);
+       await _repository.AddAsync(employee);
         await _repository.SaveChangesAsync();
-        await _auditLogService.AddAsync(
-        new AuditLog
-        {
-            UserId = 3,
-            Module = "Employee",
-            Action = "Create",
-            NewValue = employee.FullName
-        });
+    //    await _auditLogService.AddAsync(
+    //    new AuditLog
+    //    {
+    //        UserId = 3,
+    //        Module = "Employee",
+    //        Action = "Create",
+    //        NewValue = employee.FullName
+    //    });
     }
     public async Task<IEnumerable<Employee>>
     SearchByNameAsync(string name)

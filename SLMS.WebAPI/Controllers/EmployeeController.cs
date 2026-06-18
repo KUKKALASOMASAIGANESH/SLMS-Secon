@@ -59,22 +59,28 @@ public class EmployeeController : ControllerBase
         return Ok(dto);
     }
     [HttpPost]
-    public async Task<IActionResult>
-    Create(EmployeeCreateDto dto)
+    public async Task<IActionResult> Create(EmployeeCreateDto dto)
     {
-        var employee = new Employee
+        try
         {
-            EmployeeNumber = dto.EmployeeNumber,
-            FullName = dto.FullName,
-            Email = dto.Email,
-            Phone = dto.Phone,
-            Designation = dto.Designation,
-            DepartmentId = dto.DepartmentId
-        };
+            var employee = new Employee
+            {
+                EmployeeNumber = dto.EmployeeNumber,
+                FullName = dto.FullName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                Designation = dto.Designation,
+                DepartmentId = dto.DepartmentId
+            };
 
-        await _service.AddAsync(employee);
+            await _service.AddAsync(employee);
 
-        return Ok("Employee Created");
+            return Ok("Employee Created");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.ToString());
+        }
     }
     [HttpGet("search/{name}")]
     public async Task<IActionResult>
