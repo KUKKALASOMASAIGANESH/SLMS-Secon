@@ -110,4 +110,39 @@ public class RequestService
 
         return true;
     }
+    public async Task<RequestResponseDto?>
+    ApproveAsync(int id)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        entity.Status = "Approved";
+
+        _repository.Update(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<RequestResponseDto>(entity);
+    }
+
+    public async Task<RequestResponseDto?>
+        RejectAsync(int id)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        entity.Status = "Rejected";
+
+        _repository.Update(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<RequestResponseDto>(entity);
+    }
 }

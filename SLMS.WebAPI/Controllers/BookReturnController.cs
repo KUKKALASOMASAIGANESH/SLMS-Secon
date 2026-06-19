@@ -1,19 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
 
-using SLMS.Shared.DTOs.BookIssue;
+using SLMS.Shared.DTOs.BookReturn;
 
 namespace SLMS.WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BookIssueController : ControllerBase
+public class BookReturnController : ControllerBase
 {
-    private readonly IBookIssueService _service;
+    private readonly IBookReturnService _service;
 
-    public BookIssueController(
-        IBookIssueService service)
+    public BookReturnController(
+        IBookReturnService service)
     {
         _service = service;
     }
@@ -36,17 +36,10 @@ public class BookIssueController : ControllerBase
 
         return Ok(result);
     }
-    [HttpGet("overdue")]
-    public async Task<IActionResult>
-    GetOverdueBooks()
-    {
-        return Ok(
-            await _service.GetOverdueBooksAsync());
-    }
 
     [HttpPost]
     public async Task<IActionResult>
-        Create(BookIssueCreateDto dto)
+        Create(BookReturnCreateDto dto)
     {
         return Ok(
             await _service.CreateAsync(dto));
@@ -56,7 +49,7 @@ public class BookIssueController : ControllerBase
     public async Task<IActionResult>
         Update(
             int id,
-            BookIssueUpdateDto dto)
+            BookReturnUpdateDto dto)
     {
         var result =
             await _service.UpdateAsync(
@@ -80,6 +73,6 @@ public class BookIssueController : ControllerBase
             return NotFound();
 
         return Ok(
-            "Book Issue Deleted");
+            "Book Return Deleted");
     }
 }

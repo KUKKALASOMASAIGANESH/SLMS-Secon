@@ -49,6 +49,17 @@ public class BookIssueService
             BookIssueResponseDto>(entity);
     }
 
+    public async Task<
+    IEnumerable<BookIssueResponseDto>>
+    GetOverdueBooksAsync()
+    {
+        var entities =
+            await _repository.GetOverdueBooksAsync();
+
+        return _mapper.Map<
+            IEnumerable<BookIssueResponseDto>>
+            (entities);
+    }
     public async Task<BookIssueResponseDto>
         CreateAsync(BookIssueCreateDto dto)
     {

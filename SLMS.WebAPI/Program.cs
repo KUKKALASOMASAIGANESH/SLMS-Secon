@@ -86,7 +86,9 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
 builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
 builder.Services.AddScoped<IBookIssueRepository, BookIssueRepository>();
-
+builder.Services.AddScoped<
+    IBookReturnRepository,
+    BookReturnRepository>();
 // Requests / Roles
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -115,7 +117,12 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
 builder.Services.AddScoped<IBookIssueService, BookIssueService>();
-
+builder.Services.AddScoped<
+    IBookReturnService,
+    BookReturnService>();
+builder.Services.AddScoped<
+    ITransactionDashboardService,
+    TransactionDashboardService>();
 // Requests / Roles
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IUserService, UserService>();

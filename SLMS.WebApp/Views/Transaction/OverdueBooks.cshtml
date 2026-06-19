@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SLMS.Shared.DTOs.BookIssue.BookIssueResponseDto>
+
+<h2>Overdue Books</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Issue ID</th>
+            <th>Employee</th>
+            <th>Inventory Item</th>
+            <th>Due Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.EmployeeId</td>
+                <td>@item.InventoryItemId</td>
+                <td>@item.DueDate</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

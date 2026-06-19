@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SLMS.Shared.DTOs.Request.RequestResponseDto>
+
+<h2>Requests</h2>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Employee</th>
+            <th>Resource</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.EmployeeId</td>
+                <td>@item.ResourceId</td>
+                <td>@item.Status</td>
+
+                <td>
+
+                    <form asp-action="ApproveRequest"
+                          asp-route-id="@item.Id"
+                          method="post"
+                          style="display:inline;">
+
+                        <button class="btn btn-success btn-sm">
+                            Approve
+                        </button>
+
+                    </form>
+
+                    <form asp-action="RejectRequest"
+                          asp-route-id="@item.Id"
+                          method="post"
+                          style="display:inline;">
+
+                        <button class="btn btn-danger btn-sm">
+                            Reject
+                        </button>
+
+                    </form>
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

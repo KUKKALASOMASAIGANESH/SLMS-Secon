@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -13,7 +13,6 @@
         <Folder Include="DTOs\Custody\" />
         <Folder Include="DTOs\DigitalContent\" />
         <Folder Include="DTOs\Reports\" />
-        <Folder Include="DTOs\Transaction\" />
         <Folder Include="Enums\" />
         <Folder Include="Constants\" />
         <Folder Include="Helpers\" />

@@ -10,6 +10,9 @@ public interface IBookIssueService
     Task<BookIssueResponseDto?>
         GetByIdAsync(int id);
 
+    Task<IEnumerable<BookIssueResponseDto>>
+    GetOverdueBooksAsync();
+
     Task<BookIssueResponseDto>
         CreateAsync(BookIssueCreateDto dto);
 

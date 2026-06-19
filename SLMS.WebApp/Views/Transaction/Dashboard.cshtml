@@ -1,0 +1,111 @@
+﻿@model SLMS.WebApp.ViewModels.TransactionDashboardViewModel
+
+@{
+    ViewData["Title"] = "Transaction Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        Transaction Dashboard
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-primary shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        Total Issued Books
+                    </h6>
+
+                    <h2 class="text-primary">
+                        @Model.TotalIssuedBooks
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-success shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        Total Returned Books
+                    </h6>
+
+                    <h2 class="text-success">
+                        @Model.TotalReturnedBooks
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-warning shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        Overdue Books
+                    </h6>
+
+                    <h2 class="text-warning">
+                        @Model.TotalOverdueBooks
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card text-center border-danger shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        Fine Collected
+                    </h6>
+
+                    <h2 class="text-danger">
+                        ₹ @Model.TotalFineCollected
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="row mt-4">
+
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Transaction"
+               asp-action="IssueBook"
+               class="btn btn-primary w-100">
+                Issue Book
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Transaction"
+               asp-action="ReturnBook"
+               class="btn btn-success w-100">
+                Return Book
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Transaction"
+               asp-action="Requests"
+               class="btn btn-warning w-100">
+                Request Approvals
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a asp-controller="Transaction"
+               asp-action="OverdueBooks"
+               class="btn btn-danger w-100">
+                Overdue Books
+            </a>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,50 @@
+﻿@model SLMS.Shared.DTOs.BookReturn.BookReturnCreateDto
+
+<h2>Return Book</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<form method="post">
+
+    <div class="mb-3">
+        <label>Book Issue Id</label>
+        <input asp-for="BookIssueId"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Return Date</label>
+        <input asp-for="ReturnDate"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Condition</label>
+        <input asp-for="Condition"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Remarks</label>
+        <input asp-for="Remarks"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Returned By User</label>
+        <input asp-for="ReturnedByUserId"
+               class="form-control" />
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Return Book
+    </button>
+
+</form>

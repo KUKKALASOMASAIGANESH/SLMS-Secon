@@ -71,4 +71,29 @@ public class RequestController : ControllerBase
 
         return Ok("Request Deleted");
     }
+    [HttpPut("{id}/approve")]
+    public async Task<IActionResult>
+    Approve(int id)
+    {
+        var result =
+            await _service.ApproveAsync(id);
+
+        if (result == null)
+            return NotFound();
+
+        return Ok(result);
+    }
+
+    [HttpPut("{id}/reject")]
+    public async Task<IActionResult>
+        Reject(int id)
+    {
+        var result =
+            await _service.RejectAsync(id);
+
+        if (result == null)
+            return NotFound();
+
+        return Ok(result);
+    }
 }
