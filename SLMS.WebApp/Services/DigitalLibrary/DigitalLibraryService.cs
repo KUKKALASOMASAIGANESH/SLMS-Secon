@@ -31,9 +31,7 @@ public class DigitalLibraryService
         var request = new
         {
             digitalContentId = model.DigitalContentId,
-            employeeId = 1,
-            approvalStatus = "Pending",
-            requestDate = DateTime.UtcNow
+            reason = model.Reason
         };
 
         await _httpClient.PostAsJsonAsync(
@@ -72,5 +70,58 @@ public class DigitalLibraryService
                 DownloadedOn = x.DownloadedOn
             })
             .ToList();
+    }
+
+    public async Task CreateContentAsync(
+    AdminDigitalContentViewModel model)
+    {
+        await _httpClient.PostAsJsonAsync(
+            "https://localhost:7277/api/DigitalContent",
+            model);
+    }
+
+    public async Task UpdateContentAsync(
+    AdminDigitalContentViewModel model)
+    {
+        await _httpClient.PutAsJsonAsync(
+            $"https://localhost:7277/api/DigitalContent/{model.Id}",
+            model);
+    }
+
+    public async Task DeleteContentAsync(int id)
+    {
+        await _httpClient.DeleteAsync(
+            $"https://localhost:7277/api/DigitalContent/{id}");
+    }
+
+    public async Task<DigitalContentViewModel?> GetContentByIdAsync(int id)
+    {
+        return await _httpClient.GetFromJsonAsync<DigitalContentViewModel>(
+            $"https://localhost:7277/api/DigitalContent/{id}");
+    }
+
+    public async Task<List<AdminRequestViewModel>>
+GetRequestsAsync()
+    {
+        var result =
+            await _httpClient.GetFromJsonAsync<
+                List<AdminRequestViewModel>>
+            ("https://localhost:7277/api/DigitalContentRequest");
+
+        return result ?? new();
+    }
+
+    public async Task ApproveRequestAsync(int id)
+    {
+        await _httpClient.PutAsync(
+            $"https://localhost:7277/api/DigitalContentRequest/approve/{id}",
+            null);
+    }
+
+    public async Task RejectRequestAsync(int id)
+    {
+        await _httpClient.PutAsync(
+            $"https://localhost:7277/api/DigitalContentRequest/reject/{id}",
+            null);
     }
 }

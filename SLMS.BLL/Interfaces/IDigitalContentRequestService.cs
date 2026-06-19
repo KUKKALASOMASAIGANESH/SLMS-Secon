@@ -9,4 +9,7 @@ public interface IDigitalContentRequestService
     Task<DigitalContentRequest?> GetByIdAsync(int id);
 
     Task AddAsync(DigitalContentRequest request);
+
+    Task UpdateAsync(
+    DigitalContentRequest request);
 }

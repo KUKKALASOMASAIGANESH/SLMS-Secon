@@ -4,7 +4,8 @@ using SLMS.DOL.Entities;
 
 namespace SLMS.BLL.Services;
 
-public class DigitalContentService : IDigitalContentService
+public class DigitalContentService
+    : IDigitalContentService
 {
     private readonly IDigitalContentRepository _repository;
 
@@ -24,9 +25,31 @@ public class DigitalContentService : IDigitalContentService
         return await _repository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(DigitalContent digitalContent)
+    public async Task AddAsync(
+        DigitalContent digitalContent)
     {
         await _repository.AddAsync(digitalContent);
+
+        await _repository.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(
+        DigitalContent digitalContent)
+    {
+        _repository.Update(digitalContent);
+
+        await _repository.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var content =
+            await _repository.GetByIdAsync(id);
+
+        if (content == null)
+            return;
+
+        _repository.Delete(content);
 
         await _repository.SaveChangesAsync();
     }
