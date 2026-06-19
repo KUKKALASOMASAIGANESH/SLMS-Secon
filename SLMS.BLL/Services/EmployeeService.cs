@@ -38,20 +38,50 @@ public class EmployeeService
             (entities);
     }
 
-    public async Task<
-        EmployeeResponseDto?>
-        GetByIdAsync(int id)
+    public async Task<EmployeeResponseDto?>
+    GetByIdAsync(int id)
+{
+    var entity =
+        await _repository.GetByIdAsync(id);
+
+    if (entity == null)
+        return null;
+
+    return _mapper.Map<
+        EmployeeResponseDto>
+        (entity);
+}
+
+public async Task AddAsync(Employee employee)
+{
+    await _repository.AddAsync(employee);
+    await _repository.SaveChangesAsync();
+}
+
+public async Task<IEnumerable<Employee>>
+    SearchByNameAsync(string name)
+{
+    return await _repository
+        .SearchByNameAsync(name);
+}
+
+public async Task UpdateAsync(Employee employee)
+{
+    _repository.Update(employee);
+    await _repository.SaveChangesAsync();
+}
+
+public async Task DeleteEmployeeAsync(int id)
+{
+    var employee =
+        await _repository.GetByIdAsync(id);
+
+    if (employee != null)
     {
-        var entity =
-            await _repository.GetByIdAsync(id);
-
-        if (entity == null)
-            return null;
-
-        return _mapper.Map<
-            EmployeeResponseDto>
-            (entity);
+        _repository.Delete(employee);
+        await _repository.SaveChangesAsync();
     }
+}
 
     public async Task<
         EmployeeResponseDto>

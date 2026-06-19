@@ -40,6 +40,7 @@ builder.Services.AddHttpClient<AuditLogService>(
     {
         client.BaseAddress = apiBaseUrl;
     });
+<<<<<<< HEAD
 
 builder.Services.AddHttpClient<AuthService>(
     client =>
@@ -115,6 +116,14 @@ builder.Services.AddSession(options =>
 
 #endregion
 
+=======
+builder.Services.AddHttpClient<DepartmentService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
+>>>>>>> feature-custody
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

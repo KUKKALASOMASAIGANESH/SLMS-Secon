@@ -48,16 +48,22 @@ public EmployeeController(EmployeeService service)
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result =
-                await _service.CreateAsync(model);
+            var error =
+    await _service.CreateAsync(model);
 
-            if (result)
+            if (error == null)
             {
                 TempData["Success"] =
                     "Employee created successfully.";
 
                 return RedirectToAction(nameof(Index));
             }
+
+            ModelState.AddModelError(
+                string.Empty,
+                error);
+
+            return View(model);
 
             TempData["Error"] =
                 "Unable to create employee.";

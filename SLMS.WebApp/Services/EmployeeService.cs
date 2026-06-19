@@ -37,15 +37,18 @@ public class EmployeeService
 
         return response.IsSuccessStatusCode;
     }
-    public async Task<bool> CreateAsync(
-        EmployeeViewModel employee)
+    public async Task<string?> CreateAsync(
+    EmployeeViewModel employee)
     {
         var response = await _httpClient
             .PostAsJsonAsync(
                 "api/Employee",
                 employee);
 
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode)
+            return null;
+
+        return await response.Content.ReadAsStringAsync();
     }
     public async Task<bool> DeleteAsync(int id)
     {

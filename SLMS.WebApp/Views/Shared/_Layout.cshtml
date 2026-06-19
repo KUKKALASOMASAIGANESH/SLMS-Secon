@@ -16,7 +16,26 @@
           href="~/SLMS.WebApp.styles.css"
           asp-append-version="true" />
 </head>
+<script>
+    setTimeout(function () {
 
+        var alerts =
+            document.querySelectorAll('.alert');
+
+        alerts.forEach(function (alert) {
+
+            alert.style.transition = "opacity 0.5s";
+
+            alert.style.opacity = "0";
+
+            setTimeout(function () {
+                alert.remove();
+            }, 500);
+
+        });
+
+    }, 3000);
+</script>
 <body>
 
     <header>
@@ -192,6 +211,13 @@
                                asp-controller="AuditLog"
                                asp-action="Index">
                                 Audit Logs
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="Department"
+                               asp-action="Index">
+                                Departments
                             </a>
                         </li>
 
