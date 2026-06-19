@@ -22,6 +22,12 @@ builder.Services.AddHttpClient<AuditLogService>(
         client.BaseAddress =
             new Uri("https://localhost:7277/");
     });
+builder.Services.AddHttpClient<DepartmentService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri("https://localhost:7277/");
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

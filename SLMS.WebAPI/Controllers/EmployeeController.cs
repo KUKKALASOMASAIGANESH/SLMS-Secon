@@ -37,13 +37,14 @@ public class EmployeeController : ControllerBase
 
         return Ok(result);
     }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         var data = await _service.GetByIdAsync(id);
 
         if (data == null)
-            return NotFound();
+            return NotFound("Employee not found");
 
         var dto = new EmployeeDto
         {
@@ -58,11 +59,24 @@ public class EmployeeController : ControllerBase
 
         return Ok(dto);
     }
+
     [HttpPost]
-    public async Task<IActionResult> Create(EmployeeCreateDto dto)
+    public async Task<IActionResult> Create(
+        EmployeeCreateDto dto)
     {
         try
         {
+            var employees =
+                await _service.GetAllAsync();
+
+            if (employees.Any(x =>
+                x.EmployeeNumber.ToLower() ==
+                dto.EmployeeNumber.ToLower()))
+            {
+                return BadRequest(
+                    "Employee Number already exists");
+            }
+
             var employee = new Employee
             {
                 EmployeeNumber = dto.EmployeeNumber,
@@ -75,58 +89,92 @@ public class EmployeeController : ControllerBase
 
             await _service.AddAsync(employee);
 
-            return Ok("Employee Created");
+            return Ok("Employee Created Successfully");
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.ToString());
+            return BadRequest(ex.Message);
         }
     }
+
     [HttpGet("search/{name}")]
-    public async Task<IActionResult>
-    Search(string name)
+    public async Task<IActionResult> Search(string name)
     {
         var data = await _service
             .SearchByNameAsync(name);
 
-        var result = data.Select(e => new EmployeeDto
-        {
-            Id = e.Id,
-            EmployeeNumber = e.EmployeeNumber,
-            FullName = e.FullName,
-            Email = e.Email,
-            Designation = e.Designation,
-            DepartmentId = e.DepartmentId
-        });
+        var result = data.Select(e =>
+            new EmployeeDto
+            {
+                Id = e.Id,
+                EmployeeNumber = e.EmployeeNumber,
+                FullName = e.FullName,
+                Email = e.Email,
+                Phone = e.Phone,
+                Designation = e.Designation,
+                DepartmentId = e.DepartmentId
+            });
 
         return Ok(result);
     }
+
     [HttpPut]
-    public async Task<IActionResult>
-Update(EmployeeUpdateDto dto)
+    public async Task<IActionResult> Update(
+        EmployeeUpdateDto dto)
     {
-        var employee = new Employee
+        try
         {
-            Id = dto.Id,
-            EmployeeNumber = dto.EmployeeNumber,
-            FullName = dto.FullName,
-            Email = dto.Email,
-            Phone = dto.Phone,
-            Designation = dto.Designation,
-            DepartmentId = dto.DepartmentId
-        };
+            var employees =
+                await _service.GetAllAsync();
 
-        await _service.UpdateAsync(employee);
+            if (employees.Any(x =>
+                x.Id != dto.Id &&
+                x.EmployeeNumber.ToLower() ==
+                dto.EmployeeNumber.ToLower()))
+            {
+                return BadRequest(
+                    "Employee Number already exists");
+            }
 
-        return Ok("Employee Updated");
+            var employee = new Employee
+            {
+                Id = dto.Id,
+                EmployeeNumber = dto.EmployeeNumber,
+                FullName = dto.FullName,
+                Email = dto.Email,
+                Phone = dto.Phone,
+                Designation = dto.Designation,
+                DepartmentId = dto.DepartmentId
+            };
+
+            await _service.UpdateAsync(employee);
+
+            return Ok("Employee Updated Successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult>
-    Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        await _service.DeleteAsync(id);
+        try
+        {
+            var employee =
+                await _service.GetByIdAsync(id);
 
-        return Ok("Employee Deleted");
+            if (employee == null)
+                return NotFound("Employee not found");
+
+            await _service.DeleteAsync(id);
+
+            return Ok("Employee Deleted Successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model SLMS.WebApp.Models.DepartmentViewModel
+
+@{
+    ViewData["Title"] = "Department Details";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h2>Department Details</h2>
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th>Department Code</th>
+                <td>@Model.DepartmentCode</td>
+            </tr>
+
+            <tr>
+                <th>Department Name</th>
+                <td>@Model.DepartmentName</td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>@Model.Description</td>
+            </tr>
+
+        </table>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+</div>

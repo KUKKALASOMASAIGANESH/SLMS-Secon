@@ -1,0 +1,89 @@
+﻿@model IEnumerable<SLMS.WebApp.Models.DepartmentViewModel>
+
+@{
+    ViewData["Title"] = "Departments";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-3">
+
+            <h2>Department Management</h2>
+
+            <a asp-action="Create"
+               class="btn btn-primary">
+                Add Department
+            </a>
+
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                No Departments Found.
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>Department Code</th>
+                        <th>Department Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.DepartmentCode</td>
+
+                            <td>@item.DepartmentName</td>
+
+                            <td>@item.Description</td>
+
+                            <td>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+                                    Details
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        }
+
+    </div>
+
+</div>
