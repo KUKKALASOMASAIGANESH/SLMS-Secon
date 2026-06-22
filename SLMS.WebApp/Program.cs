@@ -1,8 +1,6 @@
 using SLMS.WebApp.Services;
 using SLMS.WebApp.Services.Interfaces;
 using SLMS.WebApp.Services.DigitalLibrary;
-
-// Add these if you created Transaction Dashboard
 using SLMS.WebApp.Services.Transaction;
 using SLMS.WebApp.Services.Transaction.Interfaces;
 
@@ -40,9 +38,14 @@ builder.Services.AddHttpClient<AuditLogService>(
     {
         client.BaseAddress = apiBaseUrl;
     });
-<<<<<<< HEAD
 
 builder.Services.AddHttpClient<AuthService>(
+    client =>
+    {
+        client.BaseAddress = apiBaseUrl;
+    });
+
+builder.Services.AddHttpClient<DepartmentService>(
     client =>
     {
         client.BaseAddress = apiBaseUrl;
@@ -116,14 +119,6 @@ builder.Services.AddSession(options =>
 
 #endregion
 
-=======
-builder.Services.AddHttpClient<DepartmentService>(
-    client =>
-    {
-        client.BaseAddress =
-            new Uri("https://localhost:7277/");
-    });
->>>>>>> feature-custody
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

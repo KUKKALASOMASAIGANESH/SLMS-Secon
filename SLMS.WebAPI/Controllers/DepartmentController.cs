@@ -75,35 +75,10 @@ public class DepartmentController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-<<<<<<< HEAD
-        [FromBody] DepartmentCreateDto dto)
+    [FromBody] DepartmentCreateDto dto)
     {
         var result =
             await _service.CreateAsync(dto);
-=======
-     Department department)
-    {
-        var departments =
-            await _service.GetAllAsync();
-
-        if (departments.Any(x =>
-            x.DepartmentCode.ToLower() ==
-            department.DepartmentCode.ToLower()))
-        {
-            return BadRequest(
-                "Department Code already exists");
-        }
-
-        if (departments.Any(x =>
-            x.DepartmentName.ToLower() ==
-            department.DepartmentName.ToLower()))
-        {
-            return BadRequest(
-                "Department Name already exists");
-        }
-
-        await _service.AddAsync(department);
->>>>>>> feature-custody
 
         return Ok(
             new ApiResponse<
