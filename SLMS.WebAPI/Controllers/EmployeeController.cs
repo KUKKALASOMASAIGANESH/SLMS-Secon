@@ -48,6 +48,7 @@ public class EmployeeController : ControllerBase
 
         return Ok(result);
     }
+<<<<<<< HEAD
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
@@ -61,6 +62,53 @@ public class EmployeeController : ControllerBase
             return NotFound();
 
         return Ok(result);
+=======
+    [HttpPut]
+    public async Task<IActionResult> Update(
+    EmployeeUpdateDto dto)
+    {
+        try
+        {
+            var employee =
+                await _service.GetByIdAsync(dto.Id);
+
+            if (employee == null)
+            {
+                return NotFound(
+                    "Employee not found");
+            }
+
+            // TEMPORARILY REMOVE DUPLICATE CHECK
+
+            employee.EmployeeNumber =
+                dto.EmployeeNumber;
+
+            employee.FullName =
+                dto.FullName;
+
+            employee.Email =
+                dto.Email;
+
+            employee.Phone =
+                dto.Phone;
+
+            employee.Designation =
+                dto.Designation;
+
+            employee.DepartmentId =
+                dto.DepartmentId;
+
+
+            await _service.UpdateAsync(employee);
+
+            return Ok(
+                "Employee Updated Successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+>>>>>>> origin/feature-custody
     }
 
     [HttpDelete("{id}")]

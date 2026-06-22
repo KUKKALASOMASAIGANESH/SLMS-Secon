@@ -7,11 +7,14 @@ namespace SLMS.WebApp.Controllers;
 public class EmployeeController : Controller
 {
     private readonly EmployeeService _service;
+    private readonly DepartmentService _departmentService;
 
-
-public EmployeeController(EmployeeService service)
+    public EmployeeController(
+        EmployeeService service,
+        DepartmentService departmentService)
     {
         _service = service;
+        _departmentService = departmentService;
     }
 
     public async Task<IActionResult> Index()
@@ -32,24 +35,51 @@ public EmployeeController(EmployeeService service)
         }
     }
 
-    [HttpGet]
-    public IActionResult Create()
-    {
-        return View();
-    }
+   
 
+    [HttpGet]
+    public async Task<IActionResult> Create()
+    {
+        var model = new EmployeeViewModel();
+
+        var departments =
+            await _departmentService.GetAllAsync();
+
+        model.Departments =
+            departments.Select(d =>
+            new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.DepartmentName
+            }).ToList();
+
+        return View(model);
+    }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        EmployeeViewModel model)
+    EmployeeViewModel model)
     {
         try
         {
             if (!ModelState.IsValid)
+            {
+                var departments =
+                    await _departmentService.GetAllAsync();
+
+                model.Departments =
+                    departments.Select(d =>
+                    new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                    {
+                        Value = d.Id.ToString(),
+                        Text = d.DepartmentName
+                    }).ToList();
+
                 return View(model);
+            }
 
             var error =
-    await _service.CreateAsync(model);
+                await _service.CreateAsync(model);
 
             if (error == null)
             {
@@ -63,10 +93,16 @@ public EmployeeController(EmployeeService service)
                 string.Empty,
                 error);
 
-            return View(model);
+            var deptList =
+                await _departmentService.GetAllAsync();
 
-            TempData["Error"] =
-                "Unable to create employee.";
+            model.Departments =
+                deptList.Select(d =>
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Value = d.Id.ToString(),
+                    Text = d.DepartmentName
+                }).ToList();
 
             return View(model);
         }
@@ -78,7 +114,6 @@ public EmployeeController(EmployeeService service)
             return View(model);
         }
     }
-
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
@@ -89,6 +124,17 @@ public EmployeeController(EmployeeService service)
 
             if (employee == null)
                 return NotFound();
+
+            var departments =
+                await _departmentService.GetAllAsync();
+
+            employee.Departments =
+                departments.Select(d =>
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Value = d.Id.ToString(),
+                    Text = d.DepartmentName
+                }).ToList();
 
             return View(employee);
         }
@@ -109,12 +155,14 @@ public EmployeeController(EmployeeService service)
         try
         {
             if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "ModelState Invalid";
                 return View(model);
+            }
+            var error =
+     await _service.UpdateAsync(model);
 
-            var result =
-                await _service.UpdateAsync(model);
-
-            if (result)
+            if (error == null)
             {
                 TempData["Success"] =
                     "Employee updated successfully.";
@@ -122,8 +170,9 @@ public EmployeeController(EmployeeService service)
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Error"] =
-                "Unable to update employee.";
+            ModelState.AddModelError(
+                string.Empty,
+                error);
 
             return View(model);
         }

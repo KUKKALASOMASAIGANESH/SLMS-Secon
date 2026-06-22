@@ -80,7 +80,23 @@
         }
         else
         {
-            <table class="table table-bordered  table-hover">
+            <style>
+                .employee-table tbody tr:nth-child(odd) {
+                    background-color: lightyellow;
+                }
+
+                .employee-table tbody tr:nth-child(even) {
+                    background-color: lightgrey;
+                }
+
+                .employee-table tbody tr:hover {
+                    background-color: #CFE2FF;
+                }
+            </style>
+            
+            <div class="table-responsive">
+             @* <table class="table table-bordered table-striped table-hover">*@
+                    <table class="table table-bordered employee-table">
 
                 <thead class="table-dark">
 
@@ -90,6 +106,7 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Designation</th>
+                        <th>Department Id</th>
                         <th>Actions</th>
                     </tr>
 
@@ -106,6 +123,7 @@
                             <td>@item.Email</td>
                             <td>@item.Phone</td>
                             <td>@item.Designation</td>
+                            <td>@item.DepartmentId</td>
 
                             <td>
 
@@ -138,6 +156,7 @@
                 </tbody>
 
             </table>
+            </div>
         }
 
     </div>

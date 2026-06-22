@@ -89,12 +89,23 @@
             </div>
 
             <div class="mb-3">
+
                 <label asp-for="DepartmentId"></label>
-                <input asp-for="DepartmentId"
-                       class="form-control"
-                       tabindex="6" />
+
+                <select asp-for="DepartmentId"
+                        asp-items="Model.Departments"
+                        class="form-select"
+                        tabindex="6">
+
+                    <option value="">
+                        -- Select Department --
+                    </option>
+
+                </select>
+
                 <span asp-validation-for="DepartmentId"
                       class="text-danger"></span>
+
             </div>
 
             <button type="submit"

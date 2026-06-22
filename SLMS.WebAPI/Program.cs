@@ -19,11 +19,7 @@ using SLMS.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-<<<<<<< HEAD
 // Controllers
-=======
-// Add services to the container.
->>>>>>> feature-digital-library
 builder.Services.AddControllers();
 
 // AutoMapper
@@ -76,7 +72,6 @@ builder.Services.AddDbContext<SLMSDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-<<<<<<< HEAD
 #region Repositories
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -91,9 +86,8 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
 builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
 builder.Services.AddScoped<IBookIssueRepository, BookIssueRepository>();
-builder.Services.AddScoped<
-    IBookReturnRepository,
-    BookReturnRepository>();
+builder.Services.AddScoped<IBookReturnRepository, BookReturnRepository>();
+
 // Requests / Roles
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -122,12 +116,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
 builder.Services.AddScoped<IBookIssueService, BookIssueService>();
-builder.Services.AddScoped<
-    IBookReturnService,
-    BookReturnService>();
-builder.Services.AddScoped<
-    ITransactionDashboardService,
-    TransactionDashboardService>();
+builder.Services.AddScoped<IBookReturnService, BookReturnService>();
+builder.Services.AddScoped<ITransactionDashboardService, TransactionDashboardService>();
+
 // Requests / Roles
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -168,59 +159,6 @@ builder.Services.AddAuthentication(
                         builder.Configuration["Jwt:Key"]!))
         };
 });
-=======
-#region Repository Registration
-
-// Department
-builder.Services.AddScoped<
-    IDepartmentRepository,
-    DepartmentRepository>();
-
-// Digital Library
-builder.Services.AddScoped<
-    IDigitalContentRepository,
-    DigitalContentRepository>();
-
-builder.Services.AddScoped<
-    IDigitalContentRequestRepository,
-    DigitalContentRequestRepository>();
-
-builder.Services.AddScoped<
-    IPolicyRepository,
-    PolicyRepository>();
-
-builder.Services.AddScoped<
-    IDownloadHistoryRepository,
-    DownloadHistoryRepository>();
-
-#endregion
-
-#region Service Registration
-
-// Department
-builder.Services.AddScoped<
-    IDepartmentService,
-    DepartmentService>();
-
-// Digital Library
-builder.Services.AddScoped<
-    IDigitalContentService,
-    DigitalContentService>();
-
-builder.Services.AddScoped<
-    IDigitalContentRequestService,
-    DigitalContentRequestService>();
-
-builder.Services.AddScoped<
-    IPolicyService,
-    PolicyService>();
-
-builder.Services.AddScoped<
-    IDownloadHistoryService,
-    DownloadHistoryService>();
-
-#endregion
->>>>>>> feature-digital-library
 
 var app = builder.Build();
 

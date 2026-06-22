@@ -1,20 +1,14 @@
-<<<<<<< HEAD
 using SLMS.WebApp.Services;
 using SLMS.WebApp.Services.Interfaces;
 using SLMS.WebApp.Services.DigitalLibrary;
 using SLMS.WebApp.Services.Transaction;
 using SLMS.WebApp.Services.Transaction.Interfaces;
-=======
-using SLMS.WebApp.Services.DigitalLibrary;
-
->>>>>>> feature-digital-library
 
 var builder = WebApplication.CreateBuilder(args);
 
 // MVC
 builder.Services.AddControllersWithViews();
 
-<<<<<<< HEAD
 // Common HttpClient
 builder.Services.AddHttpClient();
 
@@ -91,15 +85,10 @@ builder.Services.AddScoped<
 
 #region Digital Library
 
-=======
-builder.Services.AddHttpClient();
-
->>>>>>> feature-digital-library
 builder.Services.AddScoped<
     IDigitalLibraryService,
     DigitalLibraryService>();
 
-<<<<<<< HEAD
 #endregion
 
 #region Transaction Dashboard
@@ -130,8 +119,6 @@ builder.Services.AddSession(options =>
 
 #endregion
 
-=======
->>>>>>> feature-digital-library
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

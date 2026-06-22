@@ -27,15 +27,18 @@ public class EmployeeService
                 $"api/Employee/{id}");
     }
 
-    public async Task<bool> UpdateAsync(
-    EmployeeViewModel employee)
+    public async Task<string?> UpdateAsync(
+ EmployeeViewModel employee)
     {
         var response = await _httpClient
             .PutAsJsonAsync(
                 "api/Employee",
                 employee);
 
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode)
+            return null;
+
+        return await response.Content.ReadAsStringAsync();
     }
     public async Task<string?> CreateAsync(
     EmployeeViewModel employee)

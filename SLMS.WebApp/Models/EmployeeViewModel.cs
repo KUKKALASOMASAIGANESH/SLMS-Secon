@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SLMS.WebApp.Models;
 
 public class EmployeeViewModel
@@ -26,4 +26,10 @@ public class EmployeeViewModel
 
     [Required(ErrorMessage = "Department is required")]
     public int DepartmentId { get; set; }
+
+    public List<SelectListItem> Departments
+    {
+        get; set;
+    } = new();
+   
 }

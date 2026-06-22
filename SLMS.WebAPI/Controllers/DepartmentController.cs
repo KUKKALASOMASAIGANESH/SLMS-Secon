@@ -75,6 +75,7 @@ public class DepartmentController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
+<<<<<<< HEAD
     [FromBody] DepartmentCreateDto dto)
     {
         var result =
@@ -89,5 +90,40 @@ public class DepartmentController : ControllerBase
                     "Department created successfully",
                 Data = result
             });
+=======
+    Department department)
+    {
+        try
+        {
+            var departments =
+                await _service.GetAllAsync();
+
+            if (departments.Any(x =>
+                x.DepartmentCode.ToLower() ==
+                department.DepartmentCode.ToLower()))
+            {
+                return BadRequest(
+                    "Department Code already exists");
+            }
+
+            if (departments.Any(x =>
+                x.DepartmentName.ToLower() ==
+                department.DepartmentName.ToLower()))
+            {
+                return BadRequest(
+                    "Department Name already exists");
+            }
+
+            await _service.AddAsync(department);
+
+            return Ok("Department Created");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(
+                ex.InnerException?.Message ??
+                ex.Message);
+        }
+>>>>>>> origin/feature-custody
     }
 }
