@@ -117,39 +117,46 @@ public class EmployeeController : ControllerBase
 
         return Ok(result);
     }
-
     [HttpPut]
     public async Task<IActionResult> Update(
-        EmployeeUpdateDto dto)
+    EmployeeUpdateDto dto)
     {
         try
         {
-            var employees =
-                await _service.GetAllAsync();
+            var employee =
+                await _service.GetByIdAsync(dto.Id);
 
-            if (employees.Any(x =>
-                x.Id != dto.Id &&
-                x.EmployeeNumber.ToLower() ==
-                dto.EmployeeNumber.ToLower()))
+            if (employee == null)
             {
-                return BadRequest(
-                    "Employee Number already exists");
+                return NotFound(
+                    "Employee not found");
             }
 
-            var employee = new Employee
-            {
-                Id = dto.Id,
-                EmployeeNumber = dto.EmployeeNumber,
-                FullName = dto.FullName,
-                Email = dto.Email,
-                Phone = dto.Phone,
-                Designation = dto.Designation,
-                DepartmentId = dto.DepartmentId
-            };
+            // TEMPORARILY REMOVE DUPLICATE CHECK
+
+            employee.EmployeeNumber =
+                dto.EmployeeNumber;
+
+            employee.FullName =
+                dto.FullName;
+
+            employee.Email =
+                dto.Email;
+
+            employee.Phone =
+                dto.Phone;
+
+            employee.Designation =
+                dto.Designation;
+
+            employee.DepartmentId =
+                dto.DepartmentId;
+
 
             await _service.UpdateAsync(employee);
 
-            return Ok("Employee Updated Successfully");
+            return Ok(
+                "Employee Updated Successfully");
         }
         catch (Exception ex)
         {

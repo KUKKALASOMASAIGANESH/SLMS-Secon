@@ -36,29 +36,38 @@ public class DepartmentController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-     Department department)
+    Department department)
     {
-        var departments =
-            await _service.GetAllAsync();
+        try
+        {
+            var departments =
+                await _service.GetAllAsync();
 
-        if (departments.Any(x =>
-            x.DepartmentCode.ToLower() ==
-            department.DepartmentCode.ToLower()))
+            if (departments.Any(x =>
+                x.DepartmentCode.ToLower() ==
+                department.DepartmentCode.ToLower()))
+            {
+                return BadRequest(
+                    "Department Code already exists");
+            }
+
+            if (departments.Any(x =>
+                x.DepartmentName.ToLower() ==
+                department.DepartmentName.ToLower()))
+            {
+                return BadRequest(
+                    "Department Name already exists");
+            }
+
+            await _service.AddAsync(department);
+
+            return Ok("Department Created");
+        }
+        catch (Exception ex)
         {
             return BadRequest(
-                "Department Code already exists");
+                ex.InnerException?.Message ??
+                ex.Message);
         }
-
-        if (departments.Any(x =>
-            x.DepartmentName.ToLower() ==
-            department.DepartmentName.ToLower()))
-        {
-            return BadRequest(
-                "Department Name already exists");
-        }
-
-        await _service.AddAsync(department);
-
-        return Ok("Department Created");
     }
 }

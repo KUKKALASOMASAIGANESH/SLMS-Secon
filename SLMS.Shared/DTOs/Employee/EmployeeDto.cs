@@ -13,4 +13,5 @@
     public string Designation { get; set; } = string.Empty;
 
     public int DepartmentId { get; set; }
+
 }
