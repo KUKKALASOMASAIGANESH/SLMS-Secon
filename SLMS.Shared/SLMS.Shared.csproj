@@ -1,22 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Folder Include="DTOs\Category\" />
-        <Folder Include="DTOs\LibraryResource\" />
-        <Folder Include="DTOs\Inventory\" />
-        <Folder Include="DTOs\Custody\" />
-        <Folder Include="DTOs\DigitalContent\" />
-        <Folder Include="DTOs\Reports\" />
-        <Folder Include="Enums\" />
-        <Folder Include="Constants\" />
-        <Folder Include="Helpers\" />
-        <Folder Include="Responses\" />
-    </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTOs\Category\" />
+    <Folder Include="DTOs\LibraryResource\" />
+    <Folder Include="DTOs\Inventory\" />
+    <Folder Include="DTOs\Custody\" />
+    <Folder Include="DTOs\DigitalContent\" />
+    <Folder Include="DTOs\Reports\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Responses\" />
+  </ItemGroup>
 
 </Project>

@@ -37,18 +37,18 @@ body {
     font-weight: 700;
 }
 
-.navbar-brand small {
-    color: #dbeafe;
-}
+    .navbar-brand small {
+        color: #dbeafe;
+    }
 
 .nav-link {
     color: white !important;
     font-weight: 500;
 }
 
-.nav-link:hover {
-    color: #dbeafe !important;
-}
+    .nav-link:hover {
+        color: #dbeafe !important;
+    }
 
 /* Cards */
 
@@ -87,10 +87,10 @@ body {
     border-color: #1e3a8a;
 }
 
-.btn-primary:hover {
-    background-color: #1a3273;
-    border-color: #1a3273;
-}
+    .btn-primary:hover {
+        background-color: #1a3273;
+        border-color: #1a3273;
+    }
 
 /* Focus */
 
