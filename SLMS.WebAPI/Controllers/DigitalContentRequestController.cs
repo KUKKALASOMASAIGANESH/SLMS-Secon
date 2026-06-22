@@ -44,30 +44,11 @@ public class DigitalContentRequestController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-    DigitalContentRequestCreateDto dto)
+DigitalContentRequestCreateDto dto)
     {
-        var userIdClaim =
-            User.FindFirst(ClaimTypes.NameIdentifier);
-
-        if (userIdClaim == null)
-        {
-            return Unauthorized();
-        }
-
-        var userId =
-            int.Parse(userIdClaim.Value);
-
-        var user =
-            await _userRepository.GetByIdAsync(userId);
-
-        if (user == null)
-        {
-            return Unauthorized();
-        }
-
         var request = new DigitalContentRequest
         {
-            EmployeeId = user.EmployeeId,
+            EmployeeId = 1, // temporary
 
             DigitalContentId = dto.DigitalContentId,
 
@@ -76,8 +57,6 @@ public class DigitalContentRequestController
             RequestDate = DateTime.UtcNow
         };
 
-        Console.WriteLine($"EmployeeId = {user.EmployeeId}");
-        Console.WriteLine($"DigitalContentId = {dto.DigitalContentId}");
         await _service.AddAsync(request);
 
         return Ok(request);

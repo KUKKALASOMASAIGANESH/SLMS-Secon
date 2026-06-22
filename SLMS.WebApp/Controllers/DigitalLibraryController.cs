@@ -33,8 +33,14 @@ public class DigitalLibraryController : Controller
 
     [HttpPost]
     public async Task<IActionResult> Request(
-    DigitalContentRequestViewModel model)
+DigitalContentRequestViewModel model)
     {
+        Console.WriteLine(
+            $"POST REQUEST -> ContentId={model.DigitalContentId}");
+
+        Console.WriteLine(
+            $"POST REQUEST -> Reason={model.Reason}");
+
         await _service.SubmitRequestAsync(model);
 
         return RedirectToAction(nameof(Index));
@@ -137,5 +143,64 @@ public class DigitalLibraryController : Controller
         await _service.RejectRequestAsync(id);
 
         return RedirectToAction(nameof(ManageRequests));
+    }
+
+    public async Task<IActionResult>
+    ManagePolicies()
+    {
+        var data =
+            await _service
+            .GetPoliciesForAdminAsync();
+
+        return View(data);
+    }
+
+    public IActionResult CreatePolicy()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult>
+    CreatePolicy(
+    AdminPolicyViewModel model)
+    {
+        await _service
+            .CreatePolicyAsync(model);
+
+        return RedirectToAction(
+            nameof(ManagePolicies));
+    }
+
+    public async Task<IActionResult>
+    EditPolicy(int id)
+    {
+        var model =
+            await _service
+            .GetPolicyByIdAsync(id);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult>
+    EditPolicy(
+    AdminPolicyViewModel model)
+    {
+        await _service
+            .UpdatePolicyAsync(model);
+
+        return RedirectToAction(
+            nameof(ManagePolicies));
+    }
+
+    public async Task<IActionResult>
+    DeletePolicy(int id)
+    {
+        await _service
+            .DeletePolicyAsync(id);
+
+        return RedirectToAction(
+            nameof(ManagePolicies));
     }
 }

@@ -124,4 +124,73 @@ GetRequestsAsync()
             $"https://localhost:7277/api/DigitalContentRequest/reject/{id}",
             null);
     }
+
+    public async Task<List<PolicyViewModel>>
+    GetPoliciesForAdminAsync()
+    {
+        return await _httpClient
+            .GetFromJsonAsync<List<PolicyViewModel>>
+            ("https://localhost:7277/api/Policy")
+            ?? new();
+    }
+
+    public async Task CreatePolicyAsync(
+    AdminPolicyViewModel model)
+    {
+        var dto = new
+        {
+            policyTitle =
+                model.PolicyTitle,
+
+            policyContent =
+                model.PolicyContent
+        };
+
+        await _httpClient.PostAsJsonAsync(
+            "https://localhost:7277/api/Policy",
+            dto);
+    }
+
+    public async Task UpdatePolicyAsync(
+    AdminPolicyViewModel model)
+    {
+        var dto = new
+        {
+            policyTitle =
+                model.PolicyTitle,
+
+            policyContent =
+                model.PolicyContent
+        };
+
+        await _httpClient.PutAsJsonAsync(
+            $"https://localhost:7277/api/Policy/{model.Id}",
+            dto);
+    }
+
+    public async Task DeletePolicyAsync(
+    int id)
+    {
+        await _httpClient.DeleteAsync(
+            $"https://localhost:7277/api/Policy/{id}");
+    }
+
+    public async Task<AdminPolicyViewModel?>
+    GetPolicyByIdAsync(int id)
+    {
+        var policy =
+            await _httpClient.GetFromJsonAsync
+            <PolicyViewModel>(
+                $"https://localhost:7277/api/Policy/{id}");
+
+        if (policy == null)
+            return null;
+
+        return new AdminPolicyViewModel
+        {
+            Id = policy.Id,
+            PolicyTitle = policy.Title,
+            PolicyContent = policy.Description
+        };
+    }
 }

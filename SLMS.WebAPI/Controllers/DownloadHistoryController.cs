@@ -40,7 +40,7 @@ public class DownloadHistoryController
         return Ok(result);
     }
 
-    [Authorize]
+    
     [HttpPost]
     public async Task<IActionResult> Create(
     DownloadHistoryCreateDto dto)

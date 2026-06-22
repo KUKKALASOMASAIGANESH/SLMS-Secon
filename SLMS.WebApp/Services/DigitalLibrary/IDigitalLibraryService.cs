@@ -29,4 +29,18 @@ public interface IDigitalLibraryService
     Task ApproveRequestAsync(int id);
 
     Task RejectRequestAsync(int id);
+
+    Task<List<PolicyViewModel>>
+    GetPoliciesForAdminAsync();
+
+    Task CreatePolicyAsync(
+        AdminPolicyViewModel model);
+
+    Task UpdatePolicyAsync(
+        AdminPolicyViewModel model);
+
+    Task DeletePolicyAsync(int id);
+
+    Task<AdminPolicyViewModel?>
+        GetPolicyByIdAsync(int id); 
 }

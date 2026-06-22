@@ -38,7 +38,7 @@ public class PolicyController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
+    
     [HttpPost]
     public async Task<IActionResult> Create(
     PolicyCreateDto dto)
@@ -55,5 +55,43 @@ public class PolicyController : ControllerBase
         await _service.AddAsync(policy);
 
         return Ok(policy);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(
+    int id,
+    PolicyCreateDto dto)
+    {
+        var policy =
+            await _service.GetByIdAsync(id);
+
+        if (policy == null)
+            return NotFound();
+
+        policy.Title =
+            dto.PolicyTitle;
+
+        policy.Description =
+            dto.PolicyContent;
+
+        await _service.UpdateAsync(policy);
+
+        return Ok(policy);
+    }
+
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var content = await _service.GetByIdAsync(id);
+
+        if (content == null)
+        {
+            return NotFound("Policy  not found");
+        }
+
+        await _service.DeleteAsync(id);
+
+        return Ok("Policy Deleted Successfully");
     }
 }
