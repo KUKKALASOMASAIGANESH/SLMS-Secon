@@ -1,4 +1,4 @@
-﻿using SLMS.DOL.Common;
+﻿    using SLMS.DOL.Common;
 
 namespace SLMS.DOL.Entities;
 
