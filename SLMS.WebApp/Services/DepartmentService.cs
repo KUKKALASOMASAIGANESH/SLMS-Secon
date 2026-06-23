@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Json;
+
 using SLMS.WebApp.Models;
+using SLMS.WebApp.Models.Common;
 
 namespace SLMS.WebApp.Services;
 
@@ -7,7 +9,8 @@ public class DepartmentService
 {
     private readonly HttpClient _httpClient;
 
-    public DepartmentService(HttpClient httpClient)
+    public DepartmentService(
+        HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
@@ -15,22 +18,28 @@ public class DepartmentService
     public async Task<List<DepartmentViewModel>>
         GetAllAsync()
     {
-        return await _httpClient
-            .GetFromJsonAsync<List<DepartmentViewModel>>
-            ("api/Department")
+        var response =
+            await _httpClient.GetFromJsonAsync<
+                ApiResponse<List<DepartmentViewModel>>>(
+                    "api/Department");
+
+        return response?.Data
             ?? new List<DepartmentViewModel>();
     }
 
     public async Task<DepartmentViewModel?>
         GetByIdAsync(int id)
     {
-        return await _httpClient
-            .GetFromJsonAsync<DepartmentViewModel>
-            ($"api/Department/{id}");
+        var response =
+            await _httpClient.GetFromJsonAsync<
+                ApiResponse<DepartmentViewModel>>(
+                    $"api/Department/{id}");
+
+        return response?.Data;
     }
 
     public async Task<string?> CreateAsync(
-      DepartmentViewModel department)
+        DepartmentViewModel department)
     {
         var response =
             await _httpClient.PostAsJsonAsync(
@@ -40,6 +49,8 @@ public class DepartmentService
         if (response.IsSuccessStatusCode)
             return null;
 
-        return await response.Content.ReadAsStringAsync();
+        return await response
+            .Content
+            .ReadAsStringAsync();
     }
 }

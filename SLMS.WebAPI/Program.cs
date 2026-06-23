@@ -79,12 +79,19 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<ICustodyHistoryRepository, CustodyHistoryRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
+// Inventory
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+
+// Shelf
+builder.Services.AddScoped<IShelfRepository, ShelfRepository>();
 
 // Catalog
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
 builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
+
+// Transactions
 builder.Services.AddScoped<IBookIssueRepository, BookIssueRepository>();
 builder.Services.AddScoped<IBookReturnRepository, BookReturnRepository>();
 
@@ -109,12 +116,19 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<ICustodyHistoryService, CustodyHistoryService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+
+// Inventory
 builder.Services.AddScoped<IInventoryService, InventoryService>();
+
+// Shelf
+builder.Services.AddScoped<IShelfService, ShelfService>();
 
 // Catalog
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
+
+// Transactions
 builder.Services.AddScoped<IBookIssueService, BookIssueService>();
 builder.Services.AddScoped<IBookReturnService, BookReturnService>();
 builder.Services.AddScoped<ITransactionDashboardService, TransactionDashboardService>();
@@ -150,8 +164,11 @@ builder.Services.AddAuthentication(
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidIssuer =
+                builder.Configuration["Jwt:Issuer"],
+
+            ValidAudience =
+                builder.Configuration["Jwt:Audience"],
 
             IssuerSigningKey =
                 new SymmetricSecurityKey(

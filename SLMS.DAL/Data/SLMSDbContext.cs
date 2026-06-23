@@ -33,6 +33,9 @@ public class SLMSDbContext : DbContext
     public DbSet<BookIssue> BookIssues => Set<BookIssue>();
     public DbSet<BookReturn> BookReturns => Set<BookReturn>();
 
+    //Shelf
+    public DbSet<Shelf> Shelves { get; set; }
+
     // Requests
     public DbSet<Request> Requests => Set<Request>();
 

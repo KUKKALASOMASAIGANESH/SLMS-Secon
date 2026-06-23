@@ -16,6 +16,9 @@ using SLMS.Shared.DTOs.Permission;
 using SLMS.Shared.DTOs.RolePermission;
 using SLMS.Shared.DTOs.BookReturn;
 
+
+using SLMS.Shared.DTOs.Shelf;
+
 namespace SLMS.WebAPI.Mappings;
 
 public class MappingProfile : Profile
@@ -84,5 +87,10 @@ public class MappingProfile : Profile
         CreateMap<BookReturnCreateDto, BookReturn>();
         CreateMap<BookReturn, BookReturnResponseDto>();
         CreateMap<BookReturnUpdateDto, BookReturn>();
+
+        //Shelf
+        CreateMap<Shelf, ShelfResponseDto>();
+        CreateMap<ShelfCreateDto, Shelf>();
+        CreateMap<ShelfUpdateDto, Shelf>();
     }
 }
