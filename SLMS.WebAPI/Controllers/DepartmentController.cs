@@ -75,19 +75,30 @@ public class DepartmentController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] DepartmentCreateDto dto)
+     [FromBody] DepartmentCreateDto dto)
     {
-        var result =
-            await _service.CreateAsync(dto);
+        try
+        {
+            var result =
+                await _service.CreateAsync(dto);
 
-        return Ok(
-            new ApiResponse<
-                DepartmentResponseDto>
-            {
-                Success = true,
-                Message =
-                    "Department created successfully",
-                Data = result
-            });
+            return Ok(
+                new ApiResponse<DepartmentResponseDto>
+                {
+                    Success = true,
+                    Message =
+                        "Department created successfully",
+                    Data = result
+                });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(
+                new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+        }
     }
 }

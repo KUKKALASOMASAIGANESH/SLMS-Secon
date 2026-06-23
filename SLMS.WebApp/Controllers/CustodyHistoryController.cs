@@ -1,17 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
 
 namespace SLMS.WebApp.Controllers;
-
 public class CustodyHistoryController : Controller
 {
     private readonly CustodyHistoryService _service;
+    private readonly DepartmentService _departmentService;
 
     public CustodyHistoryController(
-        CustodyHistoryService service)
+    CustodyHistoryService service,
+    DepartmentService departmentService)
     {
         _service = service;
+        _departmentService = departmentService;
     }
 
     public async Task<IActionResult> Index()
@@ -34,11 +37,24 @@ public class CustodyHistoryController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
-    }
+        var model =
+            new CustodyHistoryViewModel();
 
+        var departments =
+            await _departmentService.GetAllAsync();
+
+        model.Departments =
+            departments.Select(d =>
+            new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.DepartmentName
+            }).ToList();
+
+        return View(model);
+    }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
@@ -47,7 +63,20 @@ public class CustodyHistoryController : Controller
         try
         {
             if (!ModelState.IsValid)
+            {
+                var departments =
+                    await _departmentService.GetAllAsync();
+
+                model.Departments =
+                    departments.Select(d =>
+                    new SelectListItem
+                    {
+                        Value = d.Id.ToString(),
+                        Text = d.DepartmentName
+                    }).ToList();
+
                 return View(model);
+            }
 
             var result =
                 await _service.CreateAsync(model);
