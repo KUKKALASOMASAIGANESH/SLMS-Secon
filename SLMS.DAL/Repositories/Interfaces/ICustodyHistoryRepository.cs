@@ -6,6 +6,9 @@ public interface ICustodyHistoryRepository
     : IRepository<CustodyHistory>
 {
     Task<IEnumerable<CustodyHistory>>
+    GetAllWithDetailsAsync();
+
+    Task<IEnumerable<CustodyHistory>>
     GetByInventoryItemAsync(int inventoryItemId);
 
     Task<CustodyHistory?>

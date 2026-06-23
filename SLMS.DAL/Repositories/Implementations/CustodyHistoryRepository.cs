@@ -18,16 +18,32 @@ public class CustodyHistoryRepository
         GetByInventoryItemAsync(int inventoryItemId)
     {
         return await _dbSet
-            .Where(x => x.InventoryItemId == inventoryItemId)
-            .OrderBy(x => x.TransferDate)
-            .ToListAsync();
+    .Include(x => x.FromDepartment)
+    .Include(x => x.ToDepartment)
+    .Include(x => x.InventoryItem)
+    .Where(x => x.InventoryItemId == inventoryItemId)
+    .OrderBy(x => x.TransferDate)
+    .ToListAsync();
     }
     public async Task<CustodyHistory?>
-    GetCurrentCustodianAsync(int inventoryItemId)
+GetCurrentCustodianAsync(int inventoryItemId)
     {
         return await _dbSet
+            .Include(x => x.FromDepartment)
+            .Include(x => x.ToDepartment)
+            .Include(x => x.InventoryItem)
             .Where(x => x.InventoryItemId == inventoryItemId)
             .OrderByDescending(x => x.TransferDate)
+            .ThenByDescending(x => x.Id)
             .FirstOrDefaultAsync();
+    }
+    public async Task<IEnumerable<CustodyHistory>>
+    GetAllWithDetailsAsync()
+    {
+        return await _dbSet
+            .Include(x => x.FromDepartment)
+            .Include(x => x.ToDepartment)
+            .Include(x => x.InventoryItem)
+            .ToListAsync();
     }
 }

@@ -14,9 +14,11 @@ public class CustodyHistoryService : ICustodyHistoryService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<CustodyHistory>> GetAllAsync()
+    public async Task<IEnumerable<CustodyHistory>>
+  GetAllAsync()
     {
-        return await _repository.GetAllAsync();
+        return await _repository
+            .GetAllWithDetailsAsync();
     }
 
     public async Task<IEnumerable<CustodyHistory>>

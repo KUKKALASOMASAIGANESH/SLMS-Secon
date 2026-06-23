@@ -88,6 +88,7 @@ public class SLMSDbContext : DbContext
             .WithMany(d => d.Employees)
             .HasForeignKey(e => e.DepartmentId);
 
+
         // LibraryResource -> Category
         modelBuilder.Entity<LibraryResource>()
             .HasOne(r => r.Category)

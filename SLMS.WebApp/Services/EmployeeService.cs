@@ -32,7 +32,7 @@ public class EmployeeService
     {
         var response = await _httpClient
             .PutAsJsonAsync(
-                "api/Employee",
+                $"api/Employee/{employee.Id}",
                 employee);
 
         if (response.IsSuccessStatusCode)

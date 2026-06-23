@@ -47,10 +47,28 @@ public class DepartmentService : IDepartmentService
         return _mapper.Map<
             DepartmentResponseDto>(entity);
     }
-
     public async Task<DepartmentResponseDto>
         CreateAsync(DepartmentCreateDto dto)
     {
+        var departments =
+            await _repository.GetAllAsync();
+
+        if (departments.Any(x =>
+            x.DepartmentCode.ToLower() ==
+            dto.DepartmentCode.ToLower()))
+        {
+            throw new Exception(
+                "Department Code already exists");
+        }
+
+        if (departments.Any(x =>
+            x.DepartmentName.ToLower() ==
+            dto.DepartmentName.ToLower()))
+        {
+            throw new Exception(
+                "Department Name already exists");
+        }
+
         var entity =
             _mapper.Map<Department>(dto);
 
