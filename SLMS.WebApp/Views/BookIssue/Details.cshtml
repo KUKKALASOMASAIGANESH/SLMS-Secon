@@ -1,14 +1,58 @@
-﻿@{
+﻿@model SLMS.WebApp.Models.BookIssueViewModel
+
+@{
     ViewData["Title"] = "Book Issue Details";
 }
 
 <div class="card shadow-sm">
     <div class="card-body">
+
         <h3>Book Issue Details</h3>
+        <hr />
+
+        <dl class="row">
+
+            <dt class="col-sm-3">
+                Book Title
+            </dt>
+            <dd class="col-sm-9">
+                @Model.BookTitle
+            </dd>
+
+            <dt class="col-sm-3">
+                Employee Name
+            </dt>
+            <dd class="col-sm-9">
+                @Model.EmployeeName
+            </dd>
+
+            <dt class="col-sm-3">
+                Issue Date
+            </dt>
+            <dd class="col-sm-9">
+                @Model.IssueDate.ToShortDateString()
+            </dd>
+
+            <dt class="col-sm-3">
+                Due Date
+            </dt>
+            <dd class="col-sm-9">
+                @(Model.DueDate?.ToShortDateString())
+            </dd>
+
+            <dt class="col-sm-3">
+                Status
+            </dt>
+            <dd class="col-sm-9">
+                @Model.Status
+            </dd>
+
+        </dl>
 
         <a asp-action="Index"
            class="btn btn-secondary">
             Back
         </a>
+
     </div>
 </div>

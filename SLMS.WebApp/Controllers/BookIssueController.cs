@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
 
@@ -19,29 +20,58 @@ public class BookIssueController : Controller
         var issues =
             await _service.GetAllAsync();
 
+        Console.WriteLine($"BOOK ISSUE COUNT = {issues.Count}");
+
+        foreach (var item in issues)
+        {
+            Console.WriteLine(
+                $"ID={item.Id} | Book={item.BookTitle} | Employee={item.EmployeeName}");
+        }
+
         return View(issues);
     }
 
-    public IActionResult Create()
+    [HttpGet]
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var model = new BookIssueViewModel();
+
+        var employees =
+            await _service.GetEmployeesAsync();
+
+        model.EmployeeList =
+            employees.Select(e =>
+                new SelectListItem
+                {
+                    Value = e.Id.ToString(),
+                    Text = $"{e.EmployeeNumber} - {e.FullName}"
+                }).ToList();
+
+        var books =
+            await _service.GetLibraryResourcesAsync();
+
+        model.BookList =
+            books.Select(b =>
+                new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Title
+                }).ToList();
+
+        model.IssueDate = DateTime.Today;
+        model.Status = "Issued";
+
+        return View(model);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(
         BookIssueViewModel model)
     {
-        Console.WriteLine("BOOK ISSUE CREATE CLICKED");
-
-        Console.WriteLine($"InventoryItemId = {model.InventoryItemId}");
-        Console.WriteLine($"EmployeeId = {model.EmployeeId}");
-        Console.WriteLine($"IssuedByUserId = {model.IssuedByUserId}");
-
         try
         {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
             await _service.CreateAsync(model);
-
-            Console.WriteLine("BOOK ISSUE SAVED");
 
             TempData["SuccessMessage"] =
                 "Book Issued Successfully";
