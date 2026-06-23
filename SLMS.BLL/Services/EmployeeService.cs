@@ -50,11 +50,19 @@ public class EmployeeService
             (entity);
     }
 
-    public async Task<
-        EmployeeResponseDto>
-        CreateAsync(
-            EmployeeCreateDto dto)
+    public async Task<EmployeeResponseDto>
+     CreateAsync(EmployeeCreateDto dto)
     {
+        var existingEmployee =
+            await _repository.FindAsync(e =>
+                e.EmployeeNumber == dto.EmployeeNumber);
+
+        if (existingEmployee.Any())
+        {
+            throw new Exception(
+                "Employee Number already exists.");
+        }
+
         var entity =
             _mapper.Map<Employee>(dto);
 
@@ -62,9 +70,7 @@ public class EmployeeService
 
         await _repository.SaveChangesAsync();
 
-        return _mapper.Map<
-            EmployeeResponseDto>
-            (entity);
+        return _mapper.Map<EmployeeResponseDto>(entity);
     }
 
     public async Task<
@@ -78,6 +84,16 @@ public class EmployeeService
 
         if (entity == null)
             return null;
+        var duplicateEmployee =
+    await _repository.FindAsync(e =>
+        e.EmployeeNumber == dto.EmployeeNumber
+        && e.Id != id);
+
+        if (duplicateEmployee.Any())
+        {
+            throw new Exception(
+                "Employee Number already exists.");
+        }
 
         entity.EmployeeNumber =
             dto.EmployeeNumber;

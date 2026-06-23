@@ -1,6 +1,10 @@
 ﻿@model SLMS.WebApp.Models.DepartmentViewModel
-<nav aria-label="breadcrumb">
 
+@{
+    ViewData["Title"] = "Create Department";
+}
+
+<nav aria-label="breadcrumb">
     <ol class="breadcrumb">
 
         <li class="breadcrumb-item">
@@ -22,17 +26,17 @@
         </li>
 
     </ol>
-
 </nav>
-@{
-    ViewData["Title"] = "Create Department";
-}
 
 <div class="card shadow-sm">
 
     <div class="card-body">
 
         <h2>Create Department</h2>
+
+        <p class="text-danger fw-bold">
+            * Indicates required fields
+        </p>
 
         <form asp-action="Create" method="post">
 
@@ -44,7 +48,11 @@
 
             <div class="mb-3">
 
-                <label asp-for="DepartmentCode"></label>
+                <label asp-for="DepartmentCode"
+                       class="form-label">
+                    Department Code
+                    <span class="text-danger">*</span>
+                </label>
 
                 <input asp-for="DepartmentCode"
                        class="form-control"
@@ -57,7 +65,11 @@
 
             <div class="mb-3">
 
-                <label asp-for="DepartmentName"></label>
+                <label asp-for="DepartmentName"
+                       class="form-label">
+                    Department Name
+                    <span class="text-danger">*</span>
+                </label>
 
                 <input asp-for="DepartmentName"
                        class="form-control"
@@ -70,7 +82,10 @@
 
             <div class="mb-3">
 
-                <label asp-for="Description"></label>
+                <label asp-for="Description"
+                       class="form-label">
+                    Description
+                </label>
 
                 <textarea asp-for="Description"
                           class="form-control"

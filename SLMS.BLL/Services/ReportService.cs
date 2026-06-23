@@ -12,23 +12,23 @@ public class ReportService
         _context = context;
     }
 
-    // 1. Inventory Report
-    public async Task<List<InventoryReportDto>> GetInventoryReport()
-    {
-        return await _context.InventoryItems
-            .GroupBy(x => new
-            {
-                x.Resource.Title,
-                CategoryName = x.Resource.Category.Name
-            })
-            .Select(g => new InventoryReportDto
-            {
-                Title = g.Key.Title,
-                Category = g.Key.CategoryName,
-                TotalCount = g.Count()
-            })
-            .ToListAsync();
-    }
+    //// 1. Inventory Report
+    ////public async Task<List<InventoryReportDto>> GetInventoryReport()
+    ////{
+    //    //return await _context.InventoryItems
+    //        //.GroupBy(x => new
+    //        //{
+    //            //x.Resource.Title,
+    //            CategoryName = x.Resource.Category.Name
+    //        })
+    //        .Select(g => new InventoryReportDto
+    //        {
+    //            Title = g.Key.Title,
+    //            Category = g.Key.CategoryName,
+    //            TotalCount = g.Count()
+    //        })
+    //        .ToListAsync();
+    //}
 
     // 2. Issue Report
     public async Task<List<IssueReportDto>> GetIssueReport()
@@ -37,7 +37,7 @@ public class ReportService
             .Where(x => x.Status == "Issued")
             .Select(x => new IssueReportDto
             {
-                BookTitle = x.InventoryItem.Resource.Title,
+                BookTitle = x.LibraryResource.Title,
                 EmployeeName = x.Employee.FullName,
                 IssueDate = x.IssueDate,
                 DueDate = x.DueDate
@@ -52,7 +52,7 @@ public class ReportService
             .Where(x => x.Status == "Issued" && x.DueDate < DateTime.UtcNow)
             .Select(x => new OverdueReportDto
             {
-                BookTitle = x.InventoryItem.Resource.Title,
+                BookTitle = x.LibraryResource.Title,
                 EmployeeName = x.Employee.FullName,
                 DaysOverdue = (DateTime.UtcNow - x.DueDate).Days
             })

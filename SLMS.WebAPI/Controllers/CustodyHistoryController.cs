@@ -21,13 +21,20 @@ public class CustodyHistoryController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var data = await _service.GetAllAsync();
-
         var result = data.Select(c => new CustodyHistoryDto
         {
             Id = c.Id,
             InventoryItemId = c.InventoryItemId,
+
             FromDepartmentId = c.FromDepartmentId,
             ToDepartmentId = c.ToDepartmentId,
+
+            FromDepartmentName =
+                c.FromDepartment?.DepartmentName ?? "",
+
+            ToDepartmentName =
+                c.ToDepartment?.DepartmentName ?? "",
+
             TransferDate = c.TransferDate,
             TransferReason = c.TransferReason,
             Remarks = c.Remarks,
@@ -90,13 +97,22 @@ public class CustodyHistoryController : ControllerBase
         {
             Id = c.Id,
             InventoryItemId = c.InventoryItemId,
+
             FromDepartmentId = c.FromDepartmentId,
             ToDepartmentId = c.ToDepartmentId,
+
+            FromDepartmentName =
+        c.FromDepartment?.DepartmentName ?? "",
+
+            ToDepartmentName =
+        c.ToDepartment?.DepartmentName ?? "",
+
             TransferDate = c.TransferDate,
             TransferReason = c.TransferReason,
             Remarks = c.Remarks,
             TransferredByUserId = c.TransferredByUserId
         });
+    
 
         return Ok(result);
     }

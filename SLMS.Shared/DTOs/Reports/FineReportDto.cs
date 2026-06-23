@@ -8,7 +8,7 @@ namespace SLMS.Shared.DTOs.Reports
 {
     public class FineReportDto
     {
-        public string EmployeeName { get; set; }
+       public string EmployeeName { get; set; }
         public decimal FineAmount { get; set; }
-    }
+        }
 }
