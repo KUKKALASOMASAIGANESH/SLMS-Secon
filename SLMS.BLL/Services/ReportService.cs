@@ -37,7 +37,7 @@ public class ReportService
             .Where(x => x.Status == "Issued")
             .Select(x => new IssueReportDto
             {
-                BookTitle = x.InventoryItem.Resource.Title,
+                BookTitle = x.LibraryResource.Title,
                 EmployeeName = x.Employee.FullName,
                 IssueDate = x.IssueDate,
                 DueDate = x.DueDate
@@ -52,7 +52,7 @@ public class ReportService
             .Where(x => x.Status == "Issued" && x.DueDate < DateTime.UtcNow)
             .Select(x => new OverdueReportDto
             {
-                BookTitle = x.InventoryItem.Resource.Title,
+                BookTitle = x.LibraryResource.Title,
                 EmployeeName = x.Employee.FullName,
                 DaysOverdue = (DateTime.UtcNow - x.DueDate).Days
             })
