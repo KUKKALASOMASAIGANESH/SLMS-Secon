@@ -55,4 +55,22 @@ public class BookIssueService
 
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task<List<EmployeeViewModel>>
+        GetEmployeesAsync()
+    {
+        return await _httpClient.GetFromJsonAsync
+            <List<EmployeeViewModel>>
+            ("https://localhost:7277/api/Employee")
+            ?? new List<EmployeeViewModel>();
+    }
+
+    public async Task<List<LibraryResourceViewModel>>
+        GetLibraryResourcesAsync()
+    {
+        return await _httpClient.GetFromJsonAsync
+            <List<LibraryResourceViewModel>>
+            ("https://localhost:7277/api/LibraryResource")
+            ?? new List<LibraryResourceViewModel>();
+    }
 }

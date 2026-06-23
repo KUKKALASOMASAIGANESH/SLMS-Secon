@@ -12,6 +12,11 @@ builder.Services.AddControllersWithViews();
 // Common HttpClient
 builder.Services.AddHttpClient();
 
+//shelf
+builder.Services.AddScoped<
+    IShelfService,
+    ShelfService>();
+
 #region API Base URL
 
 var apiBaseUrl =
@@ -82,6 +87,8 @@ builder.Services.AddScoped<
     InventoryService>();
 
 #endregion
+
+
 
 #region Digital Library
 

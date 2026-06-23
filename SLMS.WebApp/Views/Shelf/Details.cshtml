@@ -1,0 +1,107 @@
+﻿@model SLMS.WebApp.Models.Inventory.ShelfViewModel
+
+<div class="card shadow-sm">
+
+    
+    <div class="card-header text-white"
+         style="background-color:#1e3a5f;">
+
+        <h3 class="mb-0">
+            Shelf Details
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row mb-3">
+
+            <div class="col-md-4">
+
+                <strong>
+                    Shelf Name
+                </strong>
+
+            </div>
+
+            <div class="col-md-8">
+
+                @Model.ShelfName
+
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-md-4">
+
+                <strong>
+                    Capacity
+                </strong>
+
+            </div>
+
+            <div class="col-md-8">
+
+                @Model.Capacity
+
+            </div>
+
+        </div>
+
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+
+                <strong>
+                    Current Book Count
+                </strong>
+
+            </div>
+
+            <div class="col-md-8">
+
+                @Model.CurrentBookCount
+
+            </div>
+
+        </div>
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+
+                <strong>
+                    Remaining Capacity
+                </strong>
+
+            </div>
+
+            <div class="col-md-8">
+
+                <span class="badge bg-success fs-6">
+                    @(Model.Capacity - Model.CurrentBookCount)
+                </span>
+
+            </div>
+
+        </div>
+
+        <hr />
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn text-white"
+           style="background-color:#1e3a5f;">
+            Edit
+        </a>
+
+    </div>
+    
+
+</div>

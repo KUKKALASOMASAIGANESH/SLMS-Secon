@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 
 using SLMS.BLL.Interfaces;
-
 using SLMS.DAL.Repositories.Interfaces;
-
 using SLMS.DOL.Entities;
-
 using SLMS.Shared.DTOs.BookIssue;
 
 namespace SLMS.BLL.Services;
@@ -29,7 +26,7 @@ public class BookIssueService
         GetAllAsync()
     {
         var entities =
-            await _repository.GetAllAsync();
+            await _repository.GetAllWithDetailsAsync();
 
         return _mapper.Map<
             IEnumerable<BookIssueResponseDto>>
@@ -37,10 +34,10 @@ public class BookIssueService
     }
 
     public async Task<BookIssueResponseDto?>
-        GetByIdAsync(int id)
+       GetByIdAsync(int id)
     {
         var entity =
-            await _repository.GetByIdAsync(id);
+            await _repository.GetByIdWithDetailsAsync(id);
 
         if (entity == null)
             return null;
@@ -50,8 +47,8 @@ public class BookIssueService
     }
 
     public async Task<
-    IEnumerable<BookIssueResponseDto>>
-    GetOverdueBooksAsync()
+        IEnumerable<BookIssueResponseDto>>
+        GetOverdueBooksAsync()
     {
         var entities =
             await _repository.GetOverdueBooksAsync();
@@ -60,6 +57,7 @@ public class BookIssueService
             IEnumerable<BookIssueResponseDto>>
             (entities);
     }
+
     public async Task<BookIssueResponseDto>
         CreateAsync(BookIssueCreateDto dto)
     {
@@ -95,8 +93,8 @@ public class BookIssueService
         if (entity == null)
             return null;
 
-        entity.InventoryItemId =
-            dto.InventoryItemId;
+        entity.LibraryResourceId =
+            dto.LibraryResourceId;
 
         entity.EmployeeId =
             dto.EmployeeId;
@@ -111,8 +109,8 @@ public class BookIssueService
                 dto.DueDate,
                 DateTimeKind.Utc);
 
-        entity.IssuedByUserId =
-            dto.IssuedByUserId;
+        //entity.IssuedByUserId =
+        //    dto.IssuedByUserId;
 
         entity.Status =
             dto.Status;

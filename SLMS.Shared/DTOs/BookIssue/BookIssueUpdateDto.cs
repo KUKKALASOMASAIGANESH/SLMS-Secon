@@ -2,7 +2,7 @@
 
 public class BookIssueUpdateDto
 {
-    public int InventoryItemId { get; set; }
+    public int LibraryResourceId { get; set; }
 
     public int EmployeeId { get; set; }
 

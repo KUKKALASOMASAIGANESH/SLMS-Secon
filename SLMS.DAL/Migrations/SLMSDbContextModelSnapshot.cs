@@ -83,7 +83,7 @@ namespace SLMS.DAL.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("InventoryItemId")
+                    b.Property<int?>("InventoryItemId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsActive")
@@ -92,7 +92,7 @@ namespace SLMS.DAL.Migrations
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("IssuedByUserId")
+                    b.Property<int>("LibraryResourceId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
@@ -108,7 +108,7 @@ namespace SLMS.DAL.Migrations
 
                     b.HasIndex("InventoryItemId");
 
-                    b.HasIndex("IssuedByUserId");
+                    b.HasIndex("LibraryResourceId");
 
                     b.ToTable("BookIssues");
                 });
@@ -727,6 +727,38 @@ namespace SLMS.DAL.Migrations
                     b.ToTable("RolePermissions");
                 });
 
+            modelBuilder.Entity("SLMS.DOL.Entities.Shelf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CurrentBookCount")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ShelfName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shelves");
+                });
+
             modelBuilder.Entity("SLMS.DOL.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -799,23 +831,19 @@ namespace SLMS.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SLMS.DOL.Entities.InventoryItem", "InventoryItem")
+                    b.HasOne("SLMS.DOL.Entities.InventoryItem", null)
                         .WithMany("BookIssues")
-                        .HasForeignKey("InventoryItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("InventoryItemId");
 
-                    b.HasOne("SLMS.DOL.Entities.User", "IssuedByUser")
+                    b.HasOne("SLMS.DOL.Entities.LibraryResource", "LibraryResource")
                         .WithMany()
-                        .HasForeignKey("IssuedByUserId")
+                        .HasForeignKey("LibraryResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Employee");
 
-                    b.Navigation("InventoryItem");
-
-                    b.Navigation("IssuedByUser");
+                    b.Navigation("LibraryResource");
                 });
 
             modelBuilder.Entity("SLMS.DOL.Entities.BookReturn", b =>

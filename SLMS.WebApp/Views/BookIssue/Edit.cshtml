@@ -1,14 +1,80 @@
-﻿@{
+﻿@model SLMS.WebApp.Models.BookIssueViewModel
+
+@{
     ViewData["Title"] = "Edit Book Issue";
 }
 
 <div class="card shadow-sm">
     <div class="card-body">
-        <h3>Edit Book Issue</h3>
 
-        <a asp-action="Index"
-           class="btn btn-secondary">
-            Back
-        </a>
+        <h3>Edit Book Issue</h3>
+        <hr />
+
+        <form asp-action="Edit" method="post">
+
+            <input asp-for="Id" type="hidden" />
+
+            <div class="mb-3">
+                <label>Book Title</label>
+                <input asp-for="BookTitle"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <div class="mb-3">
+                <label>Employee Name</label>
+                <input asp-for="EmployeeName"
+                       class="form-control"
+                       readonly />
+            </div>
+            <div class="mb-3">
+
+                <input hidden asp-for="EmployeeId"
+                       class="form-control"
+                       readonly />
+            </div>
+            <div class="mb-3">
+
+                <input hidden asp-for="LibraryResourceId"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <div class="mb-3">
+                <label>Issue Date</label>
+                <input asp-for="IssueDate"
+                       type="date"
+                       class="form-control"
+                       readonly />
+            </div>
+
+            <div class="mb-3">
+                <label>Due Date</label>
+                <input asp-for="DueDate"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Status</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="Issued">Issued</option>
+                    <option value="Returned">Returned</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Update
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </form>
+
     </div>
 </div>

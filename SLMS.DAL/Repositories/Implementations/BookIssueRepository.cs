@@ -21,6 +21,26 @@ public class BookIssueRepository
     }
 
     public async Task<IEnumerable<BookIssue>>
+        GetAllWithDetailsAsync()
+    {
+        return await _context.BookIssues
+            .Include(x => x.Employee)
+            .Include(x => x.LibraryResource)
+                //.ThenInclude(x => x.ResourceType)
+            .ToListAsync();
+    }
+
+    public async Task<BookIssue?>
+        GetByIdWithDetailsAsync(int id)
+    {
+        return await _context.BookIssues
+            .Include(x => x.Employee)
+            .Include(x => x.LibraryResource)
+                //.ThenInclude(x => x.Resource)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<IEnumerable<BookIssue>>
         GetOverdueBooksAsync()
     {
         return await _context.BookIssues
