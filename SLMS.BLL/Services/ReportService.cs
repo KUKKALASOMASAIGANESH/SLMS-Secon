@@ -12,23 +12,23 @@ public class ReportService
         _context = context;
     }
 
-    // 1. Inventory Report
-    public async Task<List<InventoryReportDto>> GetInventoryReport()
-    {
-        return await _context.InventoryItems
-            .GroupBy(x => new
-            {
-                x.Resource.Title,
-                CategoryName = x.Resource.Category.Name
-            })
-            .Select(g => new InventoryReportDto
-            {
-                Title = g.Key.Title,
-                Category = g.Key.CategoryName,
-                TotalCount = g.Count()
-            })
-            .ToListAsync();
-    }
+    //// 1. Inventory Report
+    ////public async Task<List<InventoryReportDto>> GetInventoryReport()
+    ////{
+    //    //return await _context.InventoryItems
+    //        //.GroupBy(x => new
+    //        //{
+    //            //x.Resource.Title,
+    //            CategoryName = x.Resource.Category.Name
+    //        })
+    //        .Select(g => new InventoryReportDto
+    //        {
+    //            Title = g.Key.Title,
+    //            Category = g.Key.CategoryName,
+    //            TotalCount = g.Count()
+    //        })
+    //        .ToListAsync();
+    //}
 
     // 2. Issue Report
     public async Task<List<IssueReportDto>> GetIssueReport()

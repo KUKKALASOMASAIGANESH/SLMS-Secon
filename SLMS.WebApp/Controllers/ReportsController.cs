@@ -9,8 +9,8 @@ namespace SLMS.WebApp.Controllers
         {
             var client = new HttpClient();
 
-            var inventory = await client.GetFromJsonAsync<List<InventoryReport>>(
-                "https://localhost:7277/api/reports/inventory");
+            //var inventory = await client.GetFromJsonAsync<List<InventoryReport>>(
+            //    "https://localhost:7277/api/reports/inventory");
 
             var issues = await client.GetFromJsonAsync<List<IssueReport>>(
                 "https://localhost:7277/api/reports/issues");
@@ -21,7 +21,7 @@ namespace SLMS.WebApp.Controllers
             var fine = await client.GetFromJsonAsync<List<FineReport>>(
                 "https://localhost:7277/api/reports/fine");
 
-            ViewBag.Inventory = inventory;
+            //ViewBag.Inventory = inventory;
             ViewBag.Issues = issues;
             ViewBag.Overdue = overdue;
             ViewBag.Fine = fine;
