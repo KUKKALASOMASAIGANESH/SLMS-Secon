@@ -1,4 +1,5 @@
 ﻿using SLMS.DOL.Entities;
+using SLMS.Shared.DTOs.Custody;
 
 namespace SLMS.DAL.Repositories.Interfaces;
 
@@ -13,4 +14,7 @@ public interface ICustodyHistoryRepository
 
     Task<CustodyHistory?>
     GetCurrentCustodianAsync(int inventoryItemId);
+    Task<IEnumerable<CustodyHistoryReportDto>>
+       GetCustodyReportAsync();
+
 }

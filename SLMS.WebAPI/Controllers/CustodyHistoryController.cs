@@ -128,4 +128,12 @@ public class CustodyHistoryController : ControllerBase
 
         return Ok(data);
     }
+    [HttpGet("report")]
+    public async Task<IActionResult> GetCustodyReport()
+    {
+        var result =
+            await _service.GetCustodyReportAsync();
+
+        return Ok(result);
+    }
 }

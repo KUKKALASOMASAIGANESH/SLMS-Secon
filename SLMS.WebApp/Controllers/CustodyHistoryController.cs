@@ -22,17 +22,17 @@ public class CustodyHistoryController : Controller
         try
         {
             var data =
-                await _service.GetAllAsync();
+                await _service.GetReportAsync();
 
             return View(data);
         }
         catch (Exception)
         {
             TempData["Error"] =
-                "Unable to load custody records.";
+                "Unable to load custody history.";
 
             return View(
-                new List<CustodyHistoryViewModel>());
+                new List<CustodyHistoryReportViewModel>());
         }
     }
 

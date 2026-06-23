@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SLMS.WebApp.Models.CustodyHistoryViewModel>
+﻿@model IEnumerable<SLMS.WebApp.Models.CustodyHistoryReportViewModel>
 
 @{
     ViewData["Title"] = "Custody History";
@@ -26,59 +26,12 @@
 
             <h2>Custody History</h2>
 
-            <div>
-
-                <a asp-action="Create"
-                   class="btn btn-primary">
-                    Add Custody
-                </a>
-
-                <a asp-action="Index"
-                   class="btn btn-secondary">
-                    Refresh
-                </a>
-
-            </div>
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Refresh
+            </a>
 
         </div>
-
-        <form asp-action="SearchByInventory"
-              method="get"
-              class="mb-3">
-
-            <div class="row">
-
-                <div class="col-md-4">
-
-                    <input name="inventoryItemId"
-                           type="number"
-                           min="1"
-                           class="form-control"
-                           placeholder="Inventory Item Id" />
-
-                </div>
-
-                <div class="col-md-2">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-                        Search
-                    </button>
-
-                </div>
-
-                <div class="col-md-2">
-
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
-                        Clear
-                    </a>
-
-                </div>
-
-            </div>
-
-        </form>
 
         @if (!Model.Any())
         {
@@ -93,12 +46,12 @@
                 <thead class="table-dark">
 
                     <tr>
-                        <th>Inventory Item</th>
-                        <th>From Department</th>
-                        <th>To Department</th>
-                        <th>Transfer Date</th>
-                        <th>Reason</th>
-                        <th>Actions</th>
+                        <th>Date</th>
+                        <th>Resource</th>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                        <th>Status</th>
                     </tr>
 
                 </thead>
@@ -109,32 +62,39 @@
                     {
                         <tr>
 
-                            <td>@item.InventoryItemId</td>
-
-                            
-                            <td>@item.FromDepartmentName</td>
-                            <td>@item.ToDepartmentName</td>
-
                             <td>
-                                @item.TransferDate.ToString("dd-MMM-yyyy")
+                                @item.Date.ToString("dd-MMM-yyyy")
                             </td>
 
-                            <td>@item.TransferReason</td>
+                            <td>
+                                @item.ResourceTitle
+                            </td>
 
                             <td>
+                                @item.EmployeeName
+                            </td>
 
-                                <a asp-action="Details"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-info btn-sm">
-                                    Details
-                                </a>
+                            <td>
+                                @item.DepartmentName
+                            </td>
 
-                                <a asp-action="CurrentCustodian"
-                                   asp-route-inventoryItemId="@item.InventoryItemId"
-                                   class="btn btn-success btn-sm">
-                                    Current
-                                </a>
+                            <td>
+                                @item.Action
+                            </td>
 
+                            <td>
+                                @if (item.Status == "Active")
+                                {
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">
+                                        Closed
+                                    </span>
+                                }
                             </td>
 
                         </tr>
