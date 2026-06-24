@@ -12,4 +12,10 @@ public interface IDigitalContentRequestService
 
     Task UpdateAsync(
     DigitalContentRequest request);
+
+    Task<IEnumerable<DigitalContentRequest>>
+    GetByEmployeeIdAsync(int employeeId);
+
+    Task<IEnumerable<DigitalContentRequest>>
+    GetAllWithDetailsAsync();
 }

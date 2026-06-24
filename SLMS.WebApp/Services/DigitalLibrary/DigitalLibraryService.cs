@@ -3,6 +3,8 @@ using SLMS.WebApp.Models.DigitalLibrary;
 
 namespace SLMS.WebApp.Services.DigitalLibrary;
 
+using SLMS.WebApp.Models.DigitalLibrary;
+
 public class DigitalLibraryService
     : IDigitalLibraryService
 {
@@ -101,7 +103,7 @@ public class DigitalLibraryService
     }
 
     public async Task<List<AdminRequestViewModel>>
-GetRequestsAsync()
+    GetRequestsAsync()
     {
         var result =
             await _httpClient.GetFromJsonAsync<
@@ -192,5 +194,55 @@ GetRequestsAsync()
             PolicyTitle = policy.Title,
             PolicyContent = policy.Description
         };
+    }
+
+    public async Task<bool> CanAccessContentAsync(
+     int contentId,
+     int employeeId)
+    {
+        var requests =
+            await _httpClient.GetFromJsonAsync
+            <List<AccessRequestViewModel>>
+            ("https://localhost:7277/api/DigitalContentRequest");
+
+        if (requests == null)
+            return false;
+
+        return requests.Any(x =>
+            x.EmployeeId == employeeId &&
+            x.DigitalContentId == contentId &&
+            x.ApprovalStatus == "Approved");
+    }
+
+    public async Task RecordDownloadAsync(
+    int contentId)
+    {
+        await _httpClient.PostAsync(
+            $"https://localhost:7277/api/DigitalContent/download/{contentId}",
+            null);
+    }
+
+    public async Task AddDownloadHistoryAsync(
+    int employeeId,
+    int digitalContentId)
+    {
+        var dto = new
+        {
+            employeeId = employeeId,
+            digitalContentId = digitalContentId
+        };
+
+        await _httpClient.PostAsJsonAsync(
+            "https://localhost:7277/api/DownloadHistory",
+            dto);
+    }
+
+    public async Task<List<RequestStatusViewModel>>
+    GetMyRequestsAsync(int employeeId)
+    {
+        return await _httpClient
+            .GetFromJsonAsync<List<RequestStatusViewModel>>
+            ($"https://localhost:7277/api/DigitalContentRequest/employee/{employeeId}")
+            ?? new();
     }
 }

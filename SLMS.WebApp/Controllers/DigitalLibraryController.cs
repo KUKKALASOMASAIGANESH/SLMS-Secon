@@ -17,6 +17,11 @@ public class DigitalLibraryController : Controller
         var contents =
             await _service.GetContentsAsync();
 
+        var requests =
+            await _service.GetMyRequestsAsync(1);
+
+        ViewBag.Requests = requests;
+
         return View(contents);
     }
 
@@ -203,4 +208,83 @@ DigitalContentRequestViewModel model)
         return RedirectToAction(
             nameof(ManagePolicies));
     }
+
+    
+
+    public async Task<IActionResult> Read(int id)
+    {
+        var content =
+            await _service.GetContentByIdAsync(id);
+
+        if (content == null)
+            return NotFound();
+
+        return View(content);
+    }
+
+    public async Task<IActionResult> Download(int id)
+    {
+        int employeeId = 1;
+
+        bool canAccess =
+            await _service.CanAccessContentAsync(
+                id,
+                employeeId);
+
+        if (!canAccess)
+        {
+            TempData["Error"] =
+                "Your request is not approved yet.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        await _service.AddDownloadHistoryAsync(
+            employeeId,
+            id);
+
+        var content =
+            await _service.GetContentByIdAsync(id);
+
+        if (content == null)
+            return NotFound();
+
+        using var client = new HttpClient();
+
+        var fileBytes =
+            await client.GetByteArrayAsync(content.FilePath);
+
+        return File(
+            fileBytes,
+            "application/pdf",
+            $"{content.Title}.pdf");
+    }
+
+    public async Task<IActionResult> ReadContent(int id)
+{
+    int employeeId = 1;
+
+    bool canAccess =
+        await _service.CanAccessContentAsync(
+            id,
+            employeeId);
+
+    if (!canAccess)
+    {
+        TempData["Error"] =
+            "Your request is not approved yet.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    var content =
+        await _service.GetContentByIdAsync(id);
+
+    if (content == null)
+        return NotFound();
+
+    return View(content);
+}
+
+
 }
