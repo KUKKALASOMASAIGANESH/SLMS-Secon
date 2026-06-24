@@ -4,9 +4,13 @@ public class BookIssueResponseDto
 {
     public int Id { get; set; }
 
-    public int InventoryItemId { get; set; }
+    public int LibraryResourceId { get; set; }
 
     public int EmployeeId { get; set; }
+
+    public string BookTitle { get; set; } = string.Empty;
+
+    public string EmployeeName { get; set; } = string.Empty;
 
     public DateTime IssueDate { get; set; }
 

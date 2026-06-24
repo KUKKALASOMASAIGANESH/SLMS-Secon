@@ -8,7 +8,7 @@
     <div class="card-body">
 
         <div class="d-flex justify-content-between mb-3">
-            <h3>Book Issue Management</h3>
+            <h3>Issue Book Management</h3>
 
             <a asp-action="Create"
                class="btn btn-primary">
@@ -21,8 +21,8 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Inventory Item</th>
-                    <th>Employee</th>
+                    <th>Book Title</th>
+                    <th>Employee Name /Employee Id</th>
                     <th>Issue Date</th>
                     <th>Due Date</th>
                     <th>Status</th>
@@ -38,10 +38,10 @@
                     {
                         <tr>
                             <td>@item.Id</td>
-                            <td>@item.InventoryItemId</td>
-                            <td>@item.EmployeeId</td>
+                            <td>@item.BookTitle</td>
+                            <td>@item.EmployeeName</td>
                             <td>@item.IssueDate.ToShortDateString()</td>
-                            <td>@item.DueDate.ToShortDateString()</td>
+                            <td>@(item.DueDate.HasValue? item.DueDate.Value.ToShortDateString() : "")</td>
                             <td>@item.Status</td>
 
                             <td>

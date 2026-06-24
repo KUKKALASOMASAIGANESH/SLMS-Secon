@@ -37,7 +37,14 @@ public class Repository<T> : IRepository<T>
 
     public async Task AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
+        try
+        {
+            await _dbSet.AddAsync(entity);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
     public void Update(T entity)

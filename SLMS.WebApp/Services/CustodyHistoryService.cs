@@ -54,5 +54,13 @@ public class CustodyHistoryService
             .GetFromJsonAsync<CustodyHistoryViewModel>(
                 $"api/CustodyHistory/current/{inventoryItemId}");
     }
+    public async Task<List<CustodyHistoryReportViewModel>>
+    GetReportAsync()
+    {
+        return await _httpClient
+            .GetFromJsonAsync<List<CustodyHistoryReportViewModel>>
+            ("api/CustodyHistory/report")
+            ?? new List<CustodyHistoryReportViewModel>();
+    }
 
 }

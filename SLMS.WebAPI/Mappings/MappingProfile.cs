@@ -66,7 +66,15 @@ public class MappingProfile : Profile
 
         // Book Issue
         CreateMap<BookIssueCreateDto, BookIssue>();
-        CreateMap<BookIssue, BookIssueResponseDto>();
+        CreateMap<BookIssue, BookIssueResponseDto>()
+     .ForMember(
+         dest => dest.EmployeeName,
+         opt => opt.MapFrom(
+             src => src.Employee.FullName))
+     .ForMember(
+         dest => dest.BookTitle,
+         opt => opt.MapFrom(
+             src => src.LibraryResource.Title));
         CreateMap<BookIssueUpdateDto, BookIssue>();
 
         // Role

@@ -41,26 +41,39 @@ public class EmployeeController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        EmployeeCreateDto dto)
+     EmployeeCreateDto dto)
     {
-        var result =
-            await _service.CreateAsync(dto);
+        try
+        {
+            var result =
+                await _service.CreateAsync(dto);
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
-        int id,
-        EmployeeUpdateDto dto)
+     int id,
+     EmployeeUpdateDto dto)
     {
-        var result =
-            await _service.UpdateAsync(id, dto);
+        try
+        {
+            var result =
+                await _service.UpdateAsync(id, dto);
 
-        if (result == null)
-            return NotFound();
+            if (result == null)
+                return NotFound();
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
