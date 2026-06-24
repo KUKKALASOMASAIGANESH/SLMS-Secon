@@ -3,119 +3,132 @@ using SLMS.WebApp.Services.Interfaces;
 using SLMS.WebApp.Services.DigitalLibrary;
 using SLMS.WebApp.Services.Transaction;
 using SLMS.WebApp.Services.Transaction.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SLMS.WebApp.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Authentication
+builder.Services.AddAuthentication(
+    CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Auth/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddAuthorization();
 
 // MVC
 builder.Services.AddControllersWithViews();
 
-// Common HttpClient
-builder.Services.AddHttpClient();
+// Session
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// JWT Handler
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<JwtDelegatingHandler>();
 
 #region API Base URL
 
-var apiBaseUrl =
-    new Uri("http://localhost:5062/");
+var apiBaseUrl = new Uri("http://localhost:5062/");
 
 #endregion
 
 #region Existing Services
 
-builder.Services.AddHttpClient<EmployeeService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<EmployeeService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-builder.Services.AddHttpClient<CustodyHistoryService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<CustodyHistoryService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-builder.Services.AddHttpClient<AuditLogService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<AuditLogService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-builder.Services.AddHttpClient<AuthService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<DepartmentService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-builder.Services.AddHttpClient<DepartmentService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+// AuthService should NOT use JwtDelegatingHandler
+builder.Services.AddHttpClient<AuthService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+});
 
 #endregion
 
 #region Catalog Services
 
-builder.Services.AddHttpClient<CategoryService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<CategoryService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-builder.Services.AddHttpClient<LibraryResourceService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<LibraryResourceService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-builder.Services.AddHttpClient<BookIssueService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<BookIssueService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
 #endregion
 
 #region Inventory
 
-builder.Services.AddScoped<
-    IInventoryService,
-    InventoryService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 #endregion
 
 #region Digital Library
 
-builder.Services.AddScoped<
-    IDigitalLibraryService,
-    DigitalLibraryService>();
+builder.Services.AddScoped<IDigitalLibraryService, DigitalLibraryService>();
 
 #endregion
 
 #region Transaction Dashboard
 
-builder.Services.AddHttpClient<
-    ITransactionDashboardService,
-    TransactionDashboardService>(
-    client =>
-    {
-        client.BaseAddress = apiBaseUrl;
-    });
+builder.Services.AddHttpClient<ITransactionDashboardService, TransactionDashboardService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
 #endregion
 
-#region Session
+#region User Management
 
-builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddSession(options =>
+builder.Services.AddHttpClient<UserManagementService>(client =>
 {
-    options.IdleTimeout =
-        TimeSpan.FromMinutes(30);
-
-    options.Cookie.HttpOnly = true;
-
-    options.Cookie.IsEssential = true;
-});
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
 #endregion
 
@@ -135,11 +148,12 @@ app.UseRouting();
 
 app.UseSession();
 
-// app.UseAuthorization();
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern:
-    "{controller=Auth}/{action=Login}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();

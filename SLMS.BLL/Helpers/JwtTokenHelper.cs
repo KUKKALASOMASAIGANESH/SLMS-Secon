@@ -16,18 +16,26 @@ public class JwtTokenHelper
         _config = config;
     }
 
-    public string GenerateToken(User user)
+    public string GenerateToken(User user, string roleName)
     {
         var claims = new[]
         {
+            // Stores logged-in user's database Id
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Username)
+
+            // Stores logged-in username
+            new Claim(ClaimTypes.Name, user.Username),
+
+            // Stores user's role: Admin / Librarian / User
+            new Claim(ClaimTypes.Role, roleName)
         };
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var creds = new SigningCredentials(
+            key,
+            SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
@@ -35,9 +43,9 @@ public class JwtTokenHelper
             claims: claims,
             expires: DateTime.Now.AddMinutes(
                 Convert.ToDouble(_config["Jwt:ExpiryMinutes"])),
-            signingCredentials: creds
-        );
+            signingCredentials: creds);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return new JwtSecurityTokenHandler()
+            .WriteToken(token);
     }
 }

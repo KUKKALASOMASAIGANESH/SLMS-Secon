@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebApp.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class DepartmentController : Controller
 {
     private readonly DepartmentService _service;

@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebApp.Controllers;
 
+
+[Authorize(Roles = "Admin,Librarian")]
 public class CustodyHistoryController : Controller
 {
     private readonly CustodyHistoryService _service;

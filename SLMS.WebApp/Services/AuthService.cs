@@ -23,7 +23,7 @@ public class AuthService
             .ReadFromJsonAsync<LoginResponse>();
     }
 
-    public async Task<ApiResponse?> RegisterAsync(RegisterDto dto)
+    public async Task<ApiResponse> RegisterAsync(RegisterDto dto)
     {
         var response = await _httpClient.PostAsJsonAsync(
             "api/Auth/register",
@@ -33,19 +33,12 @@ public class AuthService
             .ReadFromJsonAsync<ApiResponse>();
     }
 
-    public async Task<ApiResponse?> ForgotPasswordAsync(
-    ForgotPasswordDto dto)
+    public async Task<ApiResponse> ForgotPasswordAsync(
+        ForgotPasswordDto dto)
     {
-        var response =
-            await _httpClient.PostAsJsonAsync(
-                "api/Auth/forgot-password",
-                dto);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            return await response.Content
-                .ReadFromJsonAsync<ApiResponse>();
-        }
+        var response = await _httpClient.PostAsJsonAsync(
+            "api/Auth/forgot-password",
+            dto);
 
         return await response.Content
             .ReadFromJsonAsync<ApiResponse>();

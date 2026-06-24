@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
-using SLMS.Shared.DTOs.Custody;
 using SLMS.DOL.Entities;
+using SLMS.Shared.DTOs.Custody;
 
 namespace SLMS.WebAPI.Controllers;
 
+
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class CustodyHistoryController : ControllerBase

@@ -113,5 +113,26 @@ public class SLMSDbContext : DbContext
             .WithMany(d => d.CustodyTransfersTo)
             .HasForeignKey(c => c.ToDepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Role>().HasData(
+    new Role
+    {
+        Id = 1,
+        RoleName = "Admin",
+        Description = "System Administrator"
+    },
+    new Role
+    {
+        Id = 2,
+        RoleName = "Librarian",
+        Description = "Library Manager"
+    },
+    new Role
+    {
+        Id = 3,
+        RoleName = "User",
+        Description = "Normal Employee"
+    }
+);
     }
 }

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
 using System.Text;
 
 using SLMS.DAL.Data;
@@ -45,7 +44,7 @@ builder.Services.AddSwaggerGen(options =>
             Scheme = "bearer",
             BearerFormat = "JWT",
             In = ParameterLocation.Header,
-            Description = "Enter JWT Token"
+            Description = "Enter JWT token"
         });
 
     options.AddSecurityRequirement(
@@ -54,11 +53,12 @@ builder.Services.AddSwaggerGen(options =>
             {
                 new OpenApiSecurityScheme
                 {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
+                    Reference =
+                        new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
                 },
                 Array.Empty<string>()
             }
@@ -81,20 +81,17 @@ builder.Services.AddScoped<ICustodyHistoryRepository, CustodyHistoryRepository>(
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
-// Catalog
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
 builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
 builder.Services.AddScoped<IBookIssueRepository, BookIssueRepository>();
 builder.Services.AddScoped<IBookReturnRepository, BookReturnRepository>();
 
-// Requests / Roles
 builder.Services.AddScoped<IRequestRepository, RequestRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
-// Digital Library
 builder.Services.AddScoped<IDigitalContentRepository, DigitalContentRepository>();
 builder.Services.AddScoped<IDigitalContentRequestRepository, DigitalContentRequestRepository>();
 builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
@@ -111,7 +108,6 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
-// Catalog
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
@@ -119,14 +115,12 @@ builder.Services.AddScoped<IBookIssueService, BookIssueService>();
 builder.Services.AddScoped<IBookReturnService, BookReturnService>();
 builder.Services.AddScoped<ITransactionDashboardService, TransactionDashboardService>();
 
-// Requests / Roles
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRolePermissionService, RolePermissionService>();
 
-// Digital Library
 builder.Services.AddScoped<IDigitalContentService, DigitalContentService>();
 builder.Services.AddScoped<IDigitalContentRequestService, DigitalContentRequestService>();
 builder.Services.AddScoped<IPolicyService, PolicyService>();
@@ -140,25 +134,28 @@ builder.Services.AddScoped<JwtTokenHelper>();
 // JWT Authentication
 builder.Services.AddAuthentication(
     JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters =
-        new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
 
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
 
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(
-                        builder.Configuration["Jwt:Key"]!))
-        };
-});
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            builder.Configuration["Jwt:Key"]!))
+            };
+    });
+
+// Authorization
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

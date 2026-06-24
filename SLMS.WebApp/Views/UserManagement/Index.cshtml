@@ -1,0 +1,96 @@
+﻿@model List<SLMS.WebApp.ViewModels.UserRoleViewModel>
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>User Management</h2>
+
+    <a asp-controller="Employee"
+       asp-action="Create"
+       class="btn btn-primary">
+        Create Employee
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <table class="table table-bordered table-striped table-hover">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>User Id</th>
+                    <th>Username</th>
+                    <th>Employee Name</th>
+                    <th>Current Role</th>
+                    <th>Change Role</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserId</td>
+                        <td>@user.Username</td>
+                        <td>@user.EmployeeName</td>
+
+                        <td>
+                            <span class="badge bg-primary">
+                                @user.RoleName
+                            </span>
+                        </td>
+
+                        <td>
+                            <form asp-controller="UserManagement"
+                                  asp-action="ChangeRole"
+                                  method="post"
+                                  class="d-flex gap-2">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="userId"
+                                       value="@user.UserId" />
+
+                                <select name="roleId"
+                                        class="form-select form-select-sm"
+                                        style="width:160px;">
+
+                                    <option value="1" selected="@(user.RoleName == "Admin")">Admin</option>
+                                    <option value="2" selected="@(user.RoleName == "Librarian")">Librarian</option>
+                                    <option value="3" selected="@(user.RoleName == "User")">User</option>
+
+                                </select>
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-success">
+                                    Update
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

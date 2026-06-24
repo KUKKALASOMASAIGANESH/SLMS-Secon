@@ -1,6 +1,7 @@
 ﻿@model SLMS.WebApp.ViewModels.RegisterViewModel
 
 @{
+    Layout = "_AuthLayout";
     ViewData["Title"] = "Register";
 }
 
@@ -47,6 +48,14 @@
                             <label asp-for="EmployeeNumber" class="form-label"></label>
                             <input asp-for="EmployeeNumber" class="form-control" />
                             <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label asp-for="EmployeeName" class="form-label"></label>
+                            <input asp-for="EmployeeName" class="form-control" />
+                            <span asp-validation-for="EmployeeName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">

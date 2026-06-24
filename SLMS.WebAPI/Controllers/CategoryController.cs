@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
 using SLMS.Shared.DTOs.Category;
 
 namespace SLMS.WebAPI.Controllers;
 
+
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class CategoryController : ControllerBase

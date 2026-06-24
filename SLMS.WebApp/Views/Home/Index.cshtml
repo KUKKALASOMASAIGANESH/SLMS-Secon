@@ -3,176 +3,164 @@
 }
 
 <div class="mb-4">
-
-    <h2>
-        Smart Library Management System
-    </h2>
+    <h2>Secon Library Management System</h2>
 
     <p class="text-muted">
         Welcome to SECON Library Management System Dashboard
     </p>
-
 </div>
 
 <div class="row">
 
-    <!-- Department -->
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- Department -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Departments</h5>
 
-    <div class="col-md-3 mb-3">
+                    <p class="card-text">
+                        Manage department records and information.
+                    </p>
 
-        <div class="card shadow-sm h-100">
-
-            <div class="card-body">
-
-                <h5 class="card-title">
-                    Departments
-                </h5>
-
-                <p class="card-text">
-                    Manage department records and information.
-                </p>
-
-                <a asp-controller="Department"
-                   asp-action="Index"
-                   class="btn btn-primary">
-                    Open
-                </a>
-
+                    <a asp-controller="Department"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Open
+                    </a>
+                </div>
             </div>
-
         </div>
 
-    </div>
+        <!-- Employee -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Employees</h5>
 
-    <!-- Employee -->
+                    <p class="card-text">
+                        Manage employee records.
+                    </p>
 
-    <div class="col-md-3 mb-3">
-
-        <div class="card shadow-sm h-100">
-
-            <div class="card-body">
-
-                <h5 class="card-title">
-                    Employees
-                </h5>
-
-                <p class="card-text">
-                    Manage employee records.
-                </p>
-
-                <a asp-controller="Employee"
-                   asp-action="Index"
-                   class="btn btn-primary">
-                    Open
-                </a>
-
+                    <a asp-controller="Employee"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Open
+                    </a>
+                </div>
             </div>
-
         </div>
 
-    </div>
+        <!-- Audit -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Audit Logs</h5>
 
-    <!-- Custody -->
+                    <p class="card-text">
+                        View system activities and logs.
+                    </p>
 
-    <div class="col-md-3 mb-3">
-
-        <div class="card shadow-sm h-100">
-
-            <div class="card-body">
-
-                <h5 class="card-title">
-                    Custody History
-                </h5>
-
-                <p class="card-text">
-                    Manage custody transfers.
-                </p>
-
-                <a asp-controller="CustodyHistory"
-                   asp-action="Index"
-                   class="btn btn-primary">
-                    Open
-                </a>
-
+                    <a asp-controller="AuditLog"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Open
+                    </a>
+                </div>
             </div>
-
         </div>
+    }
 
-    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+    {
+        <!-- Custody -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Custody History</h5>
 
-    <!-- Audit -->
+                    <p class="card-text">
+                        Manage custody transfers.
+                    </p>
 
-    <div class="col-md-3 mb-3">
-
-        <div class="card shadow-sm h-100">
-
-            <div class="card-body">
-
-                <h5 class="card-title">
-                    Audit Logs
-                </h5>
-
-                <p class="card-text">
-                    View system activities and logs.
-                </p>
-
-                <a asp-controller="AuditLog"
-                   asp-action="Index"
-                   class="btn btn-primary">
-                    Open
-                </a>
-
+                    <a asp-controller="CustodyHistory"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Open
+                    </a>
+                </div>
             </div>
-
         </div>
+    }
 
-    </div>
+    @if (User.IsInRole("User"))
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Digital Library</h5>
+
+                    <p class="card-text">
+                        Browse available digital library resources.
+                    </p>
+
+                    <a asp-controller="DigitalLibrary"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
 
 </div>
 
-<hr />
+@if (User.IsInRole("Admin"))
+{
+    <hr />
 
-<div class="row mt-4">
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4>Quick Access</h4>
 
-    <div class="col-md-12">
+                    <a asp-controller="Department"
+                       asp-action="Create"
+                       class="btn btn-outline-primary m-1">
+                        Add Department
+                    </a>
 
-        <div class="card shadow-sm">
-
-            <div class="card-body">
-
-                <h4>
-                    Quick Access
-                </h4>
-
-                <a asp-controller="Department"
-                   asp-action="Create"
-                   class="btn btn-outline-primary m-1">
-                    Add Department
-                </a>
-
-                <a asp-controller="Employee"
-                   asp-action="Create"
-                   class="btn btn-outline-success m-1">
-                    Add Employee
-                </a>
-
-                <a asp-controller="CustodyHistory"
-                   asp-action="Create"
-                   class="btn btn-outline-warning m-1">
-                    Add Custody
-                </a>
-
+                    <a asp-controller="Employee"
+                       asp-action="Create"
+                       class="btn btn-outline-success m-1">
+                        Add Employee
+                    </a>
+                </div>
             </div>
-
         </div>
-
     </div>
+}
 
-</div>
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <h3>JWT Token Stored In Session</h3>
+@if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+{
+    <hr />
 
-    <p>@ViewBag.Token</p>
-</div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4>Library Quick Access</h4>
+
+                    <a asp-controller="CustodyHistory"
+                       asp-action="Create"
+                       class="btn btn-outline-warning m-1">
+                        Add Custody
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

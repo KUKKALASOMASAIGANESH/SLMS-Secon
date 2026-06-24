@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
@@ -6,6 +7,7 @@ using SLMS.Shared.DTOs.BookReturn;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize(Roles = "Admin,Librarian")]
 [Route("api/[controller]")]
 [ApiController]
 public class BookReturnController : ControllerBase
