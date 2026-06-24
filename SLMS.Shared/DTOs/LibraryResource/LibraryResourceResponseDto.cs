@@ -22,4 +22,6 @@ public class LibraryResourceResponseDto
     public int? ShelfId { get; set; }
 
     public string? ShelfName { get; set; }
+
+    public string CategoryName { get; set; } = string.Empty;
 }

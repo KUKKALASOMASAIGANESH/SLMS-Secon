@@ -74,7 +74,7 @@ public class LibraryResourceController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             var categories =
     await _categoryService.GetAllAsync();
@@ -98,8 +98,9 @@ public class LibraryResourceController : Controller
                         Text = x.ShelfName
                     }).ToList();
 
-            TempData["ErrorMessage"] =
-                "Invalid Category Id. Please select a valid category.";
+            ModelState.AddModelError(
+     string.Empty,
+     ex.Message);
 
             return View(model);
         }
@@ -153,7 +154,7 @@ public class LibraryResourceController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             var categories =
                 await _categoryService.GetAllAsync();
@@ -166,8 +167,20 @@ public class LibraryResourceController : Controller
                         Text = x.Name
                     }).ToList();
 
-            TempData["ErrorMessage"] =
-                "Invalid Category Id. Please select a valid category.";
+            var shelves =
+                await _shelfService.GetAllAsync();
+
+            model.Shelves =
+                shelves.Select(x =>
+                    new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.ShelfName
+                    }).ToList();
+
+            ModelState.AddModelError(
+                string.Empty,
+                ex.Message);
 
             return View(model);
         }

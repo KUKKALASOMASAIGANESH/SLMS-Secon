@@ -101,7 +101,7 @@ public class SLMSDbContext : DbContext
         //shelg intergration
         modelBuilder.Entity<LibraryResource>()
     .HasOne(r => r.Shelf)
-    .WithMany()
+    .WithMany(s => s.Resources)
     .HasForeignKey(r => r.ShelfId)
     .OnDelete(DeleteBehavior.SetNull);
 

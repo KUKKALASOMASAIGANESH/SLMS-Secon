@@ -55,37 +55,45 @@ public class LibraryResourceService
             LibraryResourceResponseDto>
             (entity);
     }
-
-    public async Task<LibraryResourceResponseDto>
+    
+        public async Task<LibraryResourceResponseDto>
     CreateAsync(
         LibraryResourceCreateDto dto)
-    {
-        var entity =
-            _mapper.Map<LibraryResource>(dto);
-
-        await _repository.AddAsync(entity);
-
-        // Update Shelf Count
-        if (dto.ShelfId.HasValue)
         {
-            var shelf =
-                await _shelfRepository
-                    .GetByIdAsync(dto.ShelfId.Value);
-
-            if (shelf != null)
+            // Check shelf capacity first
+            if (dto.ShelfId.HasValue)
             {
-                shelf.CurrentBookCount++;
+                var shelf =
+                    await _shelfRepository
+                        .GetByIdAsync(dto.ShelfId.Value);
 
-                _shelfRepository.Update(shelf);
+                if (shelf != null)
+                {
+                    if (shelf.CurrentBookCount >= shelf.Capacity)
+                    {
+                        throw new Exception(
+                            "Selected shelf is full.");
+                    }
+
+                    shelf.CurrentBookCount++;
+
+                    _shelfRepository.Update(shelf);
+                }
             }
+
+            var entity =
+                _mapper.Map<LibraryResource>(dto);
+
+            await _repository.AddAsync(entity);
+
+            await _repository.SaveChangesAsync();
+
+            return _mapper.Map<
+                LibraryResourceResponseDto>
+                (entity);
         }
 
-        await _repository.SaveChangesAsync();
-
-        return _mapper.Map<
-            LibraryResourceResponseDto>
-            (entity);
-    }
+    
 
     public async Task<
     LibraryResourceResponseDto?>
@@ -126,6 +134,13 @@ public class LibraryResourceService
 
                 if (newShelf != null)
                 {
+                    if (newShelf.CurrentBookCount >=
+                        newShelf.Capacity)
+                    {
+                        throw new Exception(
+                            "Selected shelf is full.");
+                    }
+
                     newShelf.CurrentBookCount++;
 
                     _shelfRepository.Update(newShelf);

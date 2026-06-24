@@ -26,6 +26,8 @@ public class LibraryResourceViewModel
     public List<SelectListItem>? Shelves { get; set; }
     public string? ShelfName { get; set; }
 
+    public string CategoryName { get; set; } = string.Empty;
+
 
 
 

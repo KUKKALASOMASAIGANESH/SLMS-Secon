@@ -15,4 +15,12 @@ public interface IShelfRepository
     void Delete(Shelf shelf);
 
     Task SaveChangesAsync();
+
+    Task<bool> HasResourcesAsync(int shelfId);
+
+    Task<bool> ExistsByNameForUpdateAsync(
+    string shelfName,
+    int shelfId);
+
+    Task<Shelf?> GetByIdWithResourcesAsync(int id);
 }

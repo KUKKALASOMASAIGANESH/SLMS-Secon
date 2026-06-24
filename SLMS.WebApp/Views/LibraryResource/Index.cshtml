@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Category ID</th>
+                    <th>Category </th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Type</th>
@@ -48,7 +48,8 @@
                     {
                         <tr>
                             <td>@item.Id</td>
-                            <td>@item.CategoryId</td>
+                            @* <td>@item.CategoryId</td> *@
+                            <td>@item.CategoryName</td>
                             <td>@item.Title</td>
                             <td>@item.Author</td>
                             <td>@item.ResourceType</td>
