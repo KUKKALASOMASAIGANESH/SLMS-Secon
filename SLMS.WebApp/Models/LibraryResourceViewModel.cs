@@ -21,6 +21,17 @@ public class LibraryResourceViewModel
 
     public int PublicationYear { get; set; }
 
+    //shelf integration
+    public int? ShelfId { get; set; }
+    public List<SelectListItem>? Shelves { get; set; }
+    public string? ShelfName { get; set; }
+
+
+
+
+    // shelf
+
+
     [NotMapped]
     public List<SelectListItem>? CategoryList { get; set; }
 }

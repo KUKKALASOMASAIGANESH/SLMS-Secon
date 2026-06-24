@@ -30,4 +30,9 @@ public class LibraryResource : BaseEntity
 
     public ICollection<InventoryItem> InventoryItems { get; set; }
         = new List<InventoryItem>();
+
+    //shelf integration
+    public int? ShelfId { get; set; }
+
+    public Shelf? Shelf { get; set; }
 }

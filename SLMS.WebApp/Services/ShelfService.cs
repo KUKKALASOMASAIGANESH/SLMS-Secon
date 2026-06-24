@@ -38,20 +38,52 @@ public class ShelfService : IShelfService
     }
 
     public async Task CreateAsync(
-        CreateShelfViewModel model)
+    CreateShelfViewModel model)
     {
-        await _httpClient.PostAsJsonAsync(
-            ApiUrl,
-            model);
+        var response =
+            await _httpClient.PostAsJsonAsync(
+                ApiUrl,
+                model);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error =
+    await response.Content
+        .ReadAsStringAsync();
+
+            if (error.Contains("Shelf name already exists"))
+            {
+                throw new Exception(
+                    "Shelf name already exists.");
+            }
+
+            throw new Exception(error);
+        }
     }
 
     public async Task UpdateAsync(
-        int id,
-        UpdateShelfViewModel model)
+    int id,
+    UpdateShelfViewModel model)
     {
-        await _httpClient.PutAsJsonAsync(
-            $"{ApiUrl}/{id}",
-            model);
+        var response =
+            await _httpClient.PutAsJsonAsync(
+                $"{ApiUrl}/{id}",
+                model);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error =
+    await response.Content
+        .ReadAsStringAsync();
+
+            if (error.Contains("Shelf name already exists"))
+            {
+                throw new Exception(
+                    "Shelf name already exists.");
+            }
+
+            throw new Exception(error);
+        }
     }
 
     public async Task DeleteAsync(int id)

@@ -7,4 +7,10 @@ public interface ILibraryResourceRepository
 {
     Task<IEnumerable<LibraryResource>>
         SearchAsync(string keyword);
+
+    Task<IEnumerable<LibraryResource>>
+    GetAllWithShelfAsync();
+
+    Task<LibraryResource?>
+        GetByIdWithShelfAsync(int id);
 }

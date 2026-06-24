@@ -15,4 +15,7 @@ public class LibraryResourceUpdateDto
     public string? ISBN { get; set; }
 
     public int PublicationYear { get; set; }
+
+    //shelf
+    public int? ShelfId { get; set; }
 }

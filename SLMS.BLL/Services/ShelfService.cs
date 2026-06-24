@@ -54,12 +54,27 @@ public class ShelfService
     }
 
     public async Task<
-        ShelfResponseDto>
-        CreateAsync(
-            ShelfCreateDto dto)
+    ShelfResponseDto>
+    CreateAsync(
+        ShelfCreateDto dto)
     {
+        var existingShelf =
+            (await _repository.GetAllAsync())
+            .FirstOrDefault(x =>
+                x.ShelfName.ToLower() ==
+                dto.ShelfName.ToLower());
+
+        if (existingShelf != null)
+        {
+            throw new Exception(
+                "Shelf name already exists.");
+        }
+
         var shelf =
             _mapper.Map<Shelf>(dto);
+
+        // Always start with 0
+        shelf.CurrentBookCount = 0;
 
         await _repository
             .AddAsync(shelf);
@@ -73,10 +88,10 @@ public class ShelfService
     }
 
     public async Task<
-        ShelfResponseDto?>
-        UpdateAsync(
-            int id,
-            ShelfUpdateDto dto)
+    ShelfResponseDto?>
+    UpdateAsync(
+        int id,
+        ShelfUpdateDto dto)
     {
         var shelf =
             await _repository
@@ -85,14 +100,27 @@ public class ShelfService
         if (shelf == null)
             return null;
 
+        var duplicateShelf =
+            (await _repository.GetAllAsync())
+            .FirstOrDefault(x =>
+                x.Id != id &&
+                x.ShelfName.ToLower() ==
+                dto.ShelfName.ToLower());
+
+        if (duplicateShelf != null)
+        {
+            throw new Exception(
+                "Shelf name already exists.");
+        }
+
         shelf.ShelfName =
             dto.ShelfName;
 
         shelf.Capacity =
             dto.Capacity;
 
-        shelf.CurrentBookCount =
-            dto.CurrentBookCount;
+        // Don't allow manual count updates
+        // shelf.CurrentBookCount = dto.CurrentBookCount;
 
         _repository.Update(shelf);
 

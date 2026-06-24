@@ -15,4 +15,7 @@ public class LibraryResourceCreateDto
     public string? ISBN { get; set; }
 
     public int PublicationYear { get; set; }
+
+    //shelf integration
+    public int? ShelfId { get; set; }
 }
