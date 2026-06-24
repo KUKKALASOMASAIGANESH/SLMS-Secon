@@ -1,17 +1,30 @@
 ﻿@model IEnumerable<SLMS.WebApp.Models.CustodyHistoryReportViewModel>
 
-@{
+    @{
     ViewData["Title"] = "Custody History";
 
     var totalTransactions = Model.Count();
-    var totalIssued = Model.Count(x => x.Action == "Issued");
-    var totalReturned = Model.Count(x => x.Action == "Returned");
-    var activeBooks = Model.Count(x => x.Status == "Active");
-    var totalResources = Model
-        .Select(x => x.ResourceTitle)
-        .Distinct()
-        .Count();
+
+    var totalIssued =
+        Model.Count(x => x.Action == "Issued");
+
+    var totalReturned =
+        Model.Count(x => x.Action == "Returned");
+
+    var currentlyIssued =
+        Model.Count(x => x.Action == "Issued");
+
+    var totalResources =
+        Model.Select(x => x.ResourceTitle)
+             .Distinct()
+             .Count();
+
+    var totalEmployees =
+        Model.Select(x => x.EmployeeName)
+             .Distinct()
+             .Count();
 }
+
 
 @if (TempData["Success"] != null)
 {
@@ -63,8 +76,8 @@
     <div class="col-md-2">
         <div class="card text-center shadow-sm">
             <div class="card-body">
-                <h6>Active</h6>
-                <h3 class="text-warning">@activeBooks</h3>
+                <h6>Currently Issued</h6>
+                <h3 class="text-warning">@currentlyIssued</h3>
             </div>
         </div>
     </div>
@@ -77,7 +90,16 @@
             </div>
         </div>
     </div>
-
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Employees</h6>
+                <h3 class="text-dark">
+                    @totalEmployees
+                </h3>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Timeline -->
@@ -214,13 +236,13 @@ else
                             <td>
                                 @if (item.Status == "Active")
                                 {
-                                    <span class="badge bg-success">
+                                    <span class="badge bg-warning text-dark">
                                         Active
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">
+                                    <span class="badge bg-success">
                                         Closed
                                     </span>
                                 }

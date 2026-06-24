@@ -72,7 +72,7 @@ public class CustodyHistoryRepository
                         ReturnDate = null,
 
                         Action = "Issued",
-                        Status = x.Status
+                        Status = "Active"
                     })
                 .ToListAsync();
 
