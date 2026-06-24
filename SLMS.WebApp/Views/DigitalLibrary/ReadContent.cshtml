@@ -1,0 +1,33 @@
+﻿@model SLMS.WebApp.Models.DigitalLibrary.DigitalContentViewModel
+
+@{
+    ViewData["Title"] = "Read Content";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3>@Model.Title</h3>
+
+        <p>
+            <strong>Category:</strong>
+            @Model.Category
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            @Model.Description
+        </p>
+
+        <hr />
+
+        <iframe src="@Model.FilePath"
+                width="100%"
+                height="800px"
+                style="border:none;">
+        </iframe>
+
+    </div>
+
+</div>

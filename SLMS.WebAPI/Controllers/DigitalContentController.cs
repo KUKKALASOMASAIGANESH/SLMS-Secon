@@ -10,11 +10,17 @@ namespace SLMS.WebAPI.Controllers;
 public class DigitalContentController : ControllerBase
 {
     private readonly IDigitalContentService _service;
+    private readonly IDigitalContentRequestService _requestService;
+    private readonly IDownloadHistoryService _downloadHistoryService;
 
     public DigitalContentController(
-        IDigitalContentService service)
+    IDigitalContentService service,
+    IDigitalContentRequestService requestService,
+    IDownloadHistoryService downloadHistoryService)
     {
         _service = service;
+        _requestService = requestService;
+        _downloadHistoryService = downloadHistoryService;
     }
 
     [HttpGet]
@@ -90,5 +96,70 @@ public class DigitalContentController : ControllerBase
         await _service.DeleteAsync(id);
 
         return Ok("Content Deleted Successfully");
+    }
+
+
+    [HttpGet("access/{contentId}")]
+    public async Task<IActionResult> HasAccess(int contentId)
+    {
+        int employeeId = 1; // TEMPORARY
+
+        var request =
+            (await _requestService.GetAllAsync())
+            .FirstOrDefault(x =>
+                x.EmployeeId == employeeId &&
+                x.DigitalContentId == contentId &&
+                x.ApprovalStatus == "Approved");
+
+        return Ok(request != null);
+    }
+
+    [HttpGet("canaccess/{contentId}/{employeeId}")]
+    public async Task<IActionResult> CanAccess(
+    int contentId,
+    int employeeId)
+    {
+        var requests =
+            await _requestService.GetAllAsync();
+
+        var approved =
+            requests.Any(x =>
+                x.DigitalContentId == contentId &&
+                x.EmployeeId == employeeId &&
+                x.ApprovalStatus == "Approved");
+
+        return Ok(approved);
+    }
+
+    [HttpPost("download/{contentId}")]
+    public async Task<IActionResult> DownloadContent(
+    int contentId)
+    {
+        int employeeId = 1; // temporary
+
+        var approvedRequest =
+            (await _requestService.GetAllAsync())
+            .FirstOrDefault(x =>
+                x.EmployeeId == employeeId &&
+                x.DigitalContentId == contentId &&
+                x.ApprovalStatus == "Approved");
+
+        if (approvedRequest == null)
+        {
+            return BadRequest(
+                "Request not approved");
+        }
+
+        var history =
+            new DownloadHistory
+            {
+                EmployeeId = employeeId,
+                DigitalContentId = contentId,
+                DownloadedOn = DateTime.UtcNow
+            };
+
+        await _downloadHistoryService.AddAsync(history);
+
+        return Ok();
     }
 }

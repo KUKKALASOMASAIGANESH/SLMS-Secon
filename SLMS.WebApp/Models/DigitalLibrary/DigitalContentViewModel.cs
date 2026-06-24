@@ -13,4 +13,7 @@ public class DigitalContentViewModel
     public string FilePath { get; set; } = string.Empty;
 
     public string Author { get; set; } = string.Empty;
+
+    public bool HasApprovedAccess { get; set; }
+
 }

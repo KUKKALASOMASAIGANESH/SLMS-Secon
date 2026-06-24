@@ -1,0 +1,20 @@
+﻿@model SLMS.WebApp.Models.DigitalLibrary.DigitalContentViewModel
+
+<h2>@Model.Title</h2>
+
+<hr />
+
+<p>
+    <strong>Category:</strong>
+    @Model.Category
+</p>
+
+<p>
+    <strong>Description:</strong>
+    @Model.Description
+</p>
+
+<iframe src="@Model.FilePath"
+        width="100%"
+        height="700px">
+</iframe>

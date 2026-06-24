@@ -28,7 +28,30 @@ public class DigitalContentRequestController
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        var requests =
+     await _service.GetAllWithDetailsAsync();
+
+        var result = requests.Select(x =>
+            new DigitalContentRequestResponseDto
+            {
+                Id = x.Id,
+
+                EmployeeId = x.EmployeeId,
+
+                DigitalContentId = x.DigitalContentId,
+
+                EmployeeName =
+                    x.Employee?.FullName ?? "",
+
+                ContentTitle =
+                    x.DigitalContent?.Title ?? "",
+
+                RequestDate = x.RequestDate,
+
+                ApprovalStatus = x.ApprovalStatus
+            });
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
@@ -92,5 +115,22 @@ DigitalContentRequestCreateDto dto)
         await _service.UpdateAsync(request);
 
         return Ok("Request Rejected");
+    }
+
+    [HttpGet("employee/{employeeId}")]
+    public async Task<IActionResult>
+GetByEmployee(int employeeId)
+    {
+        var requests =
+            await _service.GetByEmployeeIdAsync(employeeId);
+
+        var result = requests.Select(x => new
+        {
+            Id = x.Id,
+            DigitalContentId = x.DigitalContentId,
+            ApprovalStatus = x.ApprovalStatus
+        });
+
+        return Ok(result);
     }
 }

@@ -42,5 +42,19 @@ public interface IDigitalLibraryService
     Task DeletePolicyAsync(int id);
 
     Task<AdminPolicyViewModel?>
-        GetPolicyByIdAsync(int id); 
+        GetPolicyByIdAsync(int id);
+
+    Task<bool> CanAccessContentAsync(
+    int contentId,
+    int employeeId);
+
+    Task RecordDownloadAsync(int contentId);
+
+    Task AddDownloadHistoryAsync(
+     int employeeId,
+     int digitalContentId);
+
+    Task<List<RequestStatusViewModel>>
+    GetMyRequestsAsync(int employeeId);
+        
 }
