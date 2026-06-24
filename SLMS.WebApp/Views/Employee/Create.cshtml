@@ -1,18 +1,20 @@
 ﻿@model SLMS.WebApp.Models.EmployeeViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Employee";
+}
+
 <nav aria-label="breadcrumb">
-
     <ol class="breadcrumb">
-
         <li class="breadcrumb-item">
-            <a asp-controller="Home"
-               asp-action="Index">
+            <a asp-controller="Home" asp-action="Index">
                 Dashboard
             </a>
         </li>
 
         <li class="breadcrumb-item">
-            <a asp-controller="Employee"
-               asp-action="Index">
+            <a asp-controller="Employee" asp-action="Index">
                 Employees
             </a>
         </li>
@@ -20,77 +22,100 @@
         <li class="breadcrumb-item active">
             Create Employee
         </li>
-
     </ol>
-
 </nav>
-@{
-    Layout = "_Layout";
-    ViewData["Title"] = "Create Employee";
-}
 
 <div class="card shadow-sm">
-
     <div class="card-body">
 
-        <h2>Create Employee</h2>
+        <h2 class="mb-3">Create Employee</h2>
+
+        <p class="text-danger small fw-bold">
+            * Indicates required fields
+        </p>
 
         <form asp-action="Create" method="post">
 
             @Html.AntiForgeryToken()
 
             <div asp-validation-summary="ModelOnly"
-                 class="text-danger">
+                 class="text-danger mb-3">
             </div>
 
             <div class="mb-3">
-                <label asp-for="EmployeeNumber"></label>
+                <label asp-for="EmployeeNumber" class="form-label">
+                    Employee Number <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="EmployeeNumber"
                        class="form-control"
                        tabindex="1" />
+
                 <span asp-validation-for="EmployeeNumber"
-                      class="text-danger"></span>
+                      class="text-danger">
+                </span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="FullName"></label>
+                <label asp-for="FullName" class="form-label">
+                    Full Name <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="FullName"
                        class="form-control"
                        tabindex="2" />
+
                 <span asp-validation-for="FullName"
-                      class="text-danger"></span>
+                      class="text-danger">
+                </span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Email"></label>
+                <label asp-for="Email" class="form-label">
+                    Email Address <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Email"
                        class="form-control"
                        tabindex="3" />
+
                 <span asp-validation-for="Email"
-                      class="text-danger"></span>
+                      class="text-danger">
+                </span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Phone"></label>
+                <label asp-for="Phone" class="form-label">
+                    Phone Number <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Phone"
                        class="form-control"
                        tabindex="4" />
+
                 <span asp-validation-for="Phone"
-                      class="text-danger"></span>
+                      class="text-danger">
+                </span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="Designation"></label>
+                <label asp-for="Designation" class="form-label">
+                    Designation <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Designation"
                        class="form-control"
                        tabindex="5" />
+
                 <span asp-validation-for="Designation"
-                      class="text-danger"></span>
+                      class="text-danger">
+                </span>
             </div>
 
             <div class="mb-3">
-
-                <label asp-for="DepartmentId"></label>
+                <label asp-for="DepartmentId" class="form-label">
+                    Department <span class="text-danger">*</span>
+                </label>
 
                 <select asp-for="DepartmentId"
                         asp-items="Model.Departments"
@@ -104,26 +129,27 @@
                 </select>
 
                 <span asp-validation-for="DepartmentId"
-                      class="text-danger"></span>
-
+                      class="text-danger">
+                </span>
             </div>
 
-            <button type="submit"
-                    class="btn btn-success"
-                    tabindex="7">
-                Save
-            </button>
+            <div class="mt-4">
+                <button type="submit"
+                        class="btn btn-success"
+                        tabindex="7">
+                    Save
+                </button>
 
-            <a asp-action="Index"
-               class="btn btn-secondary"
-               tabindex="8">
-                Cancel
-            </a>
+                <a asp-action="Index"
+                   class="btn btn-secondary"
+                   tabindex="8">
+                    Cancel
+                </a>
+            </div>
 
         </form>
 
     </div>
-
 </div>
 
 @section Scripts
@@ -131,4 +157,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}           
+}

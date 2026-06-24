@@ -75,19 +75,79 @@ public class DepartmentController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] DepartmentCreateDto dto)
+     [FromBody] DepartmentCreateDto dto)
     {
-        var result =
-            await _service.CreateAsync(dto);
+        try
+        {
+            var result =
+                await _service.CreateAsync(dto);
 
-        return Ok(
-            new ApiResponse<
-                DepartmentResponseDto>
-            {
-                Success = true,
-                Message =
-                    "Department created successfully",
-                Data = result
-            });
+            return Ok(
+                new ApiResponse<DepartmentResponseDto>
+                {
+                    Success = true,
+                    Message =
+                        "Department created successfully",
+                    Data = result
+                });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(
+                new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+        }
     }
-}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+    int id,
+    [FromBody] DepartmentUpdateDto dto)
+        {
+            var result =
+                await _service.UpdateAsync(id, dto);
+
+            if (result == null)
+            {
+                return NotFound(
+                    new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Department not found"
+                    });
+            }
+
+            return Ok(
+                new ApiResponse<DepartmentResponseDto>
+                {
+                    Success = true,
+                    Message = "Department updated successfully",
+                    Data = result
+                });
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result =
+                await _service.DeleteAsync(id);
+
+            if (!result)
+            {
+                return NotFound(
+                    new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Department not found"
+                    });
+            }
+
+            return Ok(
+                new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Department deleted successfully"
+                });
+        }
+    }

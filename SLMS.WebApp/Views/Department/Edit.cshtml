@@ -1,10 +1,8 @@
 ﻿@model SLMS.WebApp.Models.DepartmentViewModel
 
-@{
-    ViewData["Title"] = "Create Department";
-}
-
 <nav aria-label="breadcrumb">
+
+    
     <ol class="breadcrumb">
 
         <li class="breadcrumb-item">
@@ -22,23 +20,26 @@
         </li>
 
         <li class="breadcrumb-item active">
-            Create Department
+            Edit Department
         </li>
 
     </ol>
+    
+
 </nav>
+
+@{
+    ViewData["Title"] = "Edit Department";
+}
 
 <div class="card shadow-sm">
 
+    
     <div class="card-body">
 
-        <h2>Create Department</h2>
+        <h2>Edit Department</h2>
 
-        <p class="text-danger fw-bold">
-            * Indicates required fields
-        </p>
-
-        <form asp-action="Create" method="post">
+        <form asp-action="Edit" method="post">
 
             @Html.AntiForgeryToken()
 
@@ -46,12 +47,12 @@
                  class="text-danger">
             </div>
 
+            <input asp-for="Id" type="hidden" />
+
             <div class="mb-3">
 
-                <label asp-for="DepartmentCode"
-                       class="form-label">
-                    Department Code
-                    <span class="text-danger">*</span>
+                <label asp-for="DepartmentCode">
+                    Department Code *
                 </label>
 
                 <input asp-for="DepartmentCode"
@@ -65,10 +66,8 @@
 
             <div class="mb-3">
 
-                <label asp-for="DepartmentName"
-                       class="form-label">
-                    Department Name
-                    <span class="text-danger">*</span>
+                <label asp-for="DepartmentName">
+                    Department Name *
                 </label>
 
                 <input asp-for="DepartmentName"
@@ -82,8 +81,7 @@
 
             <div class="mb-3">
 
-                <label asp-for="Description"
-                       class="form-label">
+                <label asp-for="Description">
                     Description
                 </label>
 
@@ -98,9 +96,9 @@
             </div>
 
             <button type="submit"
-                    class="btn btn-success"
+                    class="btn btn-warning"
                     tabindex="4">
-                Save
+                Update
             </button>
 
             <a asp-action="Index"
@@ -112,6 +110,7 @@
         </form>
 
     </div>
+    
 
 </div>
 

@@ -5,21 +5,26 @@
 }
 
 <div class="card shadow-sm">
-
     <div class="card-body">
 
-        <h2>Create Custody</h2>
+        <h2 class="mb-3">Create Custody</h2>
+
+        <p class="text-danger small fw-bold">
+            * Indicates required fields
+        </p>
 
         <form asp-action="Create" method="post">
 
             @Html.AntiForgeryToken()
 
             <div asp-validation-summary="ModelOnly"
-                 class="text-danger">
+                 class="text-danger mb-3">
             </div>
 
             <div class="mb-3">
-                <label asp-for="InventoryItemId"></label>
+                <label asp-for="InventoryItemId" class="form-label">
+                    Inventory Item <span class="text-danger">*</span>
+                </label>
                 <input asp-for="InventoryItemId"
                        class="form-control"
                        tabindex="1" />
@@ -28,25 +33,41 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="FromDepartmentId"></label>
-                <input asp-for="FromDepartmentId"
-                       class="form-control"
-                       tabindex="2" />
+                <label asp-for="FromDepartmentId" class="form-label">
+                    From Department <span class="text-danger">*</span>
+                </label>
+
+                <select asp-for="FromDepartmentId"
+                        asp-items="Model.Departments"
+                        class="form-select"
+                        tabindex="2">
+                    <option value="">-- Select Department --</option>
+                </select>
+
                 <span asp-validation-for="FromDepartmentId"
                       class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="ToDepartmentId"></label>
-                <input asp-for="ToDepartmentId"
-                       class="form-control"
-                       tabindex="3" />
+                <label asp-for="ToDepartmentId" class="form-label">
+                    To Department <span class="text-danger">*</span>
+                </label>
+
+                <select asp-for="ToDepartmentId"
+                        asp-items="Model.Departments"
+                        class="form-select"
+                        tabindex="3">
+                    <option value="">-- Select Department --</option>
+                </select>
+
                 <span asp-validation-for="ToDepartmentId"
                       class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="TransferReason"></label>
+                <label asp-for="TransferReason" class="form-label">
+                    Transfer Reason <span class="text-danger">*</span>
+                </label>
                 <input asp-for="TransferReason"
                        class="form-control"
                        tabindex="4" />
@@ -55,7 +76,9 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Remarks"></label>
+                <label asp-for="Remarks" class="form-label">
+                    Remarks
+                </label>
                 <input asp-for="Remarks"
                        class="form-control"
                        tabindex="5" />
@@ -64,7 +87,9 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="TransferredByUserId"></label>
+                <label asp-for="TransferredByUserId" class="form-label">
+                    Transferred By User <span class="text-danger">*</span>
+                </label>
                 <input asp-for="TransferredByUserId"
                        class="form-control"
                        tabindex="6" />
@@ -72,22 +97,23 @@
                       class="text-danger"></span>
             </div>
 
-            <button type="submit"
-                    class="btn btn-success"
-                    tabindex="7">
-                Save
-            </button>
+            <div class="mt-4">
+                <button type="submit"
+                        class="btn btn-success"
+                        tabindex="7">
+                    Save
+                </button>
 
-            <a asp-action="Index"
-               class="btn btn-secondary"
-               tabindex="8">
-                Cancel
-            </a>
+                <a asp-action="Index"
+                   class="btn btn-secondary"
+                   tabindex="8">
+                    Cancel
+                </a>
+            </div>
 
         </form>
 
     </div>
-
 </div>
 
 @section Scripts

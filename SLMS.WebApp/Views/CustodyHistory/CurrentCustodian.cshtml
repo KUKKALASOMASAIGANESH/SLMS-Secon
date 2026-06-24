@@ -15,16 +15,22 @@
 
     <tr>
         <th>Current Department</th>
-        <td>@Model.ToDepartmentId</td>
+        <td>@Model.ToDepartmentName</td>
     </tr>
 
     <tr>
         <th>Transfer Date</th>
-        <td>@Model.TransferDate</td>
+        <td>@Model.TransferDate.ToString("dd-MMM-yyyy")</td>
+    </tr>
+
+    <tr>
+        <th>Reason</th>
+        <td>@Model.TransferReason</td>
     </tr>
 
 </table>
 
-<a asp-action="Index" class="btn btn-secondary">
+<a asp-action="Index"
+   class="btn btn-secondary">
     Back
 </a>

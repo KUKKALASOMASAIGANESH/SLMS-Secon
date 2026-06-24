@@ -11,9 +11,9 @@ public class ReportController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("inventory")]
-    public async Task<IActionResult> Inventory()
-        => Ok(await _service.GetInventoryReport());
+    //[HttpGet("inventory")]
+    //public async Task<IActionResult> Inventory()
+     //   => Ok(await _service.GetInventoryReport());
 
     [HttpGet("issues")]
     public async Task<IActionResult> Issues()
