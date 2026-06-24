@@ -2,20 +2,27 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
+using SLMS.WebApp.Services.Interfaces;
 
 namespace SLMS.WebApp.Controllers;
 
 public class LibraryResourceController : Controller
 {
+    
+
+
     private readonly LibraryResourceService _service;
     private readonly CategoryService _categoryService;
+    private readonly IShelfService _shelfService;
 
     public LibraryResourceController(
-        LibraryResourceService service,
-        CategoryService categoryService)
+     LibraryResourceService service,
+     CategoryService categoryService,
+     IShelfService shelfService)
     {
         _service = service;
         _categoryService = categoryService;
+        _shelfService = shelfService;
     }
 
     public async Task<IActionResult> Index()
@@ -29,6 +36,9 @@ public class LibraryResourceController : Controller
         var categories =
             await _categoryService.GetAllAsync();
 
+        var shelves =
+            await _shelfService.GetAllAsync();
+
         var model =
             new LibraryResourceViewModel();
 
@@ -38,6 +48,14 @@ public class LibraryResourceController : Controller
                 {
                     Value = x.Id.ToString(),
                     Text = x.Name
+                }).ToList();
+
+        model.Shelves =
+            shelves.Select(x =>
+                new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.ShelfName
                 }).ToList();
 
         return View(model);
@@ -59,7 +77,7 @@ public class LibraryResourceController : Controller
         catch (Exception)
         {
             var categories =
-                await _categoryService.GetAllAsync();
+    await _categoryService.GetAllAsync();
 
             model.CategoryList =
                 categories.Select(x =>
@@ -67,6 +85,17 @@ public class LibraryResourceController : Controller
                     {
                         Value = x.Id.ToString(),
                         Text = x.Name
+                    }).ToList();
+
+            var shelves =
+                await _shelfService.GetAllAsync();
+
+            model.Shelves =
+                shelves.Select(x =>
+                    new SelectListItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.ShelfName
                     }).ToList();
 
             TempData["ErrorMessage"] =
@@ -95,6 +124,17 @@ public class LibraryResourceController : Controller
                 {
                     Value = x.Id.ToString(),
                     Text = x.Name
+                }).ToList();
+
+        var shelves =
+    await _shelfService.GetAllAsync();
+
+        resource.Shelves =
+            shelves.Select(x =>
+                new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.ShelfName
                 }).ToList();
 
         return View(resource);

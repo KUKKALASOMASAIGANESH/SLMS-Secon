@@ -98,6 +98,13 @@ public class SLMSDbContext : DbContext
             .WithMany(c => c.Resources)
             .HasForeignKey(r => r.CategoryId);
 
+        //shelg intergration
+        modelBuilder.Entity<LibraryResource>()
+    .HasOne(r => r.Shelf)
+    .WithMany()
+    .HasForeignKey(r => r.ShelfId)
+    .OnDelete(DeleteBehavior.SetNull);
+
         // InventoryItem -> LibraryResource
         modelBuilder.Entity<InventoryItem>()
             .HasOne(i => i.Resource)
@@ -117,5 +124,8 @@ public class SLMSDbContext : DbContext
             .WithMany(d => d.CustodyTransfersTo)
             .HasForeignKey(c => c.ToDepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+      
     }
 }

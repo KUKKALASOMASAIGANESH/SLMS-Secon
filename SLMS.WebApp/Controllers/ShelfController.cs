@@ -48,25 +48,29 @@ public class ShelfController : Controller
     public async Task<IActionResult>
 Create(CreateShelfViewModel model)
     {
-        if (model.CurrentBookCount > model.Capacity)
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _shelfService
+                .CreateAsync(model);
+
+            TempData["SuccessMessage"] =
+                "Shelf added successfully!";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
         {
             ModelState.AddModelError(
-                "CurrentBookCount",
-                "Current Book Count cannot exceed Capacity");
-        }
+                string.Empty,
+                ex.Message);
 
-        if (!ModelState.IsValid)
-        {
             return View(model);
         }
-
-        await _shelfService
-            .CreateAsync(model);
-
-        TempData["SuccessMessage"] =
-            "Shelf added successfully!";
-
-        return RedirectToAction(nameof(Index));
     }
 
     // Details
@@ -85,6 +89,7 @@ Create(CreateShelfViewModel model)
         return View(shelf);
     }
 
+    // Edit
     // Edit
     public async Task<IActionResult>
         Edit(int id)
@@ -120,26 +125,30 @@ Create(CreateShelfViewModel model)
         int id,
         UpdateShelfViewModel model)
     {
-        if (model.CurrentBookCount > model.Capacity)
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _shelfService
+                .UpdateAsync(id, model);
+
+            TempData["SuccessMessage"] =
+                "Shelf updated successfully!";
+
+            return RedirectToAction(
+                nameof(Index));
+        }
+        catch (Exception ex)
         {
             ModelState.AddModelError(
-                "CurrentBookCount",
-                "Current Book Count cannot exceed Capacity");
-        }
+                string.Empty,
+                ex.Message);
 
-        if (!ModelState.IsValid)
-        {
             return View(model);
         }
-
-        await _shelfService
-            .UpdateAsync(id, model);
-
-        TempData["SuccessMessage"] =
-            "Shelf updated successfully!";
-
-        return RedirectToAction(
-            nameof(Index));
     }
 
     // Delete
@@ -159,7 +168,7 @@ Create(CreateShelfViewModel model)
         }
         catch (Exception ex)
         {
-            TempData["SuccessMessage"] =
+            TempData["ErrorMessage"] =
                 ex.Message;
 
             return RedirectToAction(
