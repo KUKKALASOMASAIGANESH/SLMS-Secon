@@ -33,8 +33,14 @@ public class DigitalLibraryController : Controller
 
     [HttpPost]
     public async Task<IActionResult> Request(
-    DigitalContentRequestViewModel model)
+DigitalContentRequestViewModel model)
     {
+        Console.WriteLine(
+            $"POST REQUEST -> ContentId={model.DigitalContentId}");
+
+        Console.WriteLine(
+            $"POST REQUEST -> Reason={model.Reason}");
+
         await _service.SubmitRequestAsync(model);
 
         return RedirectToAction(nameof(Index));
@@ -55,5 +61,146 @@ public class DigitalLibraryController : Controller
                 .GetDownloadHistoryAsync();
 
         return View(downloads);
+    }
+
+    
+    public async Task<IActionResult> ManageContent()
+    {
+        var data =
+            await _service.GetContentsAsync();
+
+        return View(data);
+    }
+
+    public IActionResult CreateContent()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateContent(
+    AdminDigitalContentViewModel model)
+    {
+        await _service.CreateContentAsync(model);
+
+        return RedirectToAction(nameof(ManageContent));
+    }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var content =
+            await _service.GetContentByIdAsync(id);
+
+        if (content == null)
+            return NotFound();
+
+        var model =
+            new AdminDigitalContentViewModel
+            {
+                Id = content.Id,
+                Title = content.Title,
+                ContentType = content.Category,
+                FilePath = content.FilePath,
+                Description = content.Description
+            };
+
+        return View("EditContent", model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditContent(
+    AdminDigitalContentViewModel model)
+    {
+        await _service.UpdateContentAsync(model);
+
+        return RedirectToAction(nameof(ManageContent));
+    }
+
+    public async Task<IActionResult> DeleteContent(int id)
+    {
+        await _service.DeleteContentAsync(id);
+
+        return RedirectToAction(nameof(ManageContent));
+    }
+
+    public async Task<IActionResult> ManageRequests()
+    {
+        var requests =
+            await _service.GetRequestsAsync();
+
+        return View(requests);
+    }
+
+    public async Task<IActionResult> ApproveRequest(int id)
+    {
+        await _service.ApproveRequestAsync(id);
+
+        return RedirectToAction(nameof(ManageRequests));
+    }
+
+    public async Task<IActionResult> RejectRequest(int id)
+    {
+        await _service.RejectRequestAsync(id);
+
+        return RedirectToAction(nameof(ManageRequests));
+    }
+
+    public async Task<IActionResult>
+    ManagePolicies()
+    {
+        var data =
+            await _service
+            .GetPoliciesForAdminAsync();
+
+        return View(data);
+    }
+
+    public IActionResult CreatePolicy()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult>
+    CreatePolicy(
+    AdminPolicyViewModel model)
+    {
+        await _service
+            .CreatePolicyAsync(model);
+
+        return RedirectToAction(
+            nameof(ManagePolicies));
+    }
+
+    public async Task<IActionResult>
+    EditPolicy(int id)
+    {
+        var model =
+            await _service
+            .GetPolicyByIdAsync(id);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult>
+    EditPolicy(
+    AdminPolicyViewModel model)
+    {
+        await _service
+            .UpdatePolicyAsync(model);
+
+        return RedirectToAction(
+            nameof(ManagePolicies));
+    }
+
+    public async Task<IActionResult>
+    DeletePolicy(int id)
+    {
+        await _service
+            .DeletePolicyAsync(id);
+
+        return RedirectToAction(
+            nameof(ManagePolicies));
     }
 }

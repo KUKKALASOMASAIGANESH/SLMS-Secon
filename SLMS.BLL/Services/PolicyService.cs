@@ -30,4 +30,24 @@ public class PolicyService : IPolicyService
 
         await _repository.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(Policy policy)
+    {
+        _repository.Update(policy);
+
+        await _repository.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var policy =
+            await _repository.GetByIdAsync(id);
+
+        if (policy != null)
+        {
+            _repository.Delete(policy);
+
+            await _repository.SaveChangesAsync();
+        }
+    }
 }

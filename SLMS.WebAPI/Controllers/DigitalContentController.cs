@@ -55,4 +55,40 @@ public class DigitalContentController : ControllerBase
 
         return Ok(digitalContent);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(
+    int id,
+    DigitalContentUpdateDto dto)
+    {
+        var content =
+            await _service.GetByIdAsync(id);
+
+        if (content == null)
+            return NotFound();
+
+        content.Title = dto.Title;
+        content.Description = dto.Description;
+        content.Category = dto.ContentType;
+        content.FilePath = dto.FilePath;
+
+        await _service.UpdateAsync(content);
+
+        return Ok(content);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var content = await _service.GetByIdAsync(id);
+
+        if (content == null)
+        {
+            return NotFound("Digital Content not found");
+        }
+
+        await _service.DeleteAsync(id);
+
+        return Ok("Content Deleted Successfully");
+    }
 }

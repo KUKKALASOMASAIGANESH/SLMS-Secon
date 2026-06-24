@@ -11,4 +11,6 @@ public class DigitalContentViewModel
     public string Category { get; set; } = string.Empty;
 
     public string FilePath { get; set; } = string.Empty;
+
+    public string Author { get; set; } = string.Empty;
 }

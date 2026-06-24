@@ -32,4 +32,12 @@ public class DigitalContentRequestService
 
         await _repository.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(
+    DigitalContentRequest request)
+    {
+        _repository.Update(request);
+
+        await _repository.SaveChangesAsync();
+    }
 }
