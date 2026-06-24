@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+
 using SLMS.WebApp.Models;
 
 namespace SLMS.WebApp.Services;
@@ -77,7 +78,7 @@ public class LibraryResourceService
         }
     }
     public async Task CreateAsync(
-        LibraryResourceViewModel model)
+    LibraryResourceViewModel model)
     {
         try
         {
@@ -91,14 +92,12 @@ public class LibraryResourceService
                 var error =
                     await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine(error);
-
                 throw new Exception(error);
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine(ex.Message);
             throw;
         }
     }

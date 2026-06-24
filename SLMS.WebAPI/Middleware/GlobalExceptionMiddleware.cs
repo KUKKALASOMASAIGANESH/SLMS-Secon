@@ -30,7 +30,7 @@ public class GlobalExceptionMiddleware
                 Success = false,
                 Message = ex.Message,
                 InnerException =
-                    ex.InnerException?.Message
+          ex.InnerException?.ToString()
             };
 
             await context.Response.WriteAsync(

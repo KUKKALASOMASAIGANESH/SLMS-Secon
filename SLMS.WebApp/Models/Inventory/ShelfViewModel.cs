@@ -12,4 +12,19 @@ public class ShelfViewModel
     public int CurrentBookCount { get; set; }
 
     public bool IsActive { get; set; }
+
+    public List<ShelfResourceViewModel>
+  Resources
+    { get; set; }
+  = new();
+    public int RemainingCapacity
+    {
+        get
+        {
+            return Capacity - CurrentBookCount;
+        }
+    }
+
+
+  
 }

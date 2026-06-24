@@ -41,16 +41,22 @@ public class MappingProfile : Profile
 
         // Library Resource
         CreateMap<LibraryResourceCreateDto, LibraryResource>();
-
+        CreateMap<LibraryResource, ShelfResourceDto>();
         //shelf
         //CreateMap<LibraryResource, LibraryResourceResponseDto>();
         CreateMap<LibraryResource, LibraryResourceResponseDto>()
-    .ForMember(
-        dest => dest.ShelfName,
-        opt => opt.MapFrom(
-            src => src.Shelf != null
-                ? src.Shelf.ShelfName
-                : null));
+     .ForMember(
+         dest => dest.ShelfName,
+         opt => opt.MapFrom(
+             src => src.Shelf != null
+                 ? src.Shelf.ShelfName
+                 : null))
+     .ForMember(
+         dest => dest.CategoryName,
+         opt => opt.MapFrom(
+             src => src.Category != null
+                 ? src.Category.Name
+                 : string.Empty));
         CreateMap<LibraryResourceUpdateDto, LibraryResource>();
 
         // Inventory Item
@@ -84,6 +90,8 @@ public class MappingProfile : Profile
          dest => dest.BookTitle,
          opt => opt.MapFrom(
              src => src.LibraryResource.Title));
+
+
         CreateMap<BookIssueUpdateDto, BookIssue>();
 
         // Role
@@ -109,5 +117,7 @@ public class MappingProfile : Profile
         CreateMap<Shelf, ShelfResponseDto>();
         CreateMap<ShelfCreateDto, Shelf>();
         CreateMap<ShelfUpdateDto, Shelf>();
+
+
     }
 }

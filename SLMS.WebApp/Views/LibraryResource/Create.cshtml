@@ -11,6 +11,9 @@
         <hr />
 
         <form asp-action="Create" method="post">
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
 
             <div class="mb-3">
                 <label>Category</label>

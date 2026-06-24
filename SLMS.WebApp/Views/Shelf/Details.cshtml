@@ -87,6 +87,78 @@
 
         </div>
 
+
+        <div class="mt-4">
+
+            <button class="btn btn-outline-primary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#booksSection">
+
+                Books In This Shelf (@Model.CurrentBookCount)
+
+            </button>
+
+            <div class="collapse mt-3"
+                 id="booksSection">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <strong>
+                            Books Stored In This Shelf
+                        </strong>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        @if (Model.Resources != null
+                        && Model.Resources.Any())
+                        {
+                            <table class="table table-bordered">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th>Type</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in Model.Resources)
+                                    {
+                                        <tr>
+                                            <td>@item.Title</td>
+                                            <td>@item.Author</td>
+                                            <td>@item.ResourceType</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mb-0">
+                                No resources assigned to this shelf.
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
         <hr />
 
         <a asp-action="Index"

@@ -1,4 +1,5 @@
-﻿using SLMS.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SLMS.DAL.Data;
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DOL.Entities;
 
@@ -12,5 +13,14 @@ public class CategoryRepository
         SLMSDbContext context)
         : base(context)
     {
+
+    }
+
+    public async Task<bool>
+HasResourcesAsync(int categoryId)
+    {
+        return await _context.LibraryResources
+            .AnyAsync(x =>
+                x.CategoryId == categoryId);
     }
 }

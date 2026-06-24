@@ -45,6 +45,8 @@ public class ShelfRepository : IShelfRepository
             .Update(shelf);
     }
 
+
+
     public void Delete(
     Shelf shelf)
     {
@@ -56,5 +58,33 @@ public class ShelfRepository : IShelfRepository
     {
         await _context
             .SaveChangesAsync();
+    }
+
+    public async Task<bool> HasResourcesAsync(
+    int shelfId)
+    {
+        return await _context.LibraryResources
+            .AnyAsync(x => x.ShelfId == shelfId);
+    }
+
+    public async Task<bool>
+ExistsByNameForUpdateAsync(
+    string shelfName,
+    int shelfId)
+    {
+        return await _context.Shelves
+            .AnyAsync(x =>
+                x.ShelfName.ToLower() ==
+                shelfName.ToLower()
+                &&
+                x.Id != shelfId);
+    }
+
+    public async Task<Shelf?>
+GetByIdWithResourcesAsync(int id)
+    {
+        return await _context.Shelves
+            .Include(x => x.Resources)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }
