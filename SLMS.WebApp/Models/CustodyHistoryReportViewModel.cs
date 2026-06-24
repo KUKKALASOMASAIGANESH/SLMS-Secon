@@ -2,8 +2,6 @@
 
 public class CustodyHistoryReportViewModel
 {
-    public DateTime Date { get; set; }
-
     public string ResourceTitle { get; set; }
         = string.Empty;
 
@@ -12,6 +10,10 @@ public class CustodyHistoryReportViewModel
 
     public string DepartmentName { get; set; }
         = string.Empty;
+
+    public DateTime IssueDate { get; set; }
+
+    public DateTime? ReturnDate { get; set; }
 
     public string Action { get; set; }
         = string.Empty;

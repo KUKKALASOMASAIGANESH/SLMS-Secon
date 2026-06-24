@@ -2,6 +2,15 @@
 
 @{
     ViewData["Title"] = "Custody History";
+
+    var totalTransactions = Model.Count();
+    var totalIssued = Model.Count(x => x.Action == "Issued");
+    var totalReturned = Model.Count(x => x.Action == "Returned");
+    var activeBooks = Model.Count(x => x.Status == "Active");
+    var totalResources = Model
+        .Select(x => x.ResourceTitle)
+        .Distinct()
+        .Count();
 }
 
 @if (TempData["Success"] != null)
@@ -18,42 +27,153 @@
     </div>
 }
 
-<div class="card shadow-sm">
+<h2 class="mb-4">Custody History</h2>
 
-    <div class="card-body">
+<!-- Summary Cards -->
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="row mb-4">
 
-            <h2>Custody History</h2>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Total Transactions</h6>
+                <h3 class="text-primary">@totalTransactions</h3>
+            </div>
+        </div>
+    </div>
 
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Refresh
-            </a>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Issued</h6>
+                <h3 class="text-primary">@totalIssued</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Returned</h6>
+                <h3 class="text-success">@totalReturned</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Active</h6>
+                <h3 class="text-warning">@activeBooks</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Resources</h6>
+                <h3 class="text-info">@totalResources</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Timeline -->
+
+<h4 class="mb-3">Transaction Timeline</h4>
+
+@foreach (var item in Model.Take(10))
+{
+    <div class="card mb-3 shadow-sm border-start border-4 @(item.Action == "Issued" ? "border-primary" : "border-success")">
+
+        <div class="card-body">
+
+            @if (item.Action == "Issued")
+            {
+                <p class="mb-2">
+
+                    <span class="badge bg-primary">
+                        📘 ISSUED
+                    </span>
+
+                    <strong>"@item.ResourceTitle"</strong>
+
+                    was issued to
+
+                    <strong>@item.EmployeeName</strong>
+
+                </p>
+
+                <small class="text-muted">
+                    Department: @item.DepartmentName
+                </small>
+
+                <br />
+
+                <small class="text-secondary">
+                    Issue Date:
+                    @item.IssueDate.ToString("dd-MMM-yyyy")
+                </small>
+            }
+            else
+            {
+                <p class="mb-2">
+
+                    <span class="badge bg-success">
+                        📗 RETURNED
+                    </span>
+
+                    <strong>"@item.ResourceTitle"</strong>
+
+                    was returned by
+
+                    <strong>@item.EmployeeName</strong>
+
+                </p>
+
+                <small class="text-muted">
+                    Department: @item.DepartmentName
+                </small>
+
+                <br />
+
+                <small class="text-secondary">
+                    Return Date:
+                    @(item.ReturnDate?.ToString("dd-MMM-yyyy") ?? "-")
+                </small>
+            }
 
         </div>
 
-        @if (!Model.Any())
-        {
-            <div class="alert alert-info">
-                No Custody Records Found.
-            </div>
-        }
-        else
-        {
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No Custody Records Found.
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
             <table class="table table-bordered table-striped table-hover">
 
                 <thead class="table-dark">
-
                     <tr>
-                        <th>Date</th>
+                        <th>Issue Date</th>
+                        <th>Return Date</th>
                         <th>Resource</th>
                         <th>Employee</th>
                         <th>Department</th>
                         <th>Action</th>
                         <th>Status</th>
                     </tr>
-
                 </thead>
 
                 <tbody>
@@ -63,23 +183,32 @@
                         <tr>
 
                             <td>
-                                @item.Date.ToString("dd-MMM-yyyy")
+                                @item.IssueDate.ToString("dd-MMM-yyyy")
                             </td>
 
                             <td>
-                                @item.ResourceTitle
+                                @(item.ReturnDate?.ToString("dd-MMM-yyyy") ?? "-")
                             </td>
 
-                            <td>
-                                @item.EmployeeName
-                            </td>
+                            <td>@item.ResourceTitle</td>
+
+                            <td>@item.EmployeeName</td>
+
+                            <td>@item.DepartmentName</td>
 
                             <td>
-                                @item.DepartmentName
-                            </td>
-
-                            <td>
-                                @item.Action
+                                @if (item.Action == "Issued")
+                                {
+                                    <span class="badge bg-primary">
+                                        Issued
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+                                        Returned
+                                    </span>
+                                }
                             </td>
 
                             <td>
@@ -103,8 +232,8 @@
                 </tbody>
 
             </table>
-        }
+
+        </div>
 
     </div>
-
-</div>
+}

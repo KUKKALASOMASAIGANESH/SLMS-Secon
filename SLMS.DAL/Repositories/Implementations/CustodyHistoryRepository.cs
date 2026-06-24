@@ -54,7 +54,7 @@ public class CustodyHistoryRepository
     }
 
     public async Task<IEnumerable<CustodyHistoryReportDto>>
-        GetCustodyReportAsync()
+     GetCustodyReportAsync()
     {
         var issuedRecords =
             await _context.BookIssues
@@ -64,12 +64,15 @@ public class CustodyHistoryRepository
                 .Select(x =>
                     new CustodyHistoryReportDto
                     {
-                        Date = x.IssueDate,
                         ResourceTitle = x.LibraryResource.Title,
                         EmployeeName = x.Employee.FullName,
                         DepartmentName = x.Employee.Department!.DepartmentName,
+
+                        IssueDate = x.IssueDate,
+                        ReturnDate = null,
+
                         Action = "Issued",
-                        Status = "Active"
+                        Status = x.Status
                     })
                 .ToListAsync();
 
@@ -83,10 +86,21 @@ public class CustodyHistoryRepository
                 .Select(x =>
                     new CustodyHistoryReportDto
                     {
-                        Date = x.ReturnDate,
-                        ResourceTitle = x.BookIssue.LibraryResource.Title,
-                        EmployeeName = x.BookIssue.Employee.FullName,
-                        DepartmentName = x.BookIssue.Employee.Department!.DepartmentName,
+                        ResourceTitle =
+                            x.BookIssue.LibraryResource.Title,
+
+                        EmployeeName =
+                            x.BookIssue.Employee.FullName,
+
+                        DepartmentName =
+                            x.BookIssue.Employee.Department!.DepartmentName,
+
+                        IssueDate =
+                            x.BookIssue.IssueDate,
+
+                        ReturnDate =
+                            x.ReturnDate,
+
                         Action = "Returned",
                         Status = "Closed"
                     })
@@ -94,7 +108,7 @@ public class CustodyHistoryRepository
 
         return issuedRecords
             .Concat(returnedRecords)
-            .OrderByDescending(x => x.Date)
+            .OrderByDescending(x => x.IssueDate)
             .ToList();
     }
 }

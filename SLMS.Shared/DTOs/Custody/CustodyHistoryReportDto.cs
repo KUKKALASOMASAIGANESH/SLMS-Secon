@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace SLMS.Shared.DTOs.Custody;
 
 public class CustodyHistoryReportDto
 {
-    public DateTime Date { get; set; }
-
     public string ResourceTitle { get; set; }
         = string.Empty;
 
@@ -17,6 +16,10 @@ public class CustodyHistoryReportDto
 
     public string DepartmentName { get; set; }
         = string.Empty;
+
+    public DateTime IssueDate { get; set; }
+
+    public DateTime? ReturnDate { get; set; }
 
     public string Action { get; set; }
         = string.Empty;

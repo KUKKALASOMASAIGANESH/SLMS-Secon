@@ -53,4 +53,27 @@ public class DepartmentService
             .Content
             .ReadAsStringAsync();
     }
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var response =
+            await _httpClient.DeleteAsync(
+                $"api/Department/{id}");
+
+        return response.IsSuccessStatusCode;
+    }
+    public async Task<string?> UpdateAsync(
+    DepartmentViewModel department)
+    {
+        var response =
+            await _httpClient.PutAsJsonAsync(
+                $"api/Department/{department.Id}",
+                department);
+
+        if (response.IsSuccessStatusCode)
+            return null;
+
+        return await response
+            .Content
+            .ReadAsStringAsync();
+    }
 }

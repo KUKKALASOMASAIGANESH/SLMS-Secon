@@ -79,4 +79,47 @@ public class DepartmentService : IDepartmentService
         return _mapper.Map<
             DepartmentResponseDto>(entity);
     }
+    public async Task<DepartmentResponseDto?>
+    UpdateAsync(
+        int id,
+        DepartmentUpdateDto dto)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return null;
+
+        entity.DepartmentCode =
+            dto.DepartmentCode;
+
+        entity.DepartmentName =
+            dto.DepartmentName;
+
+        entity.Description =
+            dto.Description;
+
+        _repository.Update(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return _mapper.Map<
+            DepartmentResponseDto>(entity);
+    }
+
+    public async Task<bool>
+        DeleteAsync(int id)
+    {
+        var entity =
+            await _repository.GetByIdAsync(id);
+
+        if (entity == null)
+            return false;
+
+        _repository.Delete(entity);
+
+        await _repository.SaveChangesAsync();
+
+        return true;
+    }
 }

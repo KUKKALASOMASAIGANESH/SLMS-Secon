@@ -1,0 +1,122 @@
+﻿@model SLMS.WebApp.Models.DepartmentViewModel
+
+<nav aria-label="breadcrumb">
+
+    
+    <ol class="breadcrumb">
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Department"
+               asp-action="Index">
+                Departments
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active">
+            Edit Department
+        </li>
+
+    </ol>
+    
+
+</nav>
+
+@{
+    ViewData["Title"] = "Edit Department";
+}
+
+<div class="card shadow-sm">
+
+    
+    <div class="card-body">
+
+        <h2>Edit Department</h2>
+
+        <form asp-action="Edit" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
+            </div>
+
+            <input asp-for="Id" type="hidden" />
+
+            <div class="mb-3">
+
+                <label asp-for="DepartmentCode">
+                    Department Code *
+                </label>
+
+                <input asp-for="DepartmentCode"
+                       class="form-control"
+                       tabindex="1" />
+
+                <span asp-validation-for="DepartmentCode"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="DepartmentName">
+                    Department Name *
+                </label>
+
+                <input asp-for="DepartmentName"
+                       class="form-control"
+                       tabindex="2" />
+
+                <span asp-validation-for="DepartmentName"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Description">
+                    Description
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="3"
+                          tabindex="3"></textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-warning"
+                    tabindex="4">
+                Update
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary"
+               tabindex="5">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+    
+
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
