@@ -2,17 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 
 using SLMS.BLL.Interfaces;
-
 using SLMS.Shared.DTOs.Department;
 using SLMS.Shared.Responses;
 
 namespace SLMS.WebAPI.Controllers;
 
-<<<<<<< HEAD
 [Authorize(Roles = "Admin")]
-=======
-//[Authorize]
->>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
 [ApiController]
 [Route("api/[controller]")]
 public class DepartmentController : ControllerBase
@@ -34,26 +29,21 @@ public class DepartmentController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var result =
-            await _service.GetAllAsync();
+        var result = await _service.GetAllAsync();
 
         return Ok(
-            new ApiResponse<
-                IEnumerable<DepartmentResponseDto>>
+            new ApiResponse<IEnumerable<DepartmentResponseDto>>
             {
                 Success = true,
-                Message =
-                    "Departments retrieved successfully",
+                Message = "Departments retrieved successfully",
                 Data = result
             });
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(
-        int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var result =
-            await _service.GetByIdAsync(id);
+        var result = await _service.GetByIdAsync(id);
 
         if (result == null)
         {
@@ -61,41 +51,22 @@ public class DepartmentController : ControllerBase
                 new ApiResponse<object>
                 {
                     Success = false,
-                    Message =
-                        "Department not found"
+                    Message = "Department not found"
                 });
         }
 
         return Ok(
-            new ApiResponse<
-                DepartmentResponseDto>
+            new ApiResponse<DepartmentResponseDto>
             {
                 Success = true,
-                Message =
-                    "Department retrieved successfully",
+                Message = "Department retrieved successfully",
                 Data = result
             });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(
-<<<<<<< HEAD
         [FromBody] DepartmentCreateDto dto)
-    {
-        var result =
-            await _service.CreateAsync(dto);
-
-        return Ok(
-            new ApiResponse<
-                DepartmentResponseDto>
-            {
-                Success = true,
-                Message =
-                    "Department created successfully",
-                Data = result
-            });
-=======
-     [FromBody] DepartmentCreateDto dto)
     {
         try
         {
@@ -106,8 +77,7 @@ public class DepartmentController : ControllerBase
                 new ApiResponse<DepartmentResponseDto>
                 {
                     Success = true,
-                    Message =
-                        "Department created successfully",
+                    Message = "Department created successfully",
                     Data = result
                 });
         }
@@ -121,54 +91,55 @@ public class DepartmentController : ControllerBase
                 });
         }
     }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(
-    int id,
-    [FromBody] DepartmentUpdateDto dto)
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(
+        int id,
+        [FromBody] DepartmentUpdateDto dto)
+    {
+        var result =
+            await _service.UpdateAsync(id, dto);
+
+        if (result == null)
         {
-            var result =
-                await _service.UpdateAsync(id, dto);
-
-            if (result == null)
-            {
-                return NotFound(
-                    new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "Department not found"
-                    });
-            }
-
-            return Ok(
-                new ApiResponse<DepartmentResponseDto>
-                {
-                    Success = true,
-                    Message = "Department updated successfully",
-                    Data = result
-                });
-        }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result =
-                await _service.DeleteAsync(id);
-
-            if (!result)
-            {
-                return NotFound(
-                    new ApiResponse<object>
-                    {
-                        Success = false,
-                        Message = "Department not found"
-                    });
-            }
-
-            return Ok(
+            return NotFound(
                 new ApiResponse<object>
                 {
-                    Success = true,
-                    Message = "Department deleted successfully"
+                    Success = false,
+                    Message = "Department not found"
                 });
         }
->>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
+
+        return Ok(
+            new ApiResponse<DepartmentResponseDto>
+            {
+                Success = true,
+                Message = "Department updated successfully",
+                Data = result
+            });
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result =
+            await _service.DeleteAsync(id);
+
+        if (!result)
+        {
+            return NotFound(
+                new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Department not found"
+                });
+        }
+
+        return Ok(
+            new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Department deleted successfully"
+            });
+    }
+}

@@ -125,7 +125,6 @@ public class SLMSDbContext : DbContext
             .HasForeignKey(c => c.ToDepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-<<<<<<< HEAD
         modelBuilder.Entity<Role>().HasData(
     new Role
     {
@@ -146,9 +145,5 @@ public class SLMSDbContext : DbContext
         Description = "Normal Employee"
     }
 );
-=======
-
-      
->>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
     }
 }

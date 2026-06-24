@@ -224,6 +224,15 @@
                                 Audit Logs
                             </a>
                         </li>
+                       
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="UserManagement"
+                                       asp-action="Index">
+                                        User Management
+                                    </a>
+                                </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
@@ -241,6 +250,20 @@
                                 Reports
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <span class="nav-link">
+                                @User.Identity?.Name
+                            </span>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-danger"
+                               asp-controller="Auth"
+                               asp-action="Logout">
+                                Logout
+                            </a>
+                        </li>
+
 
                     </ul>
 

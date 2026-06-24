@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
-
 using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.WebAPI.Controllers;
@@ -43,29 +42,7 @@ public class EmployeeController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-<<<<<<< HEAD
         EmployeeCreateDto dto)
-    {
-        var result =
-            await _service.CreateAsync(dto);
-
-        return Ok(result);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(
-        int id,
-        EmployeeUpdateDto dto)
-    {
-        var result =
-            await _service.UpdateAsync(id, dto);
-
-        if (result == null)
-            return NotFound();
-
-        return Ok(result);
-=======
-     EmployeeCreateDto dto)
     {
         try
         {
@@ -79,10 +56,11 @@ public class EmployeeController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
-     int id,
-     EmployeeUpdateDto dto)
+        int id,
+        EmployeeUpdateDto dto)
     {
         try
         {
@@ -98,7 +76,6 @@ public class EmployeeController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
->>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
     }
 
     [HttpDelete("{id}")]
