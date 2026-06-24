@@ -1,0 +1,88 @@
+﻿@model SLMS.WebApp.Models.Inventory.CreateShelfViewModel
+
+<div class="card shadow-sm">
+
+   
+    <div class="card-header text-white"
+         style="background-color:#1e3a5f;">
+
+        <h3 class="mb-0">
+            Add Shelf
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="ShelfName"
+                       class="form-label">
+                </label>
+
+                <input asp-for="ShelfName"
+                       class="form-control" />
+
+                <span asp-validation-for="ShelfName"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="Capacity"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Capacity"
+                       class="form-control" />
+
+                <span asp-validation-for="Capacity"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            @*<div class="mb-4">
+
+                <label asp-for="CurrentBookCount"
+                       class="form-label">
+                </label>
+
+                <input asp-for="CurrentBookCount"
+                       class="form-control" />
+
+                <span asp-validation-for="CurrentBookCount"
+                      class="text-danger">
+                </span>
+
+            </div>*@
+
+            <button type="submit"
+                    class="btn btn-success">
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+    
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

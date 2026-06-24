@@ -4,7 +4,7 @@ namespace SLMS.DOL.Entities;
 
 public class BookIssue : BaseEntity
 {
-    public int InventoryItemId { get; set; }
+    public int LibraryResourceId { get; set; }
 
     public int EmployeeId { get; set; }
 
@@ -12,13 +12,13 @@ public class BookIssue : BaseEntity
 
     public DateTime DueDate { get; set; }
 
-    public int IssuedByUserId { get; set; }
+   // public int IssuedByUserId { get; set; }
 
     public string Status { get; set; } = "Issued";
 
-    public InventoryItem InventoryItem { get; set; } = null!;
+    public LibraryResource LibraryResource { get; set; } = null!;
 
     public Employee Employee { get; set; } = null!;
 
-    public User IssuedByUser { get; set; } = null!;
+   // public User IssuedByUser { get; set; } = null!;
 }

@@ -87,4 +87,78 @@ public class DepartmentController : Controller
 
         return View(department);
     }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            var result =
+                await _service.DeleteAsync(id);
+
+            if (result)
+            {
+                TempData["Success"] =
+                    "Department deleted successfully.";
+            }
+            else
+            {
+                TempData["Error"] =
+                    "Department not found.";
+            }
+        }
+        catch
+        {
+            TempData["Error"] =
+                "Unable to delete department.";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+    DepartmentViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var error =
+                await _service.UpdateAsync(model);
+
+            if (error == null)
+            {
+                TempData["Success"] =
+                    "Department updated successfully.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ModelState.AddModelError(
+                string.Empty,
+                error);
+
+            return View(model);
+        }
+        catch
+        {
+            TempData["Error"] =
+                "Unable to update department.";
+
+            return View(model);
+        }
+    }
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var department =
+            await _service.GetByIdAsync(id);
+
+        if (department == null)
+            return NotFound();
+
+        return View(department);
+    }
 }

@@ -3,6 +3,8 @@ using SLMS.WebApp.Models.DigitalLibrary;
 
 namespace SLMS.WebApp.Services.DigitalLibrary;
 
+using SLMS.WebApp.Models.DigitalLibrary;
+
 public class DigitalLibraryService
     : IDigitalLibraryService
 {
@@ -31,9 +33,7 @@ public class DigitalLibraryService
         var request = new
         {
             digitalContentId = model.DigitalContentId,
-            employeeId = 1,
-            approvalStatus = "Pending",
-            requestDate = DateTime.UtcNow
+            reason = model.Reason
         };
 
         await _httpClient.PostAsJsonAsync(
@@ -72,5 +72,177 @@ public class DigitalLibraryService
                 DownloadedOn = x.DownloadedOn
             })
             .ToList();
+    }
+
+    public async Task CreateContentAsync(
+    AdminDigitalContentViewModel model)
+    {
+        await _httpClient.PostAsJsonAsync(
+            "https://localhost:7277/api/DigitalContent",
+            model);
+    }
+
+    public async Task UpdateContentAsync(
+    AdminDigitalContentViewModel model)
+    {
+        await _httpClient.PutAsJsonAsync(
+            $"https://localhost:7277/api/DigitalContent/{model.Id}",
+            model);
+    }
+
+    public async Task DeleteContentAsync(int id)
+    {
+        await _httpClient.DeleteAsync(
+            $"https://localhost:7277/api/DigitalContent/{id}");
+    }
+
+    public async Task<DigitalContentViewModel?> GetContentByIdAsync(int id)
+    {
+        return await _httpClient.GetFromJsonAsync<DigitalContentViewModel>(
+            $"https://localhost:7277/api/DigitalContent/{id}");
+    }
+
+    public async Task<List<AdminRequestViewModel>>
+    GetRequestsAsync()
+    {
+        var result =
+            await _httpClient.GetFromJsonAsync<
+                List<AdminRequestViewModel>>
+            ("https://localhost:7277/api/DigitalContentRequest");
+
+        return result ?? new();
+    }
+
+    public async Task ApproveRequestAsync(int id)
+    {
+        await _httpClient.PutAsync(
+            $"https://localhost:7277/api/DigitalContentRequest/approve/{id}",
+            null);
+    }
+
+    public async Task RejectRequestAsync(int id)
+    {
+        await _httpClient.PutAsync(
+            $"https://localhost:7277/api/DigitalContentRequest/reject/{id}",
+            null);
+    }
+
+    public async Task<List<PolicyViewModel>>
+    GetPoliciesForAdminAsync()
+    {
+        return await _httpClient
+            .GetFromJsonAsync<List<PolicyViewModel>>
+            ("https://localhost:7277/api/Policy")
+            ?? new();
+    }
+
+    public async Task CreatePolicyAsync(
+    AdminPolicyViewModel model)
+    {
+        var dto = new
+        {
+            policyTitle =
+                model.PolicyTitle,
+
+            policyContent =
+                model.PolicyContent
+        };
+
+        await _httpClient.PostAsJsonAsync(
+            "https://localhost:7277/api/Policy",
+            dto);
+    }
+
+    public async Task UpdatePolicyAsync(
+    AdminPolicyViewModel model)
+    {
+        var dto = new
+        {
+            policyTitle =
+                model.PolicyTitle,
+
+            policyContent =
+                model.PolicyContent
+        };
+
+        await _httpClient.PutAsJsonAsync(
+            $"https://localhost:7277/api/Policy/{model.Id}",
+            dto);
+    }
+
+    public async Task DeletePolicyAsync(
+    int id)
+    {
+        await _httpClient.DeleteAsync(
+            $"https://localhost:7277/api/Policy/{id}");
+    }
+
+    public async Task<AdminPolicyViewModel?>
+    GetPolicyByIdAsync(int id)
+    {
+        var policy =
+            await _httpClient.GetFromJsonAsync
+            <PolicyViewModel>(
+                $"https://localhost:7277/api/Policy/{id}");
+
+        if (policy == null)
+            return null;
+
+        return new AdminPolicyViewModel
+        {
+            Id = policy.Id,
+            PolicyTitle = policy.Title,
+            PolicyContent = policy.Description
+        };
+    }
+
+    public async Task<bool> CanAccessContentAsync(
+     int contentId,
+     int employeeId)
+    {
+        var requests =
+            await _httpClient.GetFromJsonAsync
+            <List<AccessRequestViewModel>>
+            ("https://localhost:7277/api/DigitalContentRequest");
+
+        if (requests == null)
+            return false;
+
+        return requests.Any(x =>
+            x.EmployeeId == employeeId &&
+            x.DigitalContentId == contentId &&
+            x.ApprovalStatus == "Approved");
+    }
+
+    public async Task RecordDownloadAsync(
+    int contentId)
+    {
+        await _httpClient.PostAsync(
+            $"https://localhost:7277/api/DigitalContent/download/{contentId}",
+            null);
+    }
+
+    public async Task AddDownloadHistoryAsync(
+    int employeeId,
+    int digitalContentId)
+    {
+        var dto = new
+        {
+            employeeId = employeeId,
+            digitalContentId = digitalContentId
+        };
+
+        await _httpClient.PostAsJsonAsync(
+            "https://localhost:7277/api/DownloadHistory",
+            dto);
+    }
+
+    public async Task<List<RequestStatusViewModel>>
+    GetMyRequestsAsync(int employeeId)
+    {
+        return await _httpClient
+            .GetFromJsonAsync<List<RequestStatusViewModel>>
+            ($"https://localhost:7277/api/DigitalContentRequest/employee/{employeeId}")
+            ?? new();
     }
 }

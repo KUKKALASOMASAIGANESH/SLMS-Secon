@@ -2,8 +2,12 @@
 using SLMS.BLL.Interfaces;
 using SLMS.DOL.Entities;
 using SLMS.Shared.DTOs.DigitalLibrary;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using SLMS.DAL.Repositories.Interfaces;
 
 namespace SLMS.WebAPI.Controllers;
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -11,17 +15,43 @@ public class DigitalContentRequestController
     : ControllerBase
 {
     private readonly IDigitalContentRequestService _service;
+    private readonly IUserRepository _userRepository;
 
     public DigitalContentRequestController(
-        IDigitalContentRequestService service)
+    IDigitalContentRequestService service,
+    IUserRepository userRepository)
     {
         _service = service;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        var requests =
+     await _service.GetAllWithDetailsAsync();
+
+        var result = requests.Select(x =>
+            new DigitalContentRequestResponseDto
+            {
+                Id = x.Id,
+
+                EmployeeId = x.EmployeeId,
+
+                DigitalContentId = x.DigitalContentId,
+
+                EmployeeName =
+                    x.Employee?.FullName ?? "",
+
+                ContentTitle =
+                    x.DigitalContent?.Title ?? "",
+
+                RequestDate = x.RequestDate,
+
+                ApprovalStatus = x.ApprovalStatus
+            });
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
@@ -37,11 +67,11 @@ public class DigitalContentRequestController
 
     [HttpPost]
     public async Task<IActionResult> Create(
-    DigitalContentRequestCreateDto dto)
+DigitalContentRequestCreateDto dto)
     {
         var request = new DigitalContentRequest
         {
-            EmployeeId = dto.EmployeeId,
+            EmployeeId = 1, // temporary
 
             DigitalContentId = dto.DigitalContentId,
 
@@ -53,5 +83,54 @@ public class DigitalContentRequestController
         await _service.AddAsync(request);
 
         return Ok(request);
+    }
+
+    [HttpPut("approve/{id}")]
+    public async Task<IActionResult> Approve(int id)
+    {
+        var request =
+            await _service.GetByIdAsync(id);
+
+        if (request == null)
+            return NotFound();
+
+        request.ApprovalStatus = "Approved";
+
+        await _service.UpdateAsync(request);
+
+        return Ok("Request Approved");
+    }
+
+    [HttpPut("reject/{id}")]
+    public async Task<IActionResult> Reject(int id)
+    {
+        var request =
+            await _service.GetByIdAsync(id);
+
+        if (request == null)
+            return NotFound();
+
+        request.ApprovalStatus = "Rejected";
+
+        await _service.UpdateAsync(request);
+
+        return Ok("Request Rejected");
+    }
+
+    [HttpGet("employee/{employeeId}")]
+    public async Task<IActionResult>
+GetByEmployee(int employeeId)
+    {
+        var requests =
+            await _service.GetByEmployeeIdAsync(employeeId);
+
+        var result = requests.Select(x => new
+        {
+            Id = x.Id,
+            DigitalContentId = x.DigitalContentId,
+            ApprovalStatus = x.ApprovalStatus
+        });
+
+        return Ok(result);
     }
 }

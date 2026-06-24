@@ -1,0 +1,93 @@
+﻿@{
+ViewData["Title"] = "Reports";
+}
+
+<h2>Reports Dashboard</h2>
+
+@* <!-- INVENTORY REPORT -->
+<h4>Inventory Report</h4>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Total Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Inventory)
+        {
+            <tr>
+                <td>@item.title</td>
+                <td>@item.category</td>
+                <td>@item.totalCount</td>
+            </tr>
+        }
+    </tbody>
+</table> *@
+
+<!-- ISSUES REPORT -->
+<h4>Issues Report</h4>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Book</th>
+            <th>Employee</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Issues)
+        {
+            <tr>
+                <td>@item.bookTitle</td>
+                <td>@item.employeeName</td>
+                <td>@item.issueDate</td>
+                <td>@item.dueDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- OVERDUE REPORT -->
+<h4>Overdue Report</h4>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Book</th>
+            <th>Employee</th>
+            <th>Days Overdue</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Overdue)
+        {
+            <tr>
+                <td>@item.bookTitle</td>
+                <td>@item.employeeName</td>
+                <td>@item.daysOverdue</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- FINE REPORT -->
+<h4>Fine Report</h4>
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Employee</th>
+            <th>Fine Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Fine)
+        {
+            <tr>
+                <td>@item.employeeName</td>
+                <td>@item.fineAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

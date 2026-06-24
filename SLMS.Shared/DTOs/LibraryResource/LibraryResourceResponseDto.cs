@@ -17,4 +17,9 @@ public class LibraryResourceResponseDto
     public string? ISBN { get; set; }
 
     public int PublicationYear { get; set; }
+
+    // Shelf
+    public int? ShelfId { get; set; }
+
+    public string? ShelfName { get; set; }
 }

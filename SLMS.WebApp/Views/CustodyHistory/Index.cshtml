@@ -1,8 +1,30 @@
-﻿@model IEnumerable<SLMS.WebApp.Models.CustodyHistoryViewModel>
+﻿@model IEnumerable<SLMS.WebApp.Models.CustodyHistoryReportViewModel>
 
-@{
+    @{
     ViewData["Title"] = "Custody History";
+
+    var totalTransactions = Model.Count();
+
+    var totalIssued =
+        Model.Count(x => x.Action == "Issued");
+
+    var totalReturned =
+        Model.Count(x => x.Action == "Returned");
+
+    var currentlyIssued =
+        Model.Count(x => x.Action == "Issued");
+
+    var totalResources =
+        Model.Select(x => x.ResourceTitle)
+             .Distinct()
+             .Count();
+
+    var totalEmployees =
+        Model.Select(x => x.EmployeeName)
+             .Distinct()
+             .Count();
 }
+
 
 @if (TempData["Success"] != null)
 {
@@ -18,89 +40,162 @@
     </div>
 }
 
-<div class="card shadow-sm">
+<h2 class="mb-4">Custody History</h2>
 
-    <div class="card-body">
+<!-- Summary Cards -->
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="row mb-4">
 
-            <h2>Custody History</h2>
-
-            <div>
-
-                <a asp-action="Create"
-                   class="btn btn-primary">
-                    Add Custody
-                </a>
-
-                <a asp-action="Index"
-                   class="btn btn-secondary">
-                    Refresh
-                </a>
-
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Total Transactions</h6>
+                <h3 class="text-primary">@totalTransactions</h3>
             </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Issued</h6>
+                <h3 class="text-primary">@totalIssued</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Returned</h6>
+                <h3 class="text-success">@totalReturned</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Currently Issued</h6>
+                <h3 class="text-warning">@currentlyIssued</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Resources</h6>
+                <h3 class="text-info">@totalResources</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h6>Employees</h6>
+                <h3 class="text-dark">
+                    @totalEmployees
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Timeline -->
+
+<h4 class="mb-3">Transaction Timeline</h4>
+
+@foreach (var item in Model.Take(10))
+{
+    <div class="card mb-3 shadow-sm border-start border-4 @(item.Action == "Issued" ? "border-primary" : "border-success")">
+
+        <div class="card-body">
+
+            @if (item.Action == "Issued")
+            {
+                <p class="mb-2">
+
+                    <span class="badge bg-primary">
+                        📘 ISSUED
+                    </span>
+
+                    <strong>"@item.ResourceTitle"</strong>
+
+                    was issued to
+
+                    <strong>@item.EmployeeName</strong>
+
+                </p>
+
+                <small class="text-muted">
+                    Department: @item.DepartmentName
+                </small>
+
+                <br />
+
+                <small class="text-secondary">
+                    Issue Date:
+                    @item.IssueDate.ToString("dd-MMM-yyyy")
+                </small>
+            }
+            else
+            {
+                <p class="mb-2">
+
+                    <span class="badge bg-success">
+                        📗 RETURNED
+                    </span>
+
+                    <strong>"@item.ResourceTitle"</strong>
+
+                    was returned by
+
+                    <strong>@item.EmployeeName</strong>
+
+                </p>
+
+                <small class="text-muted">
+                    Department: @item.DepartmentName
+                </small>
+
+                <br />
+
+                <small class="text-secondary">
+                    Return Date:
+                    @(item.ReturnDate?.ToString("dd-MMM-yyyy") ?? "-")
+                </small>
+            }
 
         </div>
 
-        <form asp-action="SearchByInventory"
-              method="get"
-              class="mb-3">
+    </div>
+}
 
-            <div class="row">
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No Custody Records Found.
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
 
-                <div class="col-md-4">
+        <div class="card-body">
 
-                    <input name="inventoryItemId"
-                           type="number"
-                           min="1"
-                           class="form-control"
-                           placeholder="Inventory Item Id" />
-
-                </div>
-
-                <div class="col-md-2">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-                        Search
-                    </button>
-
-                </div>
-
-                <div class="col-md-2">
-
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
-                        Clear
-                    </a>
-
-                </div>
-
-            </div>
-
-        </form>
-
-        @if (!Model.Any())
-        {
-            <div class="alert alert-info">
-                No Custody Records Found.
-            </div>
-        }
-        else
-        {
             <table class="table table-bordered table-striped table-hover">
 
                 <thead class="table-dark">
-
                     <tr>
-                        <th>Inventory Item</th>
-                        <th>From Department</th>
-                        <th>To Department</th>
-                        <th>Transfer Date</th>
-                        <th>Reason</th>
-                        <th>Actions</th>
+                        <th>Issue Date</th>
+                        <th>Return Date</th>
+                        <th>Resource</th>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                        <th>Status</th>
                     </tr>
-
                 </thead>
 
                 <tbody>
@@ -109,32 +204,48 @@
                     {
                         <tr>
 
-                            <td>@item.InventoryItemId</td>
-
-                            <td>@item.FromDepartmentId</td>
-
-                            <td>@item.ToDepartmentId</td>
-
                             <td>
-                                @item.TransferDate.ToString("dd-MMM-yyyy")
+                                @item.IssueDate.ToString("dd-MMM-yyyy")
                             </td>
 
-                            <td>@item.TransferReason</td>
+                            <td>
+                                @(item.ReturnDate?.ToString("dd-MMM-yyyy") ?? "-")
+                            </td>
+
+                            <td>@item.ResourceTitle</td>
+
+                            <td>@item.EmployeeName</td>
+
+                            <td>@item.DepartmentName</td>
 
                             <td>
+                                @if (item.Action == "Issued")
+                                {
+                                    <span class="badge bg-primary">
+                                        Issued
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+                                        Returned
+                                    </span>
+                                }
+                            </td>
 
-                                <a asp-action="Details"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-info btn-sm">
-                                    Details
-                                </a>
-
-                                <a asp-action="CurrentCustodian"
-                                   asp-route-inventoryItemId="@item.InventoryItemId"
-                                   class="btn btn-success btn-sm">
-                                    Current
-                                </a>
-
+                            <td>
+                                @if (item.Status == "Active")
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+                                        Closed
+                                    </span>
+                                }
                             </td>
 
                         </tr>
@@ -143,8 +254,8 @@
                 </tbody>
 
             </table>
-        }
+
+        </div>
 
     </div>
-
-</div>
+}

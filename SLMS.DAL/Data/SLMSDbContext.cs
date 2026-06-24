@@ -33,6 +33,9 @@ public class SLMSDbContext : DbContext
     public DbSet<BookIssue> BookIssues => Set<BookIssue>();
     public DbSet<BookReturn> BookReturns => Set<BookReturn>();
 
+    //Shelf
+    public DbSet<Shelf> Shelves { get; set; }
+
     // Requests
     public DbSet<Request> Requests => Set<Request>();
 
@@ -88,11 +91,19 @@ public class SLMSDbContext : DbContext
             .WithMany(d => d.Employees)
             .HasForeignKey(e => e.DepartmentId);
 
+
         // LibraryResource -> Category
         modelBuilder.Entity<LibraryResource>()
             .HasOne(r => r.Category)
             .WithMany(c => c.Resources)
             .HasForeignKey(r => r.CategoryId);
+
+        //shelg intergration
+        modelBuilder.Entity<LibraryResource>()
+    .HasOne(r => r.Shelf)
+    .WithMany()
+    .HasForeignKey(r => r.ShelfId)
+    .OnDelete(DeleteBehavior.SetNull);
 
         // InventoryItem -> LibraryResource
         modelBuilder.Entity<InventoryItem>()
@@ -114,6 +125,7 @@ public class SLMSDbContext : DbContext
             .HasForeignKey(c => c.ToDepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
+<<<<<<< HEAD
         modelBuilder.Entity<Role>().HasData(
     new Role
     {
@@ -134,5 +146,9 @@ public class SLMSDbContext : DbContext
         Description = "Normal Employee"
     }
 );
+=======
+
+      
+>>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
     }
 }

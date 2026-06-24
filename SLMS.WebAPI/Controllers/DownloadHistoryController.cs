@@ -2,8 +2,10 @@
 using SLMS.BLL.Interfaces;
 using SLMS.DOL.Entities;
 using SLMS.Shared.DTOs.DigitalLibrary;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebAPI.Controllers;
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -18,6 +20,7 @@ public class DownloadHistoryController
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -25,6 +28,7 @@ public class DownloadHistoryController
             await _service.GetAllWithContentAsync());
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -36,6 +40,7 @@ public class DownloadHistoryController
         return Ok(result);
     }
 
+    
     [HttpPost]
     public async Task<IActionResult> Create(
     DownloadHistoryCreateDto dto)

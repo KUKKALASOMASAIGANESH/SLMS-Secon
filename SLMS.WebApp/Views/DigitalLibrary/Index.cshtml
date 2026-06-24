@@ -1,8 +1,23 @@
 ﻿@model List<SLMS.WebApp.Models.DigitalLibrary.DigitalContentViewModel>
 
+@using SLMS.WebApp.Models.DigitalLibrary
+
+@{
+    var requests =
+        ViewBag.Requests as List<RequestStatusViewModel>;
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 @{
     ViewData["Title"] = "Digital Library";
 }
+
 
 <div class="card shadow-sm">
 
@@ -58,6 +73,8 @@
 
                     <th>Description</th>
 
+                    <th>Status</th>
+
                     <th>Actions</th>
 
                 </tr>
@@ -66,30 +83,105 @@
 
             <tbody id="contentTable">
 
-                @foreach (var item in Model)
-                {
-                    <tr>
+                    @foreach (var item in Model)
+                    {
+                        var request =
+                        requests?
+                        .Where(x => x.DigitalContentId == item.Id)
+                        .OrderByDescending(x => x.Id)
+                        .FirstOrDefault();
 
-                        <td>@item.Title</td>
+                        <tr>
 
-                        <td>@item.Category</td>
+                            <td>@item.Title</td>
 
-                        <td>@item.Description</td>
+                            <td>@item.Category</td>
 
-                        <td>
+                            <td>@item.Description</td>
 
-                            <a asp-action="Request"
-                               asp-route-id="@item.Id"
-                               class="btn btn-primary btn-sm">
+                            <td>
 
-                                Request Access
+                                @if (request == null)
+                                {
+                                    <span class="badge bg-secondary">
+                                        Not Requested
+                                    </span>
+                                }
+                                else if (request.ApprovalStatus == "Pending")
+                                {
+                                    <span class="badge bg-warning">
+                                        Pending
+                                    </span>
+                                }
+                                else if (request.ApprovalStatus == "Approved")
+                                {
+                                    <span class="badge bg-success">
+                                        Approved
+                                    </span>
+                                }
+                                else if (request.ApprovalStatus == "Rejected")
+                                {
+                                    <span class="badge bg-danger">
+                                        Rejected
+                                    </span>
+                                }
 
-                            </a>
+                            </td>
 
-                        </td>
+                            <td>
 
-                    </tr>
-                }
+                                @if (request == null)
+                                {
+                                    <a asp-action="Request"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-primary btn-sm">
+
+                                        Request Access
+
+                                    </a>
+                                }
+                                else if (request.ApprovalStatus == "Pending")
+                                {
+                                    <button class="btn btn-secondary btn-sm"
+                                            disabled>
+
+                                        Request Sent
+
+                                    </button>
+                                }
+                                else if (request.ApprovalStatus == "Approved")
+                                {
+                                    <a asp-action="ReadContent"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-info btn-sm">
+
+                                        Read
+
+                                    </a>
+
+                                    <a asp-action="Download"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-success btn-sm">
+
+                                        Download
+
+                                    </a>
+                                }
+                                else if (request.ApprovalStatus == "Rejected")
+                                {
+                                    <a asp-action="Request"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-danger btn-sm">
+
+                                        Request Again
+
+                                    </a>
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
 
             </tbody>
 

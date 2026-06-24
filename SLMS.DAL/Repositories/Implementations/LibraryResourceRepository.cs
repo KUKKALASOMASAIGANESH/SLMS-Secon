@@ -27,4 +27,23 @@ public class LibraryResourceRepository
                 x.Publisher.Contains(keyword))
             .ToListAsync();
     }
+
+    //shelf
+    public async Task<IEnumerable<LibraryResource>>
+    GetAllWithShelfAsync()
+    {
+        return await _context.LibraryResources
+            .Include(x => x.Category)
+            .Include(x => x.Shelf)
+            .ToListAsync();
+    }
+
+    public async Task<LibraryResource?>
+        GetByIdWithShelfAsync(int id)
+    {
+        return await _context.LibraryResources
+            .Include(x => x.Category)
+            .Include(x => x.Shelf)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }

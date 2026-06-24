@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SLMS.WebApp.Models;
 
 public class CustodyHistoryViewModel
@@ -17,6 +17,16 @@ public class CustodyHistoryViewModel
     [Range(1, int.MaxValue,
         ErrorMessage = "Department Id must be greater than 0")]
     public int ToDepartmentId { get; set; }
+    public string FromDepartmentName { get; set; }
+    = string.Empty;
+
+    public string ToDepartmentName { get; set; }
+        = string.Empty;
+    public List<SelectListItem> Departments
+    {
+        get;
+        set;
+    } = new();
 
     [Required(ErrorMessage = "Transfer Date is required")]
     public DateTime TransferDate { get; set; }
@@ -28,6 +38,7 @@ public class CustodyHistoryViewModel
     [StringLength(500,
         ErrorMessage = "Remarks cannot exceed 500 characters")]
     public string? Remarks { get; set; }
+
 
     public int? TransferredByUserId { get; set; }
 }

@@ -1,20 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebApp.Controllers;
+<<<<<<< HEAD
 
 
 [Authorize(Roles = "Admin,Librarian")]
+=======
+>>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
 public class CustodyHistoryController : Controller
 {
     private readonly CustodyHistoryService _service;
+    private readonly DepartmentService _departmentService;
 
     public CustodyHistoryController(
-        CustodyHistoryService service)
+    CustodyHistoryService service,
+    DepartmentService departmentService)
     {
         _service = service;
+        _departmentService = departmentService;
     }
 
     public async Task<IActionResult> Index()
@@ -22,26 +29,39 @@ public class CustodyHistoryController : Controller
         try
         {
             var data =
-                await _service.GetAllAsync();
+                await _service.GetReportAsync();
 
             return View(data);
         }
         catch (Exception)
         {
             TempData["Error"] =
-                "Unable to load custody records.";
+                "Unable to load custody history.";
 
             return View(
-                new List<CustodyHistoryViewModel>());
+                new List<CustodyHistoryReportViewModel>());
         }
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
-    }
+        var model =
+            new CustodyHistoryViewModel();
 
+        var departments =
+            await _departmentService.GetAllAsync();
+
+        model.Departments =
+            departments.Select(d =>
+            new SelectListItem
+            {
+                Value = d.Id.ToString(),
+                Text = d.DepartmentName
+            }).ToList();
+
+        return View(model);
+    }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
@@ -50,7 +70,20 @@ public class CustodyHistoryController : Controller
         try
         {
             if (!ModelState.IsValid)
+            {
+                var departments =
+                    await _departmentService.GetAllAsync();
+
+                model.Departments =
+                    departments.Select(d =>
+                    new SelectListItem
+                    {
+                        Value = d.Id.ToString(),
+                        Text = d.DepartmentName
+                    }).ToList();
+
                 return View(model);
+            }
 
             var result =
                 await _service.CreateAsync(model);

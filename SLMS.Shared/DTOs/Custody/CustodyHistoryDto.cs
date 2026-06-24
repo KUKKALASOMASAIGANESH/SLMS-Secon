@@ -15,6 +15,9 @@ public class CustodyHistoryDto
     public string? TransferReason { get; set; }
 
     public string? Remarks { get; set; }
+    public string FromDepartmentName { get; set; } = string.Empty;
+
+    public string ToDepartmentName { get; set; } = string.Empty;
 
     public int? TransferredByUserId { get; set; }
 }

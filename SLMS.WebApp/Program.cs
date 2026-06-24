@@ -38,6 +38,11 @@ builder.Services.AddSession(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<JwtDelegatingHandler>();
 
+//shelf
+builder.Services.AddScoped<
+    IShelfService,
+    ShelfService>();
+
 #region API Base URL
 
 var apiBaseUrl = new Uri("http://localhost:5062/");
@@ -105,6 +110,8 @@ builder.Services.AddHttpClient<BookIssueService>(client =>
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 #endregion
+
+
 
 #region Digital Library
 

@@ -1,0 +1,33 @@
+﻿@model SLMS.WebApp.Models.DigitalLibrary.AdminPolicyViewModel
+
+<h2>Create Policy</h2>
+
+<form asp-action="CreatePolicy"
+      method="post">
+
+    <div class="mb-3">
+
+        <label>Title</label>
+
+        <input asp-for="PolicyTitle"
+               class="form-control" />
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Content</label>
+
+        <textarea asp-for="PolicyContent"
+                  class="form-control">
+        </textarea>
+
+    </div>
+
+    <button class="btn btn-success">
+
+        Save
+
+    </button>
+
+</form>

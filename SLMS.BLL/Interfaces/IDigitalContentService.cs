@@ -1,7 +1,5 @@
 ﻿using SLMS.DOL.Entities;
 
-namespace SLMS.BLL.Interfaces;
-
 public interface IDigitalContentService
 {
     Task<IEnumerable<DigitalContent>> GetAllAsync();
@@ -9,4 +7,8 @@ public interface IDigitalContentService
     Task<DigitalContent?> GetByIdAsync(int id);
 
     Task AddAsync(DigitalContent digitalContent);
+
+    Task UpdateAsync(DigitalContent digitalContent);
+
+    Task DeleteAsync(int id);
 }

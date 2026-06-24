@@ -10,4 +10,9 @@ public interface IDepartmentService
 
     Task<DepartmentResponseDto> CreateAsync(
         DepartmentCreateDto dto);
+    Task<DepartmentResponseDto?> UpdateAsync(
+    int id,
+    DepartmentUpdateDto dto);
+
+    Task<bool> DeleteAsync(int id);
 }

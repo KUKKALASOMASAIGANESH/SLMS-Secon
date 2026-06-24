@@ -22,7 +22,7 @@ public class GlobalExceptionMiddleware
         catch (Exception ex)
         {
             context.Response.StatusCode = 500;
-            context.Response.ContentType =
+             context.Response.ContentType =
                 "application/json";
 
             var response = new

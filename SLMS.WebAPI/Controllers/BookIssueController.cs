@@ -85,4 +85,18 @@ public class BookIssueController : ControllerBase
         return Ok(
             "Book Issue Deleted");
     }
+    [HttpGet("employee/{employeeId}")]
+    public async Task<IActionResult>
+GetIssuedBooksByEmployee(int employeeId)
+    {
+        var books =
+            await _service.GetAllAsync();
+
+        var result =
+            books.Where(x =>
+                x.EmployeeId == employeeId &&
+                x.Status == "Issued");
+
+        return Ok(result);
+    }
 }

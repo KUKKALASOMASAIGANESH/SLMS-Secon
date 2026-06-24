@@ -7,11 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\DigitalLibrary\Read.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SLMS.Shared\SLMS.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\DigitalLibrary\Read.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\DigitalLibrary\Read.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\DigitalLibrary\Read.cshtml" />
   </ItemGroup>
 
 </Project>

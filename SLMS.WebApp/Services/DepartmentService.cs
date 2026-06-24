@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
+
 using SLMS.WebApp.Models;
-using SLMS.WebApp.ViewModels;
+using SLMS.WebApp.Models.Common;
 
 namespace SLMS.WebApp.Services;
 
@@ -8,51 +9,71 @@ public class DepartmentService
 {
     private readonly HttpClient _httpClient;
 
-    public DepartmentService(HttpClient httpClient)
+    public DepartmentService(
+        HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
     public async Task<List<DepartmentViewModel>> GetAllAsync()
     {
-        var response = await _httpClient.GetAsync("api/Department");
+        var response =
+            await _httpClient.GetFromJsonAsync<
+                ApiResponse<List<DepartmentViewModel>>>(
+                    "api/Department");
 
-        if (!response.IsSuccessStatusCode)
-        {
-            var error = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("Department API Error: " + error);
-
-            return new List<DepartmentViewModel>();
-        }
-
-        var apiResponse = await response.Content
-            .ReadFromJsonAsync<ApiResponseOfT<List<DepartmentViewModel>>>();
-
-        return apiResponse?.Data ?? new List<DepartmentViewModel>();
+        return response?.Data
+            ?? new List<DepartmentViewModel>();
     }
 
     public async Task<DepartmentViewModel?> GetByIdAsync(int id)
     {
-        var response = await _httpClient.GetAsync($"api/Department/{id}");
+        var response =
+            await _httpClient.GetFromJsonAsync<
+                ApiResponse<DepartmentViewModel>>(
+                    $"api/Department/{id}");
 
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        var apiResponse = await response.Content
-            .ReadFromJsonAsync<ApiResponseOfT<DepartmentViewModel>>();
-
-        return apiResponse?.Data;
+        return response?.Data;
     }
 
-    public async Task<string?> CreateAsync(DepartmentViewModel department)
+    public async Task<string?> CreateAsync(
+        DepartmentViewModel department)
     {
-        var response = await _httpClient.PostAsJsonAsync(
-            "api/Department",
-            department);
+        var response =
+            await _httpClient.PostAsJsonAsync(
+                "api/Department",
+                department);
 
         if (response.IsSuccessStatusCode)
             return null;
 
-        return await response.Content.ReadAsStringAsync();
+        return await response
+            .Content
+            .ReadAsStringAsync();
+    }
+
+    public async Task<string?> UpdateAsync(
+        DepartmentViewModel department)
+    {
+        var response =
+            await _httpClient.PutAsJsonAsync(
+                $"api/Department/{department.Id}",
+                department);
+
+        if (response.IsSuccessStatusCode)
+            return null;
+
+        return await response
+            .Content
+            .ReadAsStringAsync();
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var response =
+            await _httpClient.DeleteAsync(
+                $"api/Department/{id}");
+
+        return response.IsSuccessStatusCode;
     }
 }

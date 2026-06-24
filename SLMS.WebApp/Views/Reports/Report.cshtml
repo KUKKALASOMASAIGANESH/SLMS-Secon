@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<h2>Reports Dashboard</h2>
+
+@* <h3>Inventory</h3>
+@if (ViewBag.Inventory != null)
+{
+    foreach (var item in ViewBag.Inventory)
+    {
+        <p>@item</p>
+    }
+} *@
+
+<h3>Issues</h3>
+@if (ViewBag.Issues != null)
+{
+    foreach (var item in ViewBag.Issues)
+    {
+        <p>@item</p>
+    }
+}
+
+<h3>Overdue</h3>
+@if (ViewBag.Overdue != null)
+{
+    foreach (var item in ViewBag.Overdue)
+    {
+        <p>@item</p>
+    }
+}
+
+<h3>Fine</h3>
+@if (ViewBag.Fine != null)
+{
+    foreach (var item in ViewBag.Fine)
+    {
+        <p>@item</p>
+    }
+}

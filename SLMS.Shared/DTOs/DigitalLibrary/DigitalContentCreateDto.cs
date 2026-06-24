@@ -7,7 +7,6 @@ public class DigitalContentCreateDto
     public string ContentType { get; set; } = string.Empty;
     // EBook, EJournal, Presentation, Training Material
 
-    public string Author { get; set; } = string.Empty;
 
     public string FilePath { get; set; } = string.Empty;
 

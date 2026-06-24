@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
+builder.Services.AddScoped<ReportService>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -79,11 +80,22 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<ICustodyHistoryRepository, CustodyHistoryRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
+// Inventory
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
+<<<<<<< HEAD
+=======
+// Shelf
+builder.Services.AddScoped<IShelfRepository, ShelfRepository>();
+
+// Catalog
+>>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ILibraryResourceRepository, LibraryResourceRepository>();
 builder.Services.AddScoped<IInventoryItemRepository, InventoryItemRepository>();
+
+// Transactions
 builder.Services.AddScoped<IBookIssueRepository, BookIssueRepository>();
 builder.Services.AddScoped<IBookReturnRepository, BookReturnRepository>();
 
@@ -106,11 +118,22 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<ICustodyHistoryService, CustodyHistoryService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAuditLogService, AuditLogService>();
+
+// Inventory
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
+<<<<<<< HEAD
+=======
+// Shelf
+builder.Services.AddScoped<IShelfService, ShelfService>();
+
+// Catalog
+>>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILibraryResourceService, LibraryResourceService>();
 builder.Services.AddScoped<IInventoryItemService, InventoryItemService>();
+
+// Transactions
 builder.Services.AddScoped<IBookIssueService, BookIssueService>();
 builder.Services.AddScoped<IBookReturnService, BookReturnService>();
 builder.Services.AddScoped<ITransactionDashboardService, TransactionDashboardService>();
@@ -144,8 +167,16 @@ builder.Services.AddAuthentication(
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
 
+<<<<<<< HEAD
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 ValidAudience = builder.Configuration["Jwt:Audience"],
+=======
+            ValidIssuer =
+                builder.Configuration["Jwt:Issuer"],
+
+            ValidAudience =
+                builder.Configuration["Jwt:Audience"],
+>>>>>>> dbd2ef74409f865175cf3e4c5a79f86a84713425
 
                 IssuerSigningKey =
                     new SymmetricSecurityKey(

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -152,18 +153,28 @@ public class EmployeeController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(
-        EmployeeViewModel model)
+    public async Task<IActionResult> Edit(EmployeeViewModel model)
     {
         try
         {
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = "ModelState Invalid";
+                var departments =
+                    await _departmentService.GetAllAsync();
+
+                model.Departments =
+                    departments.Select(d =>
+                    new SelectListItem
+                    {
+                        Value = d.Id.ToString(),
+                        Text = d.DepartmentName
+                    }).ToList();
+
                 return View(model);
             }
+
             var error =
-     await _service.UpdateAsync(model);
+                await _service.UpdateAsync(model);
 
             if (error == null)
             {
@@ -173,21 +184,23 @@ public class EmployeeController : Controller
                 return RedirectToAction(nameof(Index));
             }
 
+            TempData["Error"] =
+                $"API Error: {error}";
+
             ModelState.AddModelError(
                 string.Empty,
                 error);
 
             return View(model);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             TempData["Error"] =
-                "An unexpected error occurred.";
+                ex.ToString();
 
             return View(model);
         }
     }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)

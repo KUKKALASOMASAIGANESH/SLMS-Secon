@@ -1,0 +1,40 @@
+﻿@model SLMS.WebApp.Models.DigitalLibrary.AdminDigitalContentViewModel
+
+<h3>Add Content</h3>
+
+<form asp-action="EditContent" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>Title</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Content Type</label>
+        <input asp-for="ContentType" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Author</label>
+        <input asp-for="Author" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>File Path</label>
+        <input asp-for="FilePath" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        <textarea asp-for="Description"
+                  class="form-control"></textarea>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Save
+    </button>
+
+</form>

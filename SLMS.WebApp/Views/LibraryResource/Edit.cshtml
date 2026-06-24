@@ -29,6 +29,22 @@
             </div>
 
             <div class="mb-3">
+
+                <label>Shelf</label>
+
+                <select asp-for="ShelfId"
+                        asp-items="Model.Shelves"
+                        class="form-control">
+
+                    <option value="">
+                        Select Shelf
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="mb-3">
                 <label>Resource Type</label>
 
                 <select asp-for="ResourceType"
