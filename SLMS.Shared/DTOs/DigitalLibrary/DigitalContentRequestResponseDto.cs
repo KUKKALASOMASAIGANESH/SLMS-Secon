@@ -8,10 +8,13 @@ public class DigitalContentRequestResponseDto
 
     public int DigitalContentId { get; set; }
 
+    public string EmployeeName { get; set; } = string.Empty;
+
+    public string ContentTitle { get; set; } = string.Empty;
+
     public string Reason { get; set; } = string.Empty;
 
-    public DateTime RequestedOn { get; set; }
+    public DateTime RequestDate { get; set; }
 
-    public string Status { get; set; } = string.Empty;
-    // Pending, Approved, Rejected
+    public string ApprovalStatus { get; set; } = string.Empty;
 }

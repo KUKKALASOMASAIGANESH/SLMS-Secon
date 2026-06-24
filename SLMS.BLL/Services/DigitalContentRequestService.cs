@@ -32,4 +32,25 @@ public class DigitalContentRequestService
 
         await _repository.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(
+    DigitalContentRequest request)
+    {
+        _repository.Update(request);
+
+        await _repository.SaveChangesAsync();
+    }
+    public async Task<IEnumerable<DigitalContentRequest>>
+    GetByEmployeeIdAsync(int employeeId)
+    {
+        return await _repository
+        .GetByEmployeeIdAsync(employeeId);
+    }
+
+    public async Task<IEnumerable<DigitalContentRequest>>
+    GetAllWithDetailsAsync()
+    {
+        return await _repository.GetAllWithDetailsAsync();
+    }
+
 }

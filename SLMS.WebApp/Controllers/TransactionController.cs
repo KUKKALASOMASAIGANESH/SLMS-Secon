@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 
 using Microsoft.AspNetCore.Mvc;
-
+using SLMS.WebApp.Models;
 using SLMS.Shared.DTOs.BookIssue;
 using SLMS.Shared.DTOs.BookReturn;
 using SLMS.Shared.DTOs.Request;
@@ -36,52 +36,48 @@ public class TransactionController : Controller
     }
 
     // =====================================
-    // Issue Book
+    // Return Book
     // =====================================
 
     [HttpGet]
-    public IActionResult IssueBook()
-    {
-        return View();
-    }
-
-    [HttpPost]
     public async Task<IActionResult>
-        IssueBook(BookIssueCreateDto dto)
+ReturnBook()
     {
         var client = new HttpClient();
 
         client.BaseAddress =
             new Uri("http://localhost:5062/");
 
-        var response =
-            await client.PostAsJsonAsync(
-                "api/BookIssue",
-                dto);
+        var employees =
+            await client.GetFromJsonAsync<
+                List<EmployeeViewModel>>
+                ("api/Employee");
 
-        if (response.IsSuccessStatusCode)
-        {
-            TempData["Success"] =
-                "Book Issued Successfully";
+        ViewBag.Employees =
+            employees;
 
-            return RedirectToAction(
-                nameof(IssueBook));
-        }
-
-        TempData["Error"] =
-            "Failed to Issue Book";
-
-        return View(dto);
+        return View(
+            new BookReturnCreateDto
+            {
+                ReturnDate =
+                    DateTime.Today
+            });
     }
-
-    // =====================================
-    // Return Book
-    // =====================================
-
     [HttpGet]
-    public IActionResult ReturnBook()
+    public async Task<IActionResult>
+GetIssuedBooks(int employeeId)
     {
-        return View();
+        var client = new HttpClient();
+
+        client.BaseAddress =
+            new Uri("http://localhost:5062/");
+
+        var books =
+            await client.GetFromJsonAsync<
+                List<BookIssueResponseDto>>
+                ($"api/BookIssue/employee/{employeeId}");
+
+        return Json(books);
     }
 
     [HttpPost]
@@ -92,6 +88,7 @@ public class TransactionController : Controller
 
         client.BaseAddress =
             new Uri("http://localhost:5062/");
+        dto.ReturnedByUserId = 1;
 
         var response =
             await client.PostAsJsonAsync(

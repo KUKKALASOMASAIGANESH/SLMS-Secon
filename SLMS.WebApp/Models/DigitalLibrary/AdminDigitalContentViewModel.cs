@@ -1,12 +1,14 @@
-﻿namespace SLMS.Shared.DTOs.DigitalLibrary;
+﻿namespace SLMS.WebApp.Models.DigitalLibrary;
 
-public class DigitalContentCreateDto
+public class AdminDigitalContentViewModel
 {
+    public int Id { get; set; }
+
     public string Title { get; set; } = string.Empty;
 
     public string ContentType { get; set; } = string.Empty;
-    // EBook, EJournal, Presentation, Training Material
 
+    public string Author { get; set; } = string.Empty;
 
     public string FilePath { get; set; } = string.Empty;
 

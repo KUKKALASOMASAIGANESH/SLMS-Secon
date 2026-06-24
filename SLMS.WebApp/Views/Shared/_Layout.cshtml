@@ -81,13 +81,7 @@
 
                     <ul class="navbar-nav ms-auto">
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="Home"
-                               asp-action="Index">
-                                Dashboard
-                            </a>
-                        </li>
+                        
 
                         <li class="nav-item">
                             <a class="nav-link text-dark"
@@ -153,14 +147,6 @@
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="Transaction"
-                                       asp-action="IssueBook">
-                                        Issue Book
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Transaction"
                                        asp-action="ReturnBook">
                                         Return Book
                                     </a>
@@ -191,6 +177,27 @@
                                asp-controller="DigitalLibrary"
                                asp-action="Index">
                                 Digital Library
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="DigitalLibrary"
+                               asp-action="ManageContent">
+                                Manage Content
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="DigitalLibrary"
+                               asp-action="ManageRequests">
+                                Manage Requests
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-controller="DigitalLibrary"
+                               asp-action="ManagePolicies">
+                                Manage Policies
                             </a>
                         </li>
 
@@ -255,7 +262,7 @@
 
     </div>
 
-    <footer class="border-top footer text-center text-muted mt-4">
+    <footer class="border-top  text-center text-muted mt-4 fixed-bottom">
 
         <div class="container-fluid px-4">
 

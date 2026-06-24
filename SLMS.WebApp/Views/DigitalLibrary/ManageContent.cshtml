@@ -1,0 +1,81 @@
+﻿@model List<SLMS.WebApp.Models.DigitalLibrary.DigitalContentViewModel>
+
+@{
+    ViewData["Title"] = "Manage Content";
+}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+
+            <h3>Digital Content Management</h3>
+
+            <a asp-action="CreateContent"
+               class="btn btn-success">
+
+                Add Content
+
+            </a>
+
+        </div>
+
+        <hr />
+
+        <table class="table table-bordered">
+
+            <thead>
+
+                <tr>
+
+                    <th>Title</th>
+
+                    <th>Category</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.Title</td>
+
+                        <td>@item.Category</td>
+
+                        <td>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-warning btn-sm">
+
+                                Edit
+
+                            </a>
+
+                            <a asp-action="DeleteContent"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger btn-sm">
+
+                                Delete
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

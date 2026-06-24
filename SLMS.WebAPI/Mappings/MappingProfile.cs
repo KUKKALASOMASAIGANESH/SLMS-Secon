@@ -41,7 +41,16 @@ public class MappingProfile : Profile
 
         // Library Resource
         CreateMap<LibraryResourceCreateDto, LibraryResource>();
-        CreateMap<LibraryResource, LibraryResourceResponseDto>();
+
+        //shelf
+        //CreateMap<LibraryResource, LibraryResourceResponseDto>();
+        CreateMap<LibraryResource, LibraryResourceResponseDto>()
+    .ForMember(
+        dest => dest.ShelfName,
+        opt => opt.MapFrom(
+            src => src.Shelf != null
+                ? src.Shelf.ShelfName
+                : null));
         CreateMap<LibraryResourceUpdateDto, LibraryResource>();
 
         // Inventory Item

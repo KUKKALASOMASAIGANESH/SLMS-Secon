@@ -1,0 +1,66 @@
+﻿@model List<SLMS.WebApp.Models.DigitalLibrary.AdminRequestViewModel>
+
+@{
+    ViewData["Title"] = "Manage Requests";
+}
+
+<h2>Manage Requests</h2>
+
+<h4>Total Requests: @Model.Count</h4>
+
+
+<table class="table table-bordered ">
+
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Employee Name</th>
+            <th>Content Title</th>
+            <th>Status</th>
+            <th>Request Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+
+                <td>@item.EmployeeName</td>
+
+                <td>@item.ContentTitle</td>
+
+                <td>@item.ApprovalStatus</td>
+
+                <td>@item.RequestDate</td>
+
+                <td>
+
+                    @if (item.ApprovalStatus == "Pending")
+                    {
+                        <a asp-action="ApproveRequest"
+                           asp-route-id="@item.Id"
+                           class="btn btn-success btn-sm">
+                            Approve
+                        </a>
+
+                        <a asp-action="RejectRequest"
+                           asp-route-id="@item.Id"
+                           class="btn btn-danger btn-sm">
+                            Reject
+                        </a>
+                    }
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+   
