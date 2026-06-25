@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-
 using SLMS.WebApp.Models;
 
 namespace SLMS.WebApp.Services;
@@ -8,6 +7,8 @@ public class LibraryResourceService
 {
     private readonly HttpClient _httpClient;
 
+    private const string ApiUrl = "api/LibraryResource";
+
     public LibraryResourceService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -15,90 +16,48 @@ public class LibraryResourceService
 
     public async Task<List<LibraryResourceViewModel>> GetAllAsync()
     {
-        try
-        {
-            var result =
-                await _httpClient.GetFromJsonAsync<List<LibraryResourceViewModel>>
-                ("https://localhost:7277/api/LibraryResource");
+        var result =
+            await _httpClient.GetFromJsonAsync<List<LibraryResourceViewModel>>
+            (ApiUrl);
 
-            return result ?? new List<LibraryResourceViewModel>();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+        return result ?? new List<LibraryResourceViewModel>();
     }
+
     public async Task<LibraryResourceViewModel?> GetByIdAsync(int id)
     {
-        try
-        {
-            return await _httpClient
-                .GetFromJsonAsync<LibraryResourceViewModel>(
-                    $"https://localhost:7277/api/LibraryResource/{id}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+        return await _httpClient
+            .GetFromJsonAsync<LibraryResourceViewModel>(
+                $"{ApiUrl}/{id}");
     }
-    public async Task UpdateAsync(
-    LibraryResourceViewModel model)
-    {
-        try
-        {
-            var response =
-                await _httpClient.PutAsJsonAsync(
-                    $"https://localhost:7277/api/LibraryResource/{model.Id}",
-                    model);
 
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+    public async Task CreateAsync(
+        LibraryResourceViewModel model)
+    {
+        var response =
+            await _httpClient.PostAsJsonAsync(
+                ApiUrl,
+                model);
+
+        response.EnsureSuccessStatusCode();
     }
+
+    public async Task UpdateAsync(
+        LibraryResourceViewModel model)
+    {
+        var response =
+            await _httpClient.PutAsJsonAsync(
+                $"{ApiUrl}/{model.Id}",
+                model);
+
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task DeleteAsync(int id)
     {
-        try
-        {
-            var response =
-                await _httpClient.DeleteAsync(
-                    $"https://localhost:7277/api/LibraryResource/{id}");
+        var response =
+            await _httpClient.DeleteAsync(
+                $"{ApiUrl}/{id}");
 
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
-    }
-    public async Task CreateAsync(
-    LibraryResourceViewModel model)
-    {
-        try
-        {
-            var response =
-                await _httpClient.PostAsJsonAsync(
-                    "https://localhost:7277/api/LibraryResource",
-                    model);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var error =
-                    await response.Content.ReadAsStringAsync();
-
-                throw new Exception(error);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
+        response.EnsureSuccessStatusCode();
     }
 }

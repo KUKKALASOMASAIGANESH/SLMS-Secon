@@ -7,8 +7,7 @@ public class CategoryService
 {
     private readonly HttpClient _httpClient;
 
-    private const string ApiUrl =
-        "https://localhost:7277/api/Category";
+    private const string ApiUrl = "api/Category";
 
     public CategoryService(HttpClient httpClient)
     {
@@ -17,93 +16,45 @@ public class CategoryService
 
     public async Task<List<CategoryViewModel>> GetAllAsync()
     {
-        try
-        {
-            var result =
-                await _httpClient.GetFromJsonAsync<List<CategoryViewModel>>
-                ("https://localhost:7277/api/Category");
+        var result =
+            await _httpClient.GetFromJsonAsync<List<CategoryViewModel>>(ApiUrl);
 
-            return result ?? new List<CategoryViewModel>();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-        finally
-        {
-            Console.WriteLine("Get Categories Completed");
-        }
+        return result ?? new List<CategoryViewModel>();
+    }
+
+    public async Task<CategoryViewModel?> GetByIdAsync(int id)
+    {
+        return await _httpClient
+            .GetFromJsonAsync<CategoryViewModel>($"{ApiUrl}/{id}");
     }
 
     public async Task CreateAsync(CategoryViewModel model)
     {
-        try
-        {
-            var response = await _httpClient.PostAsJsonAsync(
-                "https://localhost:7277/api/Category",
-                model);
+        var response =
+            await _httpClient.PostAsJsonAsync(ApiUrl, model);
 
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-        finally
-        {
-            Console.WriteLine("Create Category Completed");
-        }
+        response.EnsureSuccessStatusCode();
     }
 
     public async Task UpdateAsync(CategoryViewModel model)
     {
-        try
-        {
-            var response = await _httpClient.PutAsJsonAsync(
-                $"https://localhost:7277/api/Category/{model.Id}",
-                model);
+        var response =
+            await _httpClient.PutAsJsonAsync($"{ApiUrl}/{model.Id}", model);
 
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-        finally
-        {
-            Console.WriteLine("Update Category Completed");
-        }
+        response.EnsureSuccessStatusCode();
     }
-    public async Task<CategoryViewModel?> GetByIdAsync(int id)
-    {
-        try
-        {
-            return await _httpClient.GetFromJsonAsync<CategoryViewModel>(
-                $"https://localhost:7277/api/Category/{id}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            throw;
-        }
-    }
+
     public async Task DeleteAsync(int id)
     {
         var response =
-            await _httpClient.DeleteAsync(
-                $"{ApiUrl}/{id}");
+            await _httpClient.DeleteAsync($"{ApiUrl}/{id}");
 
         if (!response.IsSuccessStatusCode)
         {
             var error =
-                await response.Content
-                    .ReadAsStringAsync();
+                await response.Content.ReadAsStringAsync();
 
             throw new Exception(error);
         }
     }
-
 }

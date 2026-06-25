@@ -14,63 +14,52 @@ public class BookIssueService
 
     public async Task<List<BookIssueViewModel>> GetAllAsync()
     {
-        var result =
-            await _httpClient.GetFromJsonAsync<List<BookIssueViewModel>>
-            ("https://localhost:7277/api/BookIssue");
-
-        return result ?? new List<BookIssueViewModel>();
+        return await _httpClient
+            .GetFromJsonAsync<List<BookIssueViewModel>>("api/BookIssue")
+            ?? new List<BookIssueViewModel>();
     }
 
     public async Task<BookIssueViewModel?> GetByIdAsync(int id)
     {
-        return await _httpClient.GetFromJsonAsync<BookIssueViewModel>
-        ($"https://localhost:7277/api/BookIssue/{id}");
+        return await _httpClient
+            .GetFromJsonAsync<BookIssueViewModel>($"api/BookIssue/{id}");
     }
 
     public async Task CreateAsync(BookIssueViewModel model)
     {
-        var response =
-            await _httpClient.PostAsJsonAsync(
-                "https://localhost:7277/api/BookIssue",
-                model);
+        var response = await _httpClient
+            .PostAsJsonAsync("api/BookIssue", model);
 
         response.EnsureSuccessStatusCode();
     }
 
     public async Task UpdateAsync(BookIssueViewModel model)
     {
-        var response =
-            await _httpClient.PutAsJsonAsync(
-                $"https://localhost:7277/api/BookIssue/{model.Id}",
-                model);
+        var response = await _httpClient
+            .PutAsJsonAsync($"api/BookIssue/{model.Id}", model);
 
         response.EnsureSuccessStatusCode();
     }
 
     public async Task DeleteAsync(int id)
     {
-        var response =
-            await _httpClient.DeleteAsync(
-                $"https://localhost:7277/api/BookIssue/{id}");
+        var response = await _httpClient
+            .DeleteAsync($"api/BookIssue/{id}");
 
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task<List<EmployeeViewModel>>
-        GetEmployeesAsync()
+    public async Task<List<EmployeeViewModel>> GetEmployeesAsync()
     {
-        return await _httpClient.GetFromJsonAsync
-            <List<EmployeeViewModel>>
-            ("https://localhost:7277/api/Employee")
+        return await _httpClient
+            .GetFromJsonAsync<List<EmployeeViewModel>>("api/Employee")
             ?? new List<EmployeeViewModel>();
     }
 
-    public async Task<List<LibraryResourceViewModel>>
-        GetLibraryResourcesAsync()
+    public async Task<List<LibraryResourceViewModel>> GetLibraryResourcesAsync()
     {
-        return await _httpClient.GetFromJsonAsync
-            <List<LibraryResourceViewModel>>
-            ("https://localhost:7277/api/LibraryResource")
+        return await _httpClient
+            .GetFromJsonAsync<List<LibraryResourceViewModel>>("api/LibraryResource")
             ?? new List<LibraryResourceViewModel>();
     }
 }
