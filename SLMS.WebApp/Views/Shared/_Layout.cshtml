@@ -1,8 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - SLMS</title>
 
     <link rel="stylesheet"
@@ -15,9 +20,11 @@
     <link rel="stylesheet"
           href="~/SLMS.WebApp.styles.css"
           asp-append-version="true" />
+
 </head>
 
 <script>
+
     setTimeout(function () {
 
         var alerts =
@@ -30,12 +37,15 @@
             alert.style.opacity = "0";
 
             setTimeout(function () {
+
                 alert.remove();
+
             }, 500);
 
         });
 
     }, 3000);
+
 </script>
 
 <body>
@@ -47,7 +57,7 @@
             <div class="container-fluid">
 
                 <a class="navbar-brand d-flex align-items-center"
-                   asp-controller="Home"
+                   asp-controller="Dashboard"
                    asp-action="Index">
 
                     <img src="~/images/secon-logo.jpg"
@@ -56,6 +66,7 @@
                          onerror="this.style.display='none'" />
 
                     <div>
+
                         <div style="font-weight:bold;">
                             SECON
                         </div>
@@ -63,6 +74,7 @@
                         <small>
                             Library Management System
                         </small>
+
                     </div>
 
                 </a>
@@ -81,31 +93,17 @@
 
                     <ul class="navbar-nav ms-auto">
 
-                        
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark"
-                               asp-controller="Shelf"
-                               asp-action="Index">
-                                Shelf Management
-                            </a>
-                        </li>
-
-                        @* <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="Inventory"
-                               asp-action="Dashboard">
-                                Inventory Dashboard
-                            </a>
-                        </li> *@
+                        <!-- DASHBOARD : ALL USERS -->
 
                         <li class="nav-item">
                             <a class="nav-link"
-                               asp-controller="Category"
+                               asp-controller="Dashboard"
                                asp-action="Index">
-                                Categories
+                                Dashboard
                             </a>
                         </li>
+
+                        <!-- LIBRARY RESOURCES : ALL USERS -->
 
                         <li class="nav-item">
                             <a class="nav-link"
@@ -115,62 +113,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="BookIssue"
-                               asp-action="Index">
-                                Book Issues
-                            </a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle"
-                               href="#"
-                               role="button"
-                               data-bs-toggle="dropdown">
-
-                                Transactions
-
-                            </a>
-
-                            <ul class="dropdown-menu">
-
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Transaction"
-                                       asp-action="Dashboard">
-                                        Dashboard
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Transaction"
-                                       asp-action="ReturnBook">
-                                        Return Book
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Transaction"
-                                       asp-action="Requests">
-                                        Request Approvals
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item"
-                                       asp-controller="Transaction"
-                                       asp-action="OverdueBooks">
-                                        Overdue Books
-                                    </a>
-                                </li>
-
-                            </ul>
-
-                        </li>
+                        <!-- DIGITAL LIBRARY : ALL USERS -->
 
                         <li class="nav-item">
                             <a class="nav-link"
@@ -179,77 +122,159 @@
                                 Digital Library
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="ManageContent">
-                                Manage Content
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="ManageRequests">
-                                Manage Requests
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="ManagePolicies">
-                                Manage Policies
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="Employee"
-                               asp-action="Index">
-                                Employees
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Admin") ||
+                             User.IsInRole("Librarian"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Shelf"
+                                   asp-action="Index">
+                                    Shelf Management
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="CustodyHistory"
-                               asp-action="Index">
-                                Custody History
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Category"
+                                   asp-action="Index">
+                                    Categories
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="AuditLog"
-                               asp-action="Index">
-                                Audit Logs
-                            </a>
-                        </li>
-                       
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="BookIssue"
+                                   asp-action="Index">
+                                    Book Issues
+                                </a>
+                            </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                       asp-controller="UserManagement"
-                                       asp-action="Index">
-                                        User Management
-                                    </a>
-                                </li>
+                            <li class="nav-item dropdown">
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="Department"
-                               asp-action="Index">
-                                Departments
-                            </a>
-                        </li>
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown">
 
-                        <!-- ✅ ADDED REPORTS (ONLY ADDITION, NOTHING CHANGED) -->
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="Reports"
-                               asp-action="Index">
-                                Reports
-                            </a>
-                        </li>
+                                    Transactions
+
+                                </a>
+
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Transaction"
+                                           asp-action="Dashboard">
+                                            Dashboard
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Transaction"
+                                           asp-action="ReturnBook">
+                                            Return Book
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Transaction"
+                                           asp-action="Requests">
+                                            Request Approvals
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Transaction"
+                                           asp-action="OverdueBooks">
+                                            Overdue Books
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="CustodyHistory"
+                                   asp-action="Index">
+                                    Custody History
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Reports"
+                                   asp-action="Index">
+                                    Reports
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="DigitalLibrary"
+                                   asp-action="ManageContent">
+                                    Manage Content
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="DigitalLibrary"
+                                   asp-action="ManageRequests">
+                                    Manage Requests
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="DigitalLibrary"
+                                   asp-action="ManagePolicies">
+                                    Manage Policies
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Department"
+                                   asp-action="Index">
+                                    Departments
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Employee"
+                                   asp-action="Index">
+                                    Employees
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="UserManagement"
+                                   asp-action="Index">
+                                    User Management
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="AuditLog"
+                                   asp-action="Index">
+                                    Audit Logs
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <span class="nav-link">
                                 @User.Identity?.Name
@@ -264,7 +289,6 @@
                             </a>
                         </li>
 
-
                     </ul>
 
                 </div>
@@ -277,7 +301,8 @@
 
     <div class="container-fluid px-4">
 
-        <main role="main" class="pb-3">
+        <main role="main"
+              class="pb-3">
 
             @RenderBody()
 
@@ -285,7 +310,7 @@
 
     </div>
 
-    <footer class="border-top  text-center text-muted mt-4 fixed-bottom">
+    <footer class="border-top text-center text-muted mt-4 fixed-bottom">
 
         <div class="container-fluid px-4">
 
@@ -307,4 +332,5 @@
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
+
 </html>

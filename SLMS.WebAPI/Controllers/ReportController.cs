@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "Admin,Librarian")]
 [Route("api/reports")]
 [ApiController]
 public class ReportController : ControllerBase

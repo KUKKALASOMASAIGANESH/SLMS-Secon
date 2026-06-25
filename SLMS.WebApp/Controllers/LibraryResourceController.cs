@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
@@ -25,12 +26,14 @@ public class LibraryResourceController : Controller
         _shelfService = shelfService;
     }
 
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var resources = await _service.GetAllAsync();
         return View(resources);
     }
 
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Create()
     {
         var categories =
@@ -105,7 +108,7 @@ public class LibraryResourceController : Controller
             return View(model);
         }
     }
-
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Edit(int id)
     {
         var resource =
@@ -199,6 +202,7 @@ public class LibraryResourceController : Controller
         return View(resource);
     }
 
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Delete(int id)
     {
         try
