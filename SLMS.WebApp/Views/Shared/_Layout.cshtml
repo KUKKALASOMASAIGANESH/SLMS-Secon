@@ -172,33 +172,53 @@
 
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="Index">
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown">
+
                                 Digital Library
+
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="ManageContent">
-                                Manage Content
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="ManageRequests">
-                                Manage Requests
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-controller="DigitalLibrary"
-                               asp-action="ManagePolicies">
-                                Manage Policies
-                            </a>
+
+                            <ul class="dropdown-menu">
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="DigitalLibrary"
+                                       asp-action="Index">
+                                        Digital Library
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="DigitalLibrary"
+                                       asp-action="ManageContent">
+                                        Manage Content
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="DigitalLibrary"
+                                       asp-action="ManageRequests">
+                                        Manage Requests
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="DigitalLibrary"
+                                       asp-action="ManagePolicies">
+                                        Manage Policies
+                                    </a>
+                                </li>
+
+                            </ul>
+
                         </li>
 
                         <li class="nav-item">
