@@ -1,166 +1,1081 @@
-﻿@{
+﻿@model SLMS.WebApp.Models.DashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="mb-4">
-    <h2>Secon Library Management System</h2>
+<div class="container-fluid">
 
-    <p class="text-muted">
-        Welcome to SECON Library Management System Dashboard
-    </p>
-</div>
+    <!-- Welcome Banner -->
 
-<div class="row">
+    <div class="card shadow-lg border-0 mb-4 bg-primary text-white">
 
-    @if (User.IsInRole("Admin"))
-    {
-        <!-- Department -->
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Departments</h5>
+        <div class="card-body p-4">
 
-                    <p class="card-text">
-                        Manage department records and information.
-                    </p>
+            <h2 class="fw-bold">
+                Welcome,
+                @User.Identity?.Name 👋
+            </h2>
 
-                    <a asp-controller="Department"
-                       asp-action="Index"
-                       class="btn btn-primary">
-                        Open
-                    </a>
-                </div>
-            </div>
+            <p class="mb-0 fs-5">
+                SECON Library Management System
+            </p>
+
+            <small>
+                Manage your library resources, employees,
+                digital library and transactions from one place.
+            </small>
+
         </div>
 
-        <!-- Employee -->
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Employees</h5>
+    </div>
 
-                    <p class="card-text">
-                        Manage employee records.
-                    </p>
+    <!-- Dashboard Statistics -->
 
-                    <a asp-controller="Employee"
-                       asp-action="Index"
-                       class="btn btn-primary">
-                        Open
-                    </a>
+    <div class="row g-4 mb-4">
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card shadow border-start border-primary border-5">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Departments
+                    </h6>
+
+                    <h2 class="text-primary fw-bold">
+                        @Model.TotalDepartments
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Audit -->
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Audit Logs</h5>
+        <div class="col-xl-3 col-lg-4 col-md-6">
 
-                    <p class="card-text">
-                        View system activities and logs.
-                    </p>
+            <div class="card shadow border-start border-success border-5">
 
-                    <a asp-controller="AuditLog"
-                       asp-action="Index"
-                       class="btn btn-primary">
-                        Open
-                    </a>
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Employees
+                    </h6>
+
+                    <h2 class="text-success fw-bold">
+                        @Model.TotalEmployees
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
-    }
 
-    @if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
-    {
-        <!-- Custody -->
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Custody History</h5>
+        <div class="col-xl-3 col-lg-4 col-md-6">
 
-                    <p class="card-text">
-                        Manage custody transfers.
-                    </p>
+            <div class="card shadow border-start border-warning border-5">
 
-                    <a asp-controller="CustodyHistory"
-                       asp-action="Index"
-                       class="btn btn-primary">
-                        Open
-                    </a>
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Categories
+                    </h6>
+
+                    <h2 class="text-warning fw-bold">
+                        @Model.TotalCategories
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
-    }
 
-    @if (User.IsInRole("User"))
-    {
-        <div class="col-md-4 mb-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Digital Library</h5>
+        <div class="col-xl-3 col-lg-4 col-md-6">
 
-                    <p class="card-text">
-                        Browse available digital library resources.
-                    </p>
+            <div class="card shadow border-start border-info border-5">
 
-                    <a asp-controller="DigitalLibrary"
-                       asp-action="Index"
-                       class="btn btn-primary">
-                        Open
-                    </a>
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Library Resources
+                    </h6>
+
+                    <h2 class="text-info fw-bold">
+                        @Model.TotalResources
+                    </h2>
+
                 </div>
-            </div>
-        </div>
-    }
 
-</div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card shadow border-start border-danger border-5">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Issued Books
+                    </h6>
+
+                    <h2 class="text-danger fw-bold">
+                        @Model.TotalIssuedBooks
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card shadow border-start border-success border-5">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Returned Books
+                    </h6>
+
+                    <h2 class="text-success fw-bold">
+                        @Model.TotalReturnedBooks
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card shadow border-start border-secondary border-5">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Shelves
+                    </h6>
+
+                    <h2 class="text-secondary fw-bold">
+                        @Model.TotalShelves
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card shadow border-start border-dark border-5">
+
+                <div class="card-body text-center">
+
+                    <h6 class="text-muted">
+                        Overdue Books
+                    </h6>
+
+                    <h2 class="text-dark fw-bold">
+                        @Model.TotalOverdueBooks
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Summary -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>Digital Library</h5>
+
+                    <h2 class="text-primary">
+                        @Model.TotalDigitalContents
+                    </h2>
+
+                    <small class="text-muted">
+                        Available Digital Contents
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>Pending Requests</h5>
+
+                    <h2 class="text-warning">
+                        @Model.TotalRequests
+                    </h2>
+
+                    <small class="text-muted">
+                        Library Requests
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5>System Users</h5>
+
+                    <h2 class="text-success">
+                        @Model.TotalUsers
+                    </h2>
+
+                    <small class="text-muted">
+                        Registered Users
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+@* ========================================================= *@
+@* ADMIN - MASTER MANAGEMENT                                 *@
+@* ========================================================= *@
 
 @if (User.IsInRole("Admin"))
 {
-    <hr />
+        <div class="card shadow mb-4">
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4>Quick Access</h4>
+            <div class="card-header bg-dark text-white">
+
+                <h4 class="mb-0">
+                    🛠 Master Management
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-4">
+
+                        <div class="card h-100 border-primary shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>🏢</h1>
+
+                                <h5>Departments</h5>
+
+                                <h3 class="text-primary">
+                                    @Model.TotalDepartments
+                                </h3>
+
+                                <p class="text-muted">
+                                    Manage Department Information
+                                </p>
+
+                                <a asp-controller="Department"
+                                   asp-action="Index"
+                                   class="btn btn-primary w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+
+                        <div class="card h-100 border-success shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>👨‍💼</h1>
+
+                                <h5>Employees</h5>
+
+                                <h3 class="text-success">
+                                    @Model.TotalEmployees
+                                </h3>
+
+                                <p class="text-muted">
+                                    Manage Employee Records
+                                </p>
+
+                                <a asp-controller="Employee"
+                                   asp-action="Index"
+                                   class="btn btn-success w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+
+                        <div class="card h-100 border-warning shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📚</h1>
+
+                                <h5>Categories</h5>
+
+                                <h3 class="text-warning">
+                                    @Model.TotalCategories
+                                </h3>
+
+                                <p class="text-muted">
+                                    Manage Categories
+                                </p>
+
+                                <a asp-controller="Category"
+                                   asp-action="Index"
+                                   class="btn btn-warning text-white w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <div class="card h-100 border-info shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>🗄</h1>
+
+                                <h5>Shelf Management</h5>
+
+                                <h3 class="text-info">
+                                    @Model.TotalShelves
+                                </h3>
+
+                                <p class="text-muted">
+                                    Manage Shelf Locations
+                                </p>
+
+                                <a asp-controller="Shelf"
+                                   asp-action="Index"
+                                   class="btn btn-info text-white w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                        <div class="card h-100 border-secondary shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📦</h1>
+
+                                <h5>Library Resources</h5>
+
+                                <h3 class="text-secondary">
+                                    @Model.TotalResources
+                                </h3>
+
+                                <p class="text-muted">
+                                    Manage Books & Resources
+                                </p>
+
+                                <a asp-controller="LibraryResource"
+                                   asp-action="Index"
+                                   class="btn btn-secondary w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+}
+
+@* ========================================================= *@
+@* TRANSACTIONS                                               *@
+@* ========================================================= *@
+
+@if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+{
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <h4 class="mb-0">
+                    📖 Transactions
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-3">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📕</h1>
+
+                                <h4>@Model.TotalIssuedBooks</h4>
+
+                                <p>Issued Books</p>
+
+                                <a asp-controller="BookIssue"
+                                   asp-action="Index"
+                                   class="btn btn-primary w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📗</h1>
+
+                                <h4>@Model.TotalReturnedBooks</h4>
+
+                                <p>Returned Books</p>
+
+                                <a asp-controller="Transaction"
+                                   asp-action="ReturnBook"
+                                   class="btn btn-success w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📜</h1>
+
+                                <h4>History</h4>
+
+                                <p>Custody History</p>
+
+                                <a asp-controller="CustodyHistory"
+                                   asp-action="Index"
+                                   class="btn btn-warning text-white w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>⚠</h1>
+
+                                <h4>@Model.TotalOverdueBooks</h4>
+
+                                <p>Overdue Books</p>
+
+                                <a asp-controller="Transaction"
+                                   asp-action="OverdueBooks"
+                                   class="btn btn-danger w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+}
+
+@* ========================================================= *@
+@* DIGITAL LIBRARY                                            *@
+@* ========================================================= *@
+
+@if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
+{
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-success text-white">
+
+                <h4 class="mb-0">
+                    💻 Digital Library
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-3">
+
+                        <div class="card shadow-sm h-100">
+
+                            <div class="card-body text-center">
+
+                                <h1>📚</h1>
+
+                                <h4>@Model.TotalDigitalContents</h4>
+
+                                <p>Digital Contents</p>
+
+                                <a asp-controller="DigitalLibrary"
+                                   asp-action="Index"
+                                   class="btn btn-success w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="card shadow-sm h-100">
+
+                            <div class="card-body text-center">
+
+                                <h1>⬆</h1>
+
+                                <h4>Manage</h4>
+
+                                <p>Content</p>
+
+                                <a asp-controller="DigitalLibrary"
+                                   asp-action="ManageContent"
+                                   class="btn btn-primary w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="card shadow-sm h-100">
+
+                            <div class="card-body text-center">
+
+                                <h1>✔</h1>
+
+                                <h4>@Model.TotalRequests</h4>
+
+                                <p>Requests</p>
+
+                                <a asp-controller="DigitalLibrary"
+                                   asp-action="ManageRequests"
+                                   class="btn btn-warning text-white w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <div class="card shadow-sm h-100">
+
+                            <div class="card-body text-center">
+
+                                <h1>📄</h1>
+
+                                <h4>Policies</h4>
+
+                                <p>Library Policies</p>
+
+                                <a asp-controller="DigitalLibrary"
+                                   asp-action="ManagePolicies"
+                                   class="btn btn-info text-white w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+@* ========================================================= *@
+    @* ADMINISTRATION                                             *@
+    @* ========================================================= *@
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-danger text-white">
+
+                <h4 class="mb-0">
+                    ⚙ Administration
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-lg-4">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>👥</h1>
+
+                                <h5>User Management</h5>
+
+                                <h3 class="text-danger">
+                                    @Model.TotalUsers
+                                </h3>
+
+                                <a asp-controller="UserManagement"
+                                   asp-action="Index"
+                                   class="btn btn-danger w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📋</h1>
+
+                                <h5>Audit Logs</h5>
+
+                                <h3 class="text-secondary">
+                                    @Model.TotalAuditLogs
+                                </h3>
+
+                                <a asp-controller="AuditLog"
+                                   asp-action="Index"
+                                   class="btn btn-secondary w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-4">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📊</h1>
+
+                                <h5>Reports</h5>
+
+                                <p class="text-muted">
+                                    Library Reports
+                                </p>
+
+                                <a asp-controller="Reports"
+                                   asp-action="Index"
+                                   class="btn btn-dark w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+
+        <div class="card shadow mb-5">
+
+            <div class="card-header bg-primary text-white">
+
+                <h4 class="mb-0">
+                    🚀 Quick Actions
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="d-flex flex-wrap gap-2">
 
                     <a asp-controller="Department"
                        asp-action="Create"
-                       class="btn btn-outline-primary m-1">
-                        Add Department
+                       class="btn btn-outline-primary">
+                        ➕ Department
                     </a>
 
                     <a asp-controller="Employee"
                        asp-action="Create"
-                       class="btn btn-outline-success m-1">
-                        Add Employee
+                       class="btn btn-outline-success">
+                        ➕ Employee
                     </a>
-                </div>
-            </div>
-        </div>
-    </div>
-}
 
-@if (User.IsInRole("Admin") || User.IsInRole("Librarian"))
-{
-    <hr />
-
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4>Library Quick Access</h4>
-
-                    <a asp-controller="CustodyHistory"
+                    <a asp-controller="Category"
                        asp-action="Create"
-                       class="btn btn-outline-warning m-1">
-                        Add Custody
+                       class="btn btn-outline-warning">
+                        ➕ Category
                     </a>
+
+                    <a asp-controller="LibraryResource"
+                       asp-action="Create"
+                       class="btn btn-outline-secondary">
+                        ➕ Resource
+                    </a>
+
+                    <a asp-controller="BookIssue"
+                       asp-action="Create"
+                       class="btn btn-outline-danger">
+                        📕 Issue Book
+                    </a>
+
+                    <a asp-controller="DigitalLibrary"
+                       asp-action="CreateContent"
+                       class="btn btn-outline-info">
+                        ⬆ Upload Content
+                    </a>
+
                 </div>
+
             </div>
+
         </div>
+    }
+
+    @* ========================================================= *@
+    @* USER DASHBOARD                                             *@
+    @* ========================================================= *@
+
+    @if (User.IsInRole("User"))
+    {
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-success text-white">
+
+                <h4 class="mb-0">
+                    📚 My Library
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📖</h1>
+
+                                <h5>Library Resources</h5>
+
+                                <a asp-controller="LibraryResource"
+                                   asp-action="Index"
+                                   class="btn btn-success w-100">
+                                    Browse
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>💻</h1>
+
+                                <h5>Digital Library</h5>
+
+                                <a asp-controller="DigitalLibrary"
+                                   asp-action="Index"
+                                   class="btn btn-primary w-100">
+                                    Open
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h1>📄</h1>
+
+                                <h5>Policies</h5>
+
+                                <a asp-controller="DigitalLibrary"
+                                   asp-action="Policies"
+                                   class="btn btn-warning text-white w-100">
+                                    View
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    @* ========================================================= *@
+    @* RECENT ACTIVITY & SYSTEM STATUS                            *@
+    @* ========================================================= *@
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+                        📈 Dashboard Summary
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-striped">
+
+                        <tbody>
+
+                            <tr>
+                                <td>Total Departments</td>
+                                <td><strong>@Model.TotalDepartments</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Total Employees</td>
+                                <td><strong>@Model.TotalEmployees</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Total Resources</td>
+                                <td><strong>@Model.TotalResources</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Issued Books</td>
+                                <td><strong>@Model.TotalIssuedBooks</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Returned Books</td>
+                                <td><strong>@Model.TotalReturnedBooks</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Overdue Books</td>
+                                <td><strong>@Model.TotalOverdueBooks</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Digital Contents</td>
+                                <td><strong>@Model.TotalDigitalContents</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Pending Requests</td>
+                                <td><strong>@Model.TotalRequests</strong></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-success text-white">
+
+                    <h5 class="mb-0">
+                        📊 System Status
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="progress mb-3">
+
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                             style="width:100%">
+                            Online
+                        </div>
+
+                    </div>
+
+                    <table class="table table-sm">
+
+                        <tbody>
+
+                            <tr>
+                                <td>Users</td>
+                                <td>@Model.TotalUsers</td>
+                            </tr>
+
+                            <tr>
+                                <td>Resources</td>
+                                <td>@Model.TotalResources</td>
+                            </tr>
+
+                            <tr>
+                                <td>Digital Contents</td>
+                                <td>@Model.TotalDigitalContents</td>
+                            </tr>
+
+                            <tr>
+                                <td>Audit Logs</td>
+                                <td>@Model.TotalAuditLogs</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-}
+
+</div>

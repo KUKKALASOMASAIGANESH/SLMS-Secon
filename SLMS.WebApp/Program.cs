@@ -114,9 +114,11 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 
 #region Digital Library
-
-builder.Services.AddScoped<IDigitalLibraryService, DigitalLibraryService>();
-
+builder.Services.AddHttpClient<IDigitalLibraryService, DigitalLibraryService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 #endregion
 
 #region Transaction Dashboard
@@ -132,6 +134,11 @@ builder.Services.AddHttpClient<ITransactionDashboardService, TransactionDashboar
 #region User Management
 
 builder.Services.AddHttpClient<UserManagementService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
+builder.Services.AddHttpClient<DashboardService>(client =>
 {
     client.BaseAddress = apiBaseUrl;
 })

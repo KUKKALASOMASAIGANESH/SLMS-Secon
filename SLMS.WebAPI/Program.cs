@@ -101,7 +101,7 @@ builder.Services.AddScoped<IDigitalContentRequestRepository, DigitalContentReque
 builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
 builder.Services.AddScoped<IDownloadHistoryRepository, DownloadHistoryRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
-
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 #endregion
 
 #region Services
@@ -134,6 +134,7 @@ builder.Services.AddScoped<IDigitalContentRequestService, DigitalContentRequestS
 builder.Services.AddScoped<IPolicyService, PolicyService>();
 builder.Services.AddScoped<IDownloadHistoryService, DownloadHistoryService>();
 builder.Services.AddScoped<ReportService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 #endregion
 

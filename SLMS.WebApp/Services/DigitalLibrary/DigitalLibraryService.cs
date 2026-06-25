@@ -3,32 +3,23 @@ using SLMS.WebApp.Models.DigitalLibrary;
 
 namespace SLMS.WebApp.Services.DigitalLibrary;
 
-using SLMS.WebApp.Models.DigitalLibrary;
-
-public class DigitalLibraryService
-    : IDigitalLibraryService
+public class DigitalLibraryService : IDigitalLibraryService
 {
     private readonly HttpClient _httpClient;
 
-    public DigitalLibraryService(
-        HttpClient httpClient)
+    public DigitalLibraryService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<List<DigitalContentViewModel>>
-        GetContentsAsync()
+    public async Task<List<DigitalContentViewModel>> GetContentsAsync()
     {
-        var result =
-            await _httpClient.GetFromJsonAsync<
-                List<DigitalContentViewModel>>
-            ("https://localhost:7277/api/DigitalContent");
-
-        return result ?? new();
+        return await _httpClient
+            .GetFromJsonAsync<List<DigitalContentViewModel>>("api/DigitalContent")
+            ?? new();
     }
 
-    public async Task SubmitRequestAsync(
-    DigitalContentRequestViewModel model)
+    public async Task SubmitRequestAsync(DigitalContentRequestViewModel model)
     {
         var request = new
         {
@@ -36,154 +27,115 @@ public class DigitalLibraryService
             reason = model.Reason
         };
 
-        await _httpClient.PostAsJsonAsync(
-            "https://localhost:7277/api/DigitalContentRequest",
-            request);
+        await _httpClient.PostAsJsonAsync("api/DigitalContentRequest", request);
     }
 
-    public async Task<List<PolicyViewModel>>
-    GetPoliciesAsync()
+    public async Task<List<PolicyViewModel>> GetPoliciesAsync()
     {
-        var result =
-            await _httpClient.GetFromJsonAsync<
-                List<PolicyViewModel>>
-            ("https://localhost:7277/api/Policy");
-
-        return result ?? new();
+        return await _httpClient
+            .GetFromJsonAsync<List<PolicyViewModel>>("api/Policy")
+            ?? new();
     }
 
-    public async Task<List<DownloadHistoryViewModel>>
-     GetDownloadHistoryAsync()
+    public async Task<List<DownloadHistoryViewModel>> GetDownloadHistoryAsync()
     {
-        var result =
-            await _httpClient.GetFromJsonAsync<
-                List<DownloadHistoryApiResponse>>
-            ("https://localhost:7277/api/DownloadHistory");
+        var result = await _httpClient
+            .GetFromJsonAsync<List<DownloadHistoryApiResponse>>("api/DownloadHistory");
 
         if (result == null)
             return new();
 
-        return result.Select(x =>
-            new DownloadHistoryViewModel
-            {
-                ContentTitle =
-                    x.DigitalContent?.Title ?? "Unknown",
-
-                DownloadedOn = x.DownloadedOn
-            })
-            .ToList();
+        return result.Select(x => new DownloadHistoryViewModel
+        {
+            ContentTitle = x.DigitalContent?.Title ?? "Unknown",
+            DownloadedOn = x.DownloadedOn
+        }).ToList();
     }
 
-    public async Task CreateContentAsync(
-    AdminDigitalContentViewModel model)
+    public async Task CreateContentAsync(AdminDigitalContentViewModel model)
     {
-        await _httpClient.PostAsJsonAsync(
-            "https://localhost:7277/api/DigitalContent",
-            model);
+        await _httpClient.PostAsJsonAsync("api/DigitalContent", model);
     }
 
-    public async Task UpdateContentAsync(
-    AdminDigitalContentViewModel model)
+    public async Task UpdateContentAsync(AdminDigitalContentViewModel model)
     {
         await _httpClient.PutAsJsonAsync(
-            $"https://localhost:7277/api/DigitalContent/{model.Id}",
+            $"api/DigitalContent/{model.Id}",
             model);
     }
 
     public async Task DeleteContentAsync(int id)
     {
-        await _httpClient.DeleteAsync(
-            $"https://localhost:7277/api/DigitalContent/{id}");
+        await _httpClient.DeleteAsync($"api/DigitalContent/{id}");
     }
 
     public async Task<DigitalContentViewModel?> GetContentByIdAsync(int id)
     {
-        return await _httpClient.GetFromJsonAsync<DigitalContentViewModel>(
-            $"https://localhost:7277/api/DigitalContent/{id}");
+        return await _httpClient
+            .GetFromJsonAsync<DigitalContentViewModel>($"api/DigitalContent/{id}");
     }
 
-    public async Task<List<AdminRequestViewModel>>
-    GetRequestsAsync()
+    public async Task<List<AdminRequestViewModel>> GetRequestsAsync()
     {
-        var result =
-            await _httpClient.GetFromJsonAsync<
-                List<AdminRequestViewModel>>
-            ("https://localhost:7277/api/DigitalContentRequest");
-
-        return result ?? new();
+        return await _httpClient
+            .GetFromJsonAsync<List<AdminRequestViewModel>>("api/DigitalContentRequest")
+            ?? new();
     }
 
     public async Task ApproveRequestAsync(int id)
     {
         await _httpClient.PutAsync(
-            $"https://localhost:7277/api/DigitalContentRequest/approve/{id}",
+            $"api/DigitalContentRequest/approve/{id}",
             null);
     }
 
     public async Task RejectRequestAsync(int id)
     {
         await _httpClient.PutAsync(
-            $"https://localhost:7277/api/DigitalContentRequest/reject/{id}",
+            $"api/DigitalContentRequest/reject/{id}",
             null);
     }
 
-    public async Task<List<PolicyViewModel>>
-    GetPoliciesForAdminAsync()
+    public async Task<List<PolicyViewModel>> GetPoliciesForAdminAsync()
     {
         return await _httpClient
-            .GetFromJsonAsync<List<PolicyViewModel>>
-            ("https://localhost:7277/api/Policy")
+            .GetFromJsonAsync<List<PolicyViewModel>>("api/Policy")
             ?? new();
     }
 
-    public async Task CreatePolicyAsync(
-    AdminPolicyViewModel model)
+    public async Task CreatePolicyAsync(AdminPolicyViewModel model)
     {
         var dto = new
         {
-            policyTitle =
-                model.PolicyTitle,
-
-            policyContent =
-                model.PolicyContent
+            policyTitle = model.PolicyTitle,
+            policyContent = model.PolicyContent
         };
 
-        await _httpClient.PostAsJsonAsync(
-            "https://localhost:7277/api/Policy",
-            dto);
+        await _httpClient.PostAsJsonAsync("api/Policy", dto);
     }
 
-    public async Task UpdatePolicyAsync(
-    AdminPolicyViewModel model)
+    public async Task UpdatePolicyAsync(AdminPolicyViewModel model)
     {
         var dto = new
         {
-            policyTitle =
-                model.PolicyTitle,
-
-            policyContent =
-                model.PolicyContent
+            policyTitle = model.PolicyTitle,
+            policyContent = model.PolicyContent
         };
 
         await _httpClient.PutAsJsonAsync(
-            $"https://localhost:7277/api/Policy/{model.Id}",
+            $"api/Policy/{model.Id}",
             dto);
     }
 
-    public async Task DeletePolicyAsync(
-    int id)
+    public async Task DeletePolicyAsync(int id)
     {
-        await _httpClient.DeleteAsync(
-            $"https://localhost:7277/api/Policy/{id}");
+        await _httpClient.DeleteAsync($"api/Policy/{id}");
     }
 
-    public async Task<AdminPolicyViewModel?>
-    GetPolicyByIdAsync(int id)
+    public async Task<AdminPolicyViewModel?> GetPolicyByIdAsync(int id)
     {
-        var policy =
-            await _httpClient.GetFromJsonAsync
-            <PolicyViewModel>(
-                $"https://localhost:7277/api/Policy/{id}");
+        var policy = await _httpClient
+            .GetFromJsonAsync<PolicyViewModel>($"api/Policy/{id}");
 
         if (policy == null)
             return null;
@@ -196,14 +148,10 @@ public class DigitalLibraryService
         };
     }
 
-    public async Task<bool> CanAccessContentAsync(
-     int contentId,
-     int employeeId)
+    public async Task<bool> CanAccessContentAsync(int contentId, int employeeId)
     {
-        var requests =
-            await _httpClient.GetFromJsonAsync
-            <List<AccessRequestViewModel>>
-            ("https://localhost:7277/api/DigitalContentRequest");
+        var requests = await _httpClient
+            .GetFromJsonAsync<List<AccessRequestViewModel>>("api/DigitalContentRequest");
 
         if (requests == null)
             return false;
@@ -214,35 +162,29 @@ public class DigitalLibraryService
             x.ApprovalStatus == "Approved");
     }
 
-    public async Task RecordDownloadAsync(
-    int contentId)
+    public async Task RecordDownloadAsync(int contentId)
     {
         await _httpClient.PostAsync(
-            $"https://localhost:7277/api/DigitalContent/download/{contentId}",
+            $"api/DigitalContent/download/{contentId}",
             null);
     }
 
-    public async Task AddDownloadHistoryAsync(
-    int employeeId,
-    int digitalContentId)
+    public async Task AddDownloadHistoryAsync(int employeeId, int digitalContentId)
     {
         var dto = new
         {
-            employeeId = employeeId,
-            digitalContentId = digitalContentId
+            employeeId,
+            digitalContentId
         };
 
-        await _httpClient.PostAsJsonAsync(
-            "https://localhost:7277/api/DownloadHistory",
-            dto);
+        await _httpClient.PostAsJsonAsync("api/DownloadHistory", dto);
     }
 
-    public async Task<List<RequestStatusViewModel>>
-    GetMyRequestsAsync(int employeeId)
+    public async Task<List<RequestStatusViewModel>> GetMyRequestsAsync(int employeeId)
     {
         return await _httpClient
-            .GetFromJsonAsync<List<RequestStatusViewModel>>
-            ($"https://localhost:7277/api/DigitalContentRequest/employee/{employeeId}")
+            .GetFromJsonAsync<List<RequestStatusViewModel>>(
+                $"api/DigitalContentRequest/employee/{employeeId}")
             ?? new();
     }
 }

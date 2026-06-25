@@ -202,7 +202,7 @@ public class LibraryResourceController : Controller
         return View(resource);
     }
 
-    [Authorize(Roles = "Admin,Librarian")]
+    [Authorize(Roles = "Admin,Librarian")] 
     public async Task<IActionResult> Delete(int id)
     {
         try

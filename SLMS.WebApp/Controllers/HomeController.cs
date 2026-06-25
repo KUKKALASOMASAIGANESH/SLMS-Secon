@@ -1,45 +1,48 @@
-    using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SLMS.WebApp.Models;
-using Microsoft.AspNetCore.Authorization;
+using SLMS.WebApp.Services;
+using System.Diagnostics;
 
-namespace SLMS.WebApp.Controllers
+namespace SLMS.WebApp.Controllers;
+
+[Authorize]
+public class HomeController : Controller
 {
-    // [Authorize(Roles = "Admin")]
-    [Authorize]
-    public class HomeController : Controller
+    private readonly ILogger<HomeController> _logger;
+    private readonly DashboardService _dashboardService;
+
+    public HomeController(
+        ILogger<HomeController> logger,
+        DashboardService dashboardService)
     {
-        private readonly ILogger<HomeController> _logger;
+        _logger = logger;
+        _dashboardService = dashboardService;
+    }
 
-        public HomeController(
-            ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+    public async Task<IActionResult> Index()
+    {
+        var model = await _dashboardService.GetDashboardAsync();
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View(model);
+    }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+    public IActionResult Privacy()
+    {
+        return View();
+    }
 
-        [ResponseCache(
-            Duration = 0,
-            Location = ResponseCacheLocation.None,
-            NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(
-                new ErrorViewModel
-                {
-                    RequestId =
-                        Activity.Current?.Id
-                        ?? HttpContext.TraceIdentifier
-                });
-        }
+    [ResponseCache(
+        Duration = 0,
+        Location = ResponseCacheLocation.None,
+        NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(
+            new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id
+                            ?? HttpContext.TraceIdentifier
+            });
     }
 }

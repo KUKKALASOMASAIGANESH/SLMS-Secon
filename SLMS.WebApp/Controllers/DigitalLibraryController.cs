@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.WebApp.Models.DigitalLibrary;
 using SLMS.WebApp.Services.DigitalLibrary;
-
+[Authorize(Roles = "Admin,Librarian,User")]
 public class DigitalLibraryController : Controller
 {
     private readonly IDigitalLibraryService _service;
