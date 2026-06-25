@@ -715,6 +715,32 @@ namespace SLMS.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2026, 6, 23, 5, 44, 49, 77, DateTimeKind.Utc).AddTicks(6920),
+                            Description = "System Administrator",
+                            IsActive = true,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2026, 6, 23, 5, 44, 49, 77, DateTimeKind.Utc).AddTicks(6924),
+                            Description = "Library Manager",
+                            IsActive = true,
+                            RoleName = "Librarian"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2026, 6, 23, 5, 44, 49, 77, DateTimeKind.Utc).AddTicks(6925),
+                            Description = "Normal Employee",
+                            IsActive = true,
+                            RoleName = "User"
+                        });
                 });
 
             modelBuilder.Entity("SLMS.DOL.Entities.RolePermission", b =>

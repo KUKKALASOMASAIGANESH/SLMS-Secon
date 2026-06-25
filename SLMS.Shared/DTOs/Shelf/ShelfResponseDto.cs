@@ -12,4 +12,9 @@ public class ShelfResponseDto
     public int CurrentBookCount { get; set; }
 
     public bool IsActive { get; set; }
+
+    public List<ShelfResourceDto>
+    Resources
+    { get; set; }
+    = new();
 }

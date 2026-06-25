@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SLMS.DAL.Repositories.Interfaces
 {
-    internal class IReportRepository
+    public class IReportRepository
     {
     }
 }

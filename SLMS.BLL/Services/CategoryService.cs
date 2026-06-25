@@ -81,6 +81,16 @@ public class CategoryService : ICategoryService
     public async Task<bool>
         DeleteAsync(int id)
     {
+        var hasResources =
+    await _repository
+        .HasResourcesAsync(id);
+
+        if (hasResources)
+        {
+            throw new Exception(
+                "Cannot delete category because resources are assigned to it.");
+        }
+
         var entity =
             await _repository.GetByIdAsync(id);
 

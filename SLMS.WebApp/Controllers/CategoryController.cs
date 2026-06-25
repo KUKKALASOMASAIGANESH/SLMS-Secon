@@ -108,12 +108,11 @@ public class CategoryController : Controller
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-
             TempData["ErrorMessage"] =
-                "Failed to delete category";
+                ex.Message;
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(
+                nameof(Index));
         }
     }
 

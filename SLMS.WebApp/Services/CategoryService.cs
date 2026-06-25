@@ -7,6 +7,9 @@ public class CategoryService
 {
     private readonly HttpClient _httpClient;
 
+    private const string ApiUrl =
+        "https://localhost:7277/api/Category";
+
     public CategoryService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -89,17 +92,17 @@ public class CategoryService
     }
     public async Task DeleteAsync(int id)
     {
-        try
-        {
-            var response = await _httpClient.DeleteAsync(
-                $"https://localhost:7277/api/Category/{id}");
+        var response =
+            await _httpClient.DeleteAsync(
+                $"{ApiUrl}/{id}");
 
-            response.EnsureSuccessStatusCode();
-        }
-        catch (Exception ex)
+        if (!response.IsSuccessStatusCode)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+            var error =
+                await response.Content
+                    .ReadAsStringAsync();
+
+            throw new Exception(error);
         }
     }
 

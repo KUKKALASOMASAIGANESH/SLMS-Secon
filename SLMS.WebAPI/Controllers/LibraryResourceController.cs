@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
 
@@ -6,6 +7,7 @@ using SLMS.Shared.DTOs.LibraryResource;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class LibraryResourceController : ControllerBase
@@ -91,28 +93,46 @@ public class LibraryResourceController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-        LibraryResourceCreateDto dto)
+    LibraryResourceCreateDto dto)
     {
-        var result =
-            await _service.CreateAsync(dto);
+        try
+        {
+            Console.WriteLine("API Create Started");
 
-        return Ok(result);
+            var result =
+                await _service.CreateAsync(dto);
+
+            Console.WriteLine("API Create Success");
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
+    
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
-        int id,
-        LibraryResourceUpdateDto dto)
+     int id,
+     LibraryResourceUpdateDto dto)
     {
-        var result =
-            await _service.UpdateAsync(id, dto);
+        try
+        {
+            var result =
+                await _service.UpdateAsync(id, dto);
 
-        if (result == null)
-            return NotFound();
+            if (result == null)
+                return NotFound();
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(
         int id)

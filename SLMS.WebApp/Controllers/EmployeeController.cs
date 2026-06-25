@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebApp.Controllers;
+
+[Authorize(Roles = "Admin")]
 
 public class EmployeeController : Controller
 {

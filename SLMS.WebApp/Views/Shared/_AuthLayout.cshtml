@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Character encoding -->
+    <meta charset="utf-8" />
+
+    <!-- Responsive design for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Dynamic page title -->
+    <title>@ViewData["Title"] - SLMS</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Custom application stylesheet -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+</head>
+
+<body>
+
+    <!--
+        Authentication Layout
+        Used only for Login, Register, and Forgot Password pages.
+        Does NOT display navbar, dashboard menu, or footer.
+    -->
+
+    <div class="container">
+
+        <!-- Page-specific content will be rendered here -->
+        @RenderBody()
+
+    </div>
+
+    <!-- jQuery Library -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Optional page-specific scripts -->
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

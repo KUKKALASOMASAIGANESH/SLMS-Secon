@@ -15,8 +15,7 @@ public class DepartmentService
         _httpClient = httpClient;
     }
 
-    public async Task<List<DepartmentViewModel>>
-        GetAllAsync()
+    public async Task<List<DepartmentViewModel>> GetAllAsync()
     {
         var response =
             await _httpClient.GetFromJsonAsync<
@@ -27,8 +26,7 @@ public class DepartmentService
             ?? new List<DepartmentViewModel>();
     }
 
-    public async Task<DepartmentViewModel?>
-        GetByIdAsync(int id)
+    public async Task<DepartmentViewModel?> GetByIdAsync(int id)
     {
         var response =
             await _httpClient.GetFromJsonAsync<
@@ -53,16 +51,9 @@ public class DepartmentService
             .Content
             .ReadAsStringAsync();
     }
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var response =
-            await _httpClient.DeleteAsync(
-                $"api/Department/{id}");
 
-        return response.IsSuccessStatusCode;
-    }
     public async Task<string?> UpdateAsync(
-    DepartmentViewModel department)
+        DepartmentViewModel department)
     {
         var response =
             await _httpClient.PutAsJsonAsync(
@@ -75,5 +66,14 @@ public class DepartmentService
         return await response
             .Content
             .ReadAsStringAsync();
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var response =
+            await _httpClient.DeleteAsync(
+                $"api/Department/{id}");
+
+        return response.IsSuccessStatusCode;
     }
 }

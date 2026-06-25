@@ -38,12 +38,12 @@ public class ShelfService
     }
 
     public async Task<
-        ShelfResponseDto?>
-        GetByIdAsync(int id)
+     ShelfResponseDto?>
+     GetByIdAsync(int id)
     {
         var shelf =
             await _repository
-                .GetByIdAsync(id);
+                .GetByIdWithResourcesAsync(id);
 
         if (shelf == null)
             return null;
@@ -100,6 +100,12 @@ public class ShelfService
         if (shelf == null)
             return null;
 
+        if (dto.Capacity < shelf.CurrentBookCount)
+        {
+            throw new Exception(
+                $"Capacity cannot be less than current book count ({shelf.CurrentBookCount}).");
+        }
+
         var duplicateShelf =
             (await _repository.GetAllAsync())
             .FirstOrDefault(x =>
@@ -132,8 +138,10 @@ public class ShelfService
             (shelf);
     }
 
+
+
     public async Task<bool>
-        DeleteAsync(int id)
+     DeleteAsync(int id)
     {
         var shelf =
             await _repository
@@ -141,6 +149,16 @@ public class ShelfService
 
         if (shelf == null)
             return false;
+
+        var hasResources =
+            await _repository
+                .HasResourcesAsync(id);
+
+        if (hasResources)
+        {
+            throw new Exception(
+                "Cannot delete shelf because resources are assigned to it.");
+        }
 
         _repository.Delete(shelf);
 

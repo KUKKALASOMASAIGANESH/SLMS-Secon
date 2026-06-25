@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
 using SLMS.DOL.Entities;
 using SLMS.Shared.DTOs.DigitalLibrary;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DigitalContentController : ControllerBase

@@ -10,6 +10,15 @@
     </div>
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger text-center shadow-sm w-50">
+            @TempData["ErrorMessage"]
+        </div>
+    </div>
+}
+
 <div class="d-flex justify-content-between align-items-center mb-4">
 
     
@@ -154,6 +163,7 @@
                     <th>Shelf Name</th>
                     <th>Capacity</th>
                     <th>Current Book Count</th>
+                    <th>Remaining space</th>
                     <th style="width:220px;">Actions</th>
                 </tr>
 
@@ -172,6 +182,7 @@
                             <td>@item.Capacity</td>
 
                             <td>@item.CurrentBookCount</td>
+                            <td>@item.RemainingCapacity</td>
 
                             <td>
 

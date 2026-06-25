@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
 
@@ -6,6 +7,7 @@ using SLMS.Shared.DTOs.Shelf;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class ShelfController : ControllerBase
@@ -56,35 +58,50 @@ public class ShelfController : ControllerBase
     }
 
     // PUT: api/Shelf/5
+    // PUT: api/Shelf/5
     [HttpPut("{id}")]
     public async Task<IActionResult>
-        Update(
-            int id,
-            ShelfUpdateDto dto)
+    Update(
+        int id,
+        ShelfUpdateDto dto)
     {
-        var result =
-            await _service.UpdateAsync(
-                id,
-                dto);
+        try
+        {
+            var result =
+                await _service.UpdateAsync(
+                    id,
+                    dto);
 
-        if (result == null)
-            return NotFound();
+            if (result == null)
+                return NotFound();
 
-        return Ok(result);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // DELETE: api/Shelf/5
     [HttpDelete("{id}")]
     public async Task<IActionResult>
-        Delete(int id)
+Delete(int id)
     {
-        var result =
-            await _service.DeleteAsync(id);
+        try
+        {
+            var result =
+                await _service.DeleteAsync(id);
 
-        if (!result)
-            return NotFound();
+            if (!result)
+                return NotFound();
 
-        return Ok(
-            "Shelf Deleted Successfully");
+            return Ok(
+                "Shelf Deleted Successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
 using SLMS.Shared.DTOs.Category;
 
 namespace SLMS.WebAPI.Controllers;
 
+
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class CategoryController : ControllerBase
@@ -60,17 +63,24 @@ public class CategoryController : ControllerBase
 
         return Ok(result);
     }
-
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(
-        int id)
+    public async Task<IActionResult>
+    Delete(int id)
     {
-        var result =
-            await _service.DeleteAsync(id);
+        try
+        {
+            var result =
+                await _service.DeleteAsync(id);
 
-        if (!result)
-            return NotFound();
+            if (!result)
+                return NotFound();
 
-        return Ok("Category Deleted Successfully");
+            return Ok(
+                "Category deleted successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

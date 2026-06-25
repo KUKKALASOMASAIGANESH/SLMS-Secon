@@ -73,13 +73,19 @@ public class ShelfService : IShelfService
         if (!response.IsSuccessStatusCode)
         {
             var error =
-    await response.Content
-        .ReadAsStringAsync();
+                await response.Content
+                    .ReadAsStringAsync();
 
             if (error.Contains("Shelf name already exists"))
             {
                 throw new Exception(
                     "Shelf name already exists.");
+            }
+
+            if (error.Contains("Capacity cannot be less than current book count"))
+            {
+                throw new Exception(
+                    error);
             }
 
             throw new Exception(error);
@@ -92,6 +98,13 @@ public class ShelfService : IShelfService
             await _httpClient.DeleteAsync(
                 $"{ApiUrl}/{id}");
 
-        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode)
+        {
+            var error =
+                await response.Content
+                    .ReadAsStringAsync();
+
+            throw new Exception(error);
+        }
     }
 }

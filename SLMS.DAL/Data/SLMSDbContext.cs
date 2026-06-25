@@ -101,7 +101,7 @@ public class SLMSDbContext : DbContext
         //shelg intergration
         modelBuilder.Entity<LibraryResource>()
     .HasOne(r => r.Shelf)
-    .WithMany()
+    .WithMany(s => s.Resources)
     .HasForeignKey(r => r.ShelfId)
     .OnDelete(DeleteBehavior.SetNull);
 
@@ -125,7 +125,25 @@ public class SLMSDbContext : DbContext
             .HasForeignKey(c => c.ToDepartmentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-
-      
+        modelBuilder.Entity<Role>().HasData(
+    new Role
+    {
+        Id = 1,
+        RoleName = "Admin",
+        Description = "System Administrator"
+    },
+    new Role
+    {
+        Id = 2,
+        RoleName = "Librarian",
+        Description = "Library Manager"
+    },
+    new Role
+    {
+        Id = 3,
+        RoleName = "User",
+        Description = "Normal Employee"
+    }
+);
     }
 }

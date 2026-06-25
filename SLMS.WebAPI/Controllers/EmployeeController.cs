@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
-
 using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
@@ -41,7 +42,7 @@ public class EmployeeController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> Create(
-     EmployeeCreateDto dto)
+        EmployeeCreateDto dto)
     {
         try
         {
@@ -55,10 +56,11 @@ public class EmployeeController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(
-     int id,
-     EmployeeUpdateDto dto)
+        int id,
+        EmployeeUpdateDto dto)
     {
         try
         {
