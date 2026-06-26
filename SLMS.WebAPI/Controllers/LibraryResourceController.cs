@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
-
 using SLMS.Shared.DTOs.LibraryResource;
 
 namespace SLMS.WebAPI.Controllers;
 
-[Authorize(Roles = "Admin,Librarian")]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class LibraryResourceController : ControllerBase
@@ -20,21 +19,21 @@ public class LibraryResourceController : ControllerBase
         _service = service;
     }
 
+    // Admin, Librarian, User can view all resources
     [HttpGet]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> GetAll()
     {
-        var result =
-            await _service.GetAllAsync();
-
+        var result = await _service.GetAllAsync();
         return Ok(result);
     }
 
+    // Admin, Librarian, User can view details
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(
-        int id)
+    [Authorize(Roles = "Admin,Librarian,User")]
+    public async Task<IActionResult> GetById(int id)
     {
-        var result =
-            await _service.GetByIdAsync(id);
+        var result = await _service.GetByIdAsync(id);
 
         if (result == null)
             return NotFound();
@@ -42,68 +41,54 @@ public class LibraryResourceController : ControllerBase
         return Ok(result);
     }
 
+    // Admin, Librarian, User can search
     [HttpGet("search/{keyword}")]
-    public async Task<IActionResult> Search(
-        string keyword)
+    [Authorize(Roles = "Admin,Librarian,User")]
+    public async Task<IActionResult> Search(string keyword)
     {
-        var result =
-            await _service.SearchAsync(keyword);
-
+        var result = await _service.SearchAsync(keyword);
         return Ok(result);
     }
 
-    // BOOKS
-
     [HttpGet("books")]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> GetBooks()
     {
-        var resources =
-            await _service.GetAllAsync();
+        var resources = await _service.GetAllAsync();
 
-        return Ok(
-            resources.Where(x =>
-                x.ResourceType == "Book"));
+        return Ok(resources.Where(x =>
+            x.ResourceType == "Book"));
     }
-
-    // JOURNALS
 
     [HttpGet("journals")]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> GetJournals()
     {
-        var resources =
-            await _service.GetAllAsync();
+        var resources = await _service.GetAllAsync();
 
-        return Ok(
-            resources.Where(x =>
-                x.ResourceType == "Journal"));
+        return Ok(resources.Where(x =>
+            x.ResourceType == "Journal"));
     }
-
-    // MAGAZINES
 
     [HttpGet("magazines")]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> GetMagazines()
     {
-        var resources =
-            await _service.GetAllAsync();
+        var resources = await _service.GetAllAsync();
 
-        return Ok(
-            resources.Where(x =>
-                x.ResourceType == "Magazine"));
+        return Ok(resources.Where(x =>
+            x.ResourceType == "Magazine"));
     }
 
+    // Only Admin and Librarian can create
     [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Create(
-    LibraryResourceCreateDto dto)
+        LibraryResourceCreateDto dto)
     {
         try
         {
-            Console.WriteLine("API Create Started");
-
-            var result =
-                await _service.CreateAsync(dto);
-
-            Console.WriteLine("API Create Success");
-
+            var result = await _service.CreateAsync(dto);
             return Ok(result);
         }
         catch (Exception ex)
@@ -111,17 +96,17 @@ public class LibraryResourceController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    
 
+    // Only Admin and Librarian can update
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Update(
-     int id,
-     LibraryResourceUpdateDto dto)
+        int id,
+        LibraryResourceUpdateDto dto)
     {
         try
         {
-            var result =
-                await _service.UpdateAsync(id, dto);
+            var result = await _service.UpdateAsync(id, dto);
 
             if (result == null)
                 return NotFound();
@@ -133,12 +118,13 @@ public class LibraryResourceController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    // Only Admin and Librarian can delete
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(
-        int id)
+    [Authorize(Roles = "Admin,Librarian")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var result =
-            await _service.DeleteAsync(id);
+        var result = await _service.DeleteAsync(id);
 
         if (!result)
             return NotFound();

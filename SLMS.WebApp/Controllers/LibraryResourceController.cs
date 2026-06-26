@@ -7,44 +7,164 @@ using SLMS.WebApp.Services.Interfaces;
 
 namespace SLMS.WebApp.Controllers;
 
-[Authorize(Roles = "Admin,Librarian")]
+[Authorize(Roles = "Admin,Librarian,User")]
 public class LibraryResourceController : Controller
 {
-    
-
-
     private readonly LibraryResourceService _service;
     private readonly CategoryService _categoryService;
     private readonly IShelfService _shelfService;
 
     public LibraryResourceController(
-     LibraryResourceService service,
-     CategoryService categoryService,
-     IShelfService shelfService)
+        LibraryResourceService service,
+        CategoryService categoryService,
+        IShelfService shelfService)
     {
         _service = service;
         _categoryService = categoryService;
         _shelfService = shelfService;
     }
 
-    [Authorize]
+    [HttpGet]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> Index()
     {
         var resources = await _service.GetAllAsync();
         return View(resources);
     }
 
+    [HttpGet]
+    [Authorize(Roles = "Admin,Librarian,User")]
+    public async Task<IActionResult> Details(int id)
+    {
+        var resource = await _service.GetByIdAsync(id);
+
+        if (resource == null)
+            return NotFound();
+
+        return View(resource);
+    }
+
+    [HttpGet]
     [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Create()
+    {
+        var model = new LibraryResourceViewModel();
+        await LoadDropdowns(model);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(
+        LibraryResourceViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                await LoadDropdowns(model);
+                return View(model);
+            }
+
+            await _service.CreateAsync(model);
+
+            TempData["SuccessMessage"] =
+                "Resource Added Successfully";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            await LoadDropdowns(model);
+
+            ModelState.AddModelError(
+                string.Empty,
+                ex.Message);
+
+            return View(model);
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin,Librarian")]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var resource = await _service.GetByIdAsync(id);
+
+        if (resource == null)
+            return NotFound();
+
+        await LoadDropdowns(resource);
+
+        return View(resource);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        LibraryResourceViewModel model)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                await LoadDropdowns(model);
+                return View(model);
+            }
+
+            await _service.UpdateAsync(model);
+
+            TempData["SuccessMessage"] =
+                "Resource Updated Successfully";
+
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            await LoadDropdowns(model);
+
+            ModelState.AddModelError(
+                string.Empty,
+                ex.Message);
+
+            return View(model);
+        }
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _service.DeleteAsync(id);
+
+            TempData["SuccessMessage"] =
+                "Resource Deleted Successfully";
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+
+            TempData["ErrorMessage"] =
+                "Failed to delete resource";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    private async Task LoadDropdowns(
+        LibraryResourceViewModel model)
     {
         var categories =
             await _categoryService.GetAllAsync();
 
         var shelves =
             await _shelfService.GetAllAsync();
-
-        var model =
-            new LibraryResourceViewModel();
 
         model.CategoryList =
             categories.Select(x =>
@@ -61,168 +181,5 @@ public class LibraryResourceController : Controller
                     Value = x.Id.ToString(),
                     Text = x.ShelfName
                 }).ToList();
-
-        return View(model);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(
-        LibraryResourceViewModel model)
-    {
-        try
-        {
-            await _service.CreateAsync(model);
-
-            TempData["SuccessMessage"] =
-                "Resource Added Successfully";
-
-            return RedirectToAction(nameof(Index));
-        }
-        catch (Exception ex)
-        {
-            var categories =
-    await _categoryService.GetAllAsync();
-
-            model.CategoryList =
-                categories.Select(x =>
-                    new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name
-                    }).ToList();
-
-            var shelves =
-                await _shelfService.GetAllAsync();
-
-            model.Shelves =
-                shelves.Select(x =>
-                    new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.ShelfName
-                    }).ToList();
-
-            ModelState.AddModelError(
-     string.Empty,
-     ex.Message);
-
-            return View(model);
-        }
-    }
-    [Authorize(Roles = "Admin,Librarian")]
-    public async Task<IActionResult> Edit(int id)
-    {
-        var resource =
-            await _service.GetByIdAsync(id);
-
-        if (resource == null)
-        {
-            return NotFound();
-        }
-
-        var categories =
-            await _categoryService.GetAllAsync();
-
-        resource.CategoryList =
-            categories.Select(x =>
-                new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name
-                }).ToList();
-
-        var shelves =
-    await _shelfService.GetAllAsync();
-
-        resource.Shelves =
-            shelves.Select(x =>
-                new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.ShelfName
-                }).ToList();
-
-        return View(resource);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Edit(
-        LibraryResourceViewModel model)
-    {
-        try
-        {
-            await _service.UpdateAsync(model);
-
-            TempData["SuccessMessage"] =
-                "Resource Updated Successfully";
-
-            return RedirectToAction(nameof(Index));
-        }
-        catch (Exception ex)
-        {
-            var categories =
-                await _categoryService.GetAllAsync();
-
-            model.CategoryList =
-                categories.Select(x =>
-                    new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Name
-                    }).ToList();
-
-            var shelves =
-                await _shelfService.GetAllAsync();
-
-            model.Shelves =
-                shelves.Select(x =>
-                    new SelectListItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.ShelfName
-                    }).ToList();
-
-            ModelState.AddModelError(
-                string.Empty,
-                ex.Message);
-
-            return View(model);
-        }
-    }
-
-    public async Task<IActionResult> Details(int id)
-    {
-        var resource =
-            await _service.GetByIdAsync(id);
-
-        if (resource == null)
-        {
-            return NotFound();
-        }
-
-        return View(resource);
-    }
-
-    [Authorize(Roles = "Admin,Librarian")] 
-    public async Task<IActionResult> Delete(int id)
-    {
-        try
-        {
-            await _service.DeleteAsync(id);
-
-            TempData["SuccessMessage"] =
-                "Resource Deleted Successfully";
-
-            return RedirectToAction(nameof(Index));
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-
-            TempData["ErrorMessage"] =
-                "Failed to delete resource";
-
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

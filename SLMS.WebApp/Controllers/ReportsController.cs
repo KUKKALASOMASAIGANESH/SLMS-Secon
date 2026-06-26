@@ -1,35 +1,38 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SLMS.WebApp.Models;   // ✅ IMPORTANT
+using SLMS.WebApp.Models;
+using System.Net.Http.Json;
 
-namespace SLMS.WebApp.Controllers
+namespace SLMS.WebApp.Controllers;
+
+[Authorize(Roles = "Admin,Librarian")]
+public class ReportsController : Controller
 {
+    private readonly HttpClient _httpClient;
 
-    [Authorize(Roles = "Admin,Librarian")]
-    public class ReportsController : Controller
+    public ReportsController(IHttpClientFactory httpClientFactory)
     {
-        public async Task<ActionResult> Index()
-        {
-            var client = new HttpClient();
+        _httpClient = httpClientFactory.CreateClient("SLMSApi");
+    }
 
-            //var inventory = await client.GetFromJsonAsync<List<InventoryReport>>(
-            //    "https://localhost:7277/api/reports/inventory");
+    public async Task<IActionResult> Index()
+    {
+        var issues = await _httpClient
+            .GetFromJsonAsync<List<IssueReport>>(
+                "api/reports/issues");
 
-            var issues = await client.GetFromJsonAsync<List<IssueReport>>(
-                "https://localhost:7277/api/reports/issues");
+        var overdue = await _httpClient
+            .GetFromJsonAsync<List<OverdueReport>>(
+                "api/reports/overdue");
 
-            var overdue = await client.GetFromJsonAsync<List<OverdueReport>>(
-                "https://localhost:7277/api/reports/overdue");
+        var fine = await _httpClient
+            .GetFromJsonAsync<List<FineReport>>(
+                "api/reports/fine");
 
-            var fine = await client.GetFromJsonAsync<List<FineReport>>(
-                "https://localhost:7277/api/reports/fine");
+        ViewBag.Issues = issues ?? new List<IssueReport>();
+        ViewBag.Overdue = overdue ?? new List<OverdueReport>();
+        ViewBag.Fine = fine ?? new List<FineReport>();
 
-            //ViewBag.Inventory = inventory;
-            ViewBag.Issues = issues;
-            ViewBag.Overdue = overdue;
-            ViewBag.Fine = fine;
-
-            return View();
-        }
+        return View();
     }
 }
