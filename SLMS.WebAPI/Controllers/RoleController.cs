@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
 using SLMS.Shared.DTOs.Role;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RoleController : ControllerBase

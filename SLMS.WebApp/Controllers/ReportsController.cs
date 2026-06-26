@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.WebApp.Models;   // ✅ IMPORTANT
 
 namespace SLMS.WebApp.Controllers
 {
+
+    [Authorize(Roles = "Admin,Librarian")]
     public class ReportsController : Controller
     {
         public async Task<ActionResult> Index()

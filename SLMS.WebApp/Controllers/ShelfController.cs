@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.WebApp.Models.Inventory;
 using SLMS.WebApp.Services.Interfaces;
 
 namespace SLMS.WebApp.Controllers;
 
+
+[Authorize(Roles = "Admin,Librarian")]
 public class ShelfController : Controller
 {
     private readonly IShelfService _shelfService;

@@ -9,38 +9,25 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebApp.Controllers;
 
-// Authentication controller handles:
-// Login, Register, Forgot Password, Logout operations
-// Uses AuthService to communicate with backend API
 [AllowAnonymous]
 public class AuthController : Controller
 {
     private readonly AuthService _authService;
 
-    // Inject authentication service
     public AuthController(AuthService authService)
     {
         _authService = authService;
     }
 
-    // Loads Login page
     [HttpGet]
     public IActionResult Login()
     {
-        // If user is already authenticated, redirect to Home
-        if (User.Identity?.IsAuthenticated == true)
-            return RedirectToAction("Index", "Home");
-
-       //return Content(
-        //$"Authenticated = {User.Identity?.IsAuthenticated}");
         return View();
     }
 
-    // Handles Login form submission
     [HttpPost]
     public async Task<IActionResult> Login(LoginDto dto)
     {
-        // Call API to validate user credentials
         var result = await _authService.LoginAsync(dto);
 
         if (result == null)
@@ -55,16 +42,15 @@ public class AuthController : Controller
             return View(dto);
         }
 
-        // Store JWT token in session for API calls
         HttpContext.Session.SetString("accesstoken", result.Token);
 
-        Console.WriteLine($"Role from API = {result.Role}");
-
         var claims = new List<Claim>
-{
-    new Claim(ClaimTypes.Name, dto.Username),
-    new Claim(ClaimTypes.Role, result.Role)
-};
+        {
+            new Claim(ClaimTypes.NameIdentifier, result.UserId.ToString()),
+            new Claim("EmployeeId", result.EmployeeId.ToString()),
+            new Claim(ClaimTypes.Name, dto.Username),
+            new Claim(ClaimTypes.Role, result.Role)
+        };
 
         var identity = new ClaimsIdentity(
             claims,
@@ -72,27 +58,19 @@ public class AuthController : Controller
 
         var principal = new ClaimsPrincipal(identity);
 
-        // Sign in user using cookie authentication
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             principal);
 
-        // Redirect to Home page after successful login
         return RedirectToAction("Index", "Home");
     }
 
-    // Loads Register page
     [HttpGet]
     public IActionResult Register()
     {
-        // Prevent access if already logged in
-        if (User.Identity?.IsAuthenticated == true)
-            return RedirectToAction("Index", "Home");
-
         return View();
     }
 
-    // Handles Register form submission
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
@@ -101,15 +79,10 @@ public class AuthController : Controller
 
         var dto = new RegisterDto
         {
-           /* EmployeeNumber = model.EmployeeNumber,
-            Username = model.Username,
-            Password = model.Password*/
-           
-
-        EmployeeNumber = model.EmployeeNumber.Trim(),
-        EmployeeName = model.EmployeeName.Trim(),
-        Username = model.Username.Trim(),
-        Password = model.Password
+            EmployeeNumber = model.EmployeeNumber.Trim(),
+            EmployeeName = model.EmployeeName.Trim(),
+            Username = model.Username.Trim(),
+            Password = model.Password
         };
 
         var result = await _authService.RegisterAsync(dto);
@@ -127,18 +100,15 @@ public class AuthController : Controller
         }
 
         TempData["Success"] = "Registration successful. Please login.";
-
         return RedirectToAction("Login");
     }
 
-    // Loads Forgot Password page
     [HttpGet]
     public IActionResult ForgotPassword()
     {
         return View();
     }
 
-    // Handles Forgot Password submission
     [HttpPost]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
     {
@@ -157,11 +127,9 @@ public class AuthController : Controller
         }
 
         TempData["Success"] = "Password reset successful. Please login.";
-
         return RedirectToAction("Login");
     }
 
-    // Logs out user and clears authentication session
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(
@@ -172,11 +140,9 @@ public class AuthController : Controller
         return RedirectToAction("Login");
     }
 
-
     [HttpGet]
     public IActionResult AccessDenied()
     {
         return Content("Access Denied: You do not have permission to access this page.");
     }
-
 }

@@ -6,7 +6,7 @@ using SLMS.Shared.DTOs.DigitalLibrary;
 
 namespace SLMS.WebAPI.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Librarian,User")]
 [ApiController]
 [Route("api/[controller]")]
 public class DigitalContentController : ControllerBase

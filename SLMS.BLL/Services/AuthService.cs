@@ -69,7 +69,7 @@ public class AuthService : IAuthService
             return new AuthResponse
             {
                 Success = false,
-                Message = "Invalid password"
+                Message = "wrong password"
             };
         }
 
@@ -94,7 +94,8 @@ public class AuthService : IAuthService
             Success = true,
             Message = "Login successful",
             Token = token,
-            Role = roleName
+            Role = roleName,
+            EmployeeId = user.EmployeeId
         };
     }
 

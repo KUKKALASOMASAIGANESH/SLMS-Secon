@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SLMS.WebApp.Models;
 using SLMS.WebApp.Services;
 
 namespace SLMS.WebApp.Controllers;
 
+[Authorize(Roles = "Admin,Librarian")]
 public class CategoryController : Controller
 {
     private readonly CategoryService _service;

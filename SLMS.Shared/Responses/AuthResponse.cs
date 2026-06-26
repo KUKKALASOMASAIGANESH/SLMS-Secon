@@ -1,5 +1,3 @@
-namespace SLMS.Shared.Responses;
-
 public class AuthResponse
 {
     public bool Success { get; set; }
@@ -9,4 +7,8 @@ public class AuthResponse
     public string Token { get; set; } = string.Empty;
 
     public string Role { get; set; } = string.Empty;
+
+    public int UserId { get; set; }
+
+    public int EmployeeId { get; set; }
 }

@@ -33,15 +33,17 @@
  */
 
 
-using SLMS.Shared.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SLMS.BLL.Interfaces;
 using SLMS.Shared.DTOs.Inventory;
+using SLMS.Shared.Responses;
 
 namespace SLMS.WebAPI.Controllers;
 
 // REST API controller for managing inventory items,
 // inventory reporting, shelf tracking and availability operations.
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class InventoryController : ControllerBase

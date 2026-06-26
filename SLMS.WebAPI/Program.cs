@@ -3,70 +3,57 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Security.Claims;
 
 using SLMS.DAL.Data;
-
 using SLMS.BLL.Interfaces;
 using SLMS.BLL.Services;
 using SLMS.BLL.Helpers;
-
 using SLMS.DAL.Repositories.Interfaces;
 using SLMS.DAL.Repositories.Implementations;
-
-
 using SLMS.WebAPI.Mappings;
 using SLMS.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Controllers
 builder.Services.AddControllers();
-
-// AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-// Swagger
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1",
-        new OpenApiInfo
-        {
-            Title = "SLMS API",
-            Version = "v1"
-        });
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "SLMS API",
+        Version = "v1"
+    });
 
-    options.AddSecurityDefinition("Bearer",
-        new OpenApiSecurityScheme
-        {
-            Name = "Authorization",
-            Type = SecuritySchemeType.Http,
-            Scheme = "bearer",
-            BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-            Description = "Enter JWT token"
-        });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter JWT token"
+    });
 
-    options.AddSecurityRequirement(
-        new OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
+            new OpenApiSecurityScheme
             {
-                new OpenApiSecurityScheme
+                Reference = new OpenApiReference
                 {
-                    Reference =
-                        new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                },
-                Array.Empty<string>()
-            }
-        });
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
-// Database
 builder.Services.AddDbContext<SLMSDbContext>(options =>
 {
     options.UseNpgsql(
@@ -101,7 +88,9 @@ builder.Services.AddScoped<IDigitalContentRequestRepository, DigitalContentReque
 builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
 builder.Services.AddScoped<IDownloadHistoryRepository, DownloadHistoryRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
+
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+
 #endregion
 
 #region Services
@@ -133,17 +122,15 @@ builder.Services.AddScoped<IDigitalContentService, DigitalContentService>();
 builder.Services.AddScoped<IDigitalContentRequestService, DigitalContentRequestService>();
 builder.Services.AddScoped<IPolicyService, PolicyService>();
 builder.Services.AddScoped<IDownloadHistoryService, DownloadHistoryService>();
+
 builder.Services.AddScoped<ReportService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 #endregion
 
-// JWT Helper
 builder.Services.AddScoped<JwtTokenHelper>();
 
-// JWT Authentication
-builder.Services.AddAuthentication(
-    JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters =
@@ -160,7 +147,10 @@ builder.Services.AddAuthentication(
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
-                            builder.Configuration["Jwt:Key"]!))
+                            builder.Configuration["Jwt:Key"]!)),
+
+                RoleClaimType = ClaimTypes.Role,
+                NameClaimType = ClaimTypes.Name
             };
     });
 
@@ -179,7 +169,6 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

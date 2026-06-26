@@ -8,7 +8,6 @@ using SLMS.WebApp.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Authentication
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -21,10 +20,8 @@ builder.Services.AddAuthentication(
 
 builder.Services.AddAuthorization();
 
-// MVC
 builder.Services.AddControllersWithViews();
 
-// Session
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
@@ -34,22 +31,17 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// JWT Handler
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<JwtDelegatingHandler>();
 
-//shelf
-builder.Services.AddScoped<
-    IShelfService,
-    ShelfService>();
-
-#region API Base URL
-
 var apiBaseUrl = new Uri("http://localhost:5062/");
 
-#endregion
-
-#region Existing Services
+// Named client used by TransactionController
+builder.Services.AddHttpClient("SLMSApi", client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
 builder.Services.AddHttpClient<EmployeeService>(client =>
 {
@@ -75,15 +67,10 @@ builder.Services.AddHttpClient<DepartmentService>(client =>
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
 
-// AuthService should NOT use JwtDelegatingHandler
 builder.Services.AddHttpClient<AuthService>(client =>
 {
     client.BaseAddress = apiBaseUrl;
 });
-
-#endregion
-
-#region Catalog Services
 
 builder.Services.AddHttpClient<CategoryService>(client =>
 {
@@ -103,25 +90,17 @@ builder.Services.AddHttpClient<BookIssueService>(client =>
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
 
-#endregion
+builder.Services.AddHttpClient<IInventoryService, InventoryService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
-#region Inventory
-
-builder.Services.AddScoped<IInventoryService, InventoryService>();
-
-#endregion
-
-
-
-#region Digital Library
 builder.Services.AddHttpClient<IDigitalLibraryService, DigitalLibraryService>(client =>
 {
     client.BaseAddress = apiBaseUrl;
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
-#endregion
-
-#region Transaction Dashboard
 
 builder.Services.AddHttpClient<ITransactionDashboardService, TransactionDashboardService>(client =>
 {
@@ -129,22 +108,23 @@ builder.Services.AddHttpClient<ITransactionDashboardService, TransactionDashboar
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
 
-#endregion
-
-#region User Management
-
 builder.Services.AddHttpClient<UserManagementService>(client =>
 {
     client.BaseAddress = apiBaseUrl;
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
+
 builder.Services.AddHttpClient<DashboardService>(client =>
 {
     client.BaseAddress = apiBaseUrl;
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
 
-#endregion
+builder.Services.AddHttpClient<IShelfService, ShelfService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
 var app = builder.Build();
 
@@ -155,7 +135,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -163,7 +142,6 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

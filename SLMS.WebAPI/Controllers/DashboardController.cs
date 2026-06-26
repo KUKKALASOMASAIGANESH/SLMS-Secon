@@ -4,7 +4,9 @@ using SLMS.BLL.Interfaces;
 
 namespace SLMS.WebAPI.Controllers;
 
+
 //[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DashboardController : ControllerBase

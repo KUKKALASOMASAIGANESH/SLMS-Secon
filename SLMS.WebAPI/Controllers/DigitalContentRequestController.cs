@@ -8,7 +8,7 @@ using SLMS.DAL.Repositories.Interfaces;
 
 namespace SLMS.WebAPI.Controllers;
 
-
+[Authorize(Roles = "Admin,Librarian,User")]
 [ApiController]
 [Route("api/[controller]")]
 public class DigitalContentRequestController

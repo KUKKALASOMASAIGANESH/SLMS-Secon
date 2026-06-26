@@ -3,20 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using SLMS.Shared.DTOs.BookIssue;
 using SLMS.Shared.DTOs.BookReturn;
 using SLMS.Shared.DTOs.Request;
-using SLMS.WebApp.Models;
 using SLMS.WebApp.Services.Transaction.Interfaces;
-using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace SLMS.WebApp.Controllers;
 
-[Authorize(Roles = "Admin,Librarian")]
+[Authorize(Roles = "Admin,Librarian,User")]
 public class TransactionController : Controller
 {
     private readonly ITransactionDashboardService _service;
     private readonly HttpClient _httpClient;
-
-
 
     public TransactionController(
         ITransactionDashboardService service,
@@ -27,6 +24,7 @@ public class TransactionController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Dashboard()
     {
         var model = await _service.GetDashboardAsync();
@@ -34,13 +32,21 @@ public class TransactionController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> ReturnBook()
     {
-        var employees =
-            await _httpClient.GetFromJsonAsync<List<EmployeeViewModel>>(
-                "api/Employee");
+        var employeeIdClaim = User.FindFirst("EmployeeId")?.Value;
 
-        ViewBag.Employees = employees;
+        if (string.IsNullOrEmpty(employeeIdClaim))
+            return RedirectToAction("Login", "Auth");
+
+        var employeeId = int.Parse(employeeIdClaim);
+
+        var books = await _httpClient
+            .GetFromJsonAsync<List<BookIssueResponseDto>>(
+                $"api/BookIssue/employee/{employeeId}");
+
+        ViewBag.IssuedBooks = books ?? new List<BookIssueResponseDto>();
 
         return View(new BookReturnCreateDto
         {
@@ -49,24 +55,29 @@ public class TransactionController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> GetIssuedBooks(int employeeId)
     {
-        var books =
-            await _httpClient.GetFromJsonAsync<List<BookIssueResponseDto>>(
+        var books = await _httpClient
+            .GetFromJsonAsync<List<BookIssueResponseDto>>(
                 $"api/BookIssue/employee/{employeeId}");
 
-        return Json(books);
+        return Json(books ?? new List<BookIssueResponseDto>());
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> ReturnBook(BookReturnCreateDto dto)
     {
-        dto.ReturnedByUserId = 1;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var response =
-            await _httpClient.PostAsJsonAsync(
-                "api/BookReturn",
-                dto);
+        if (string.IsNullOrEmpty(userIdClaim))
+            return RedirectToAction("Login", "Auth");
+
+        dto.ReturnedByUserId = int.Parse(userIdClaim);
+
+        var response = await _httpClient
+            .PostAsJsonAsync("api/BookReturn", dto);
 
         if (response.IsSuccessStatusCode)
         {
@@ -74,21 +85,24 @@ public class TransactionController : Controller
             return RedirectToAction(nameof(ReturnBook));
         }
 
-        TempData["Error"] = "Failed to Return Book";
+        TempData["Error"] =
+            await response.Content.ReadAsStringAsync();
+
         return View(dto);
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> Requests()
     {
-        var data =
-            await _httpClient.GetFromJsonAsync<List<RequestResponseDto>>(
-                "api/Request");
+        var data = await _httpClient
+            .GetFromJsonAsync<List<RequestResponseDto>>("api/Request");
 
-        return View(data);
+        return View(data ?? new List<RequestResponseDto>());
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> ApproveRequest(int id)
     {
         await _httpClient.PutAsync(
@@ -99,6 +113,7 @@ public class TransactionController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> RejectRequest(int id)
     {
         await _httpClient.PutAsync(
@@ -109,12 +124,13 @@ public class TransactionController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> OverdueBooks()
     {
-        var data =
-            await _httpClient.GetFromJsonAsync<List<BookIssueResponseDto>>(
+        var data = await _httpClient
+            .GetFromJsonAsync<List<BookIssueResponseDto>>(
                 "api/BookIssue/overdue");
 
-        return View(data);
+        return View(data ?? new List<BookIssueResponseDto>());
     }
 }

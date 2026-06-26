@@ -7,7 +7,7 @@ using SLMS.Shared.DTOs.LibraryResource;
 
 namespace SLMS.WebAPI.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class LibraryResourceController : ControllerBase

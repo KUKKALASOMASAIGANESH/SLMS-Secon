@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SLMS.BLL.Interfaces;
 
@@ -6,6 +7,7 @@ using SLMS.Shared.DTOs.InventoryItem;
 
 namespace SLMS.WebAPI.Controllers;
 
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class InventoryItemController : ControllerBase

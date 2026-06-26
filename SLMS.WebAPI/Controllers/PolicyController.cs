@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SLMS.WebAPI.Controllers;
 
-
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class PolicyController : ControllerBase

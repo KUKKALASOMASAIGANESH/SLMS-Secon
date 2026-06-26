@@ -7,6 +7,7 @@ using SLMS.WebApp.Services.Interfaces;
 
 namespace SLMS.WebApp.Controllers;
 
+[Authorize(Roles = "Admin,Librarian")]
 public class LibraryResourceController : Controller
 {
     
