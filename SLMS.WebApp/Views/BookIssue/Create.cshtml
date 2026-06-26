@@ -4,6 +4,31 @@
     ViewData["Title"] = "Issue Book";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded shadow-sm mb-3">
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="BookIssue"
+               asp-action="Index">
+                Book Issues
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+            Issue Book
+        </li>
+
+    </ol>
+</nav>
+
 <div class="card shadow-sm">
     <div class="card-body">
 
@@ -12,8 +37,16 @@
 
         <form asp-action="Create" method="post">
 
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
+
+            <!-- Book Title -->
             <div class="mb-3">
-                <label>Book Title</label>
+
+                <label class="form-label">
+                    Book Title <span class="text-danger">*</span>
+                </label>
 
                 <select asp-for="LibraryResourceId"
                         asp-items="Model.BookList"
@@ -24,10 +57,19 @@
                     </option>
 
                 </select>
+
+                <span asp-validation-for="LibraryResourceId"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Employee -->
             <div class="mb-3">
-                <label>Employee No / Employee Name</label>
+
+                <label class="form-label">
+                    Employee No / Employee Name
+                    <span class="text-danger">*</span>
+                </label>
 
                 <select asp-for="EmployeeId"
                         asp-items="Model.EmployeeList"
@@ -38,29 +80,64 @@
                     </option>
 
                 </select>
+
+                <span asp-validation-for="EmployeeId"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Issue Date -->
             <div class="mb-3">
-                <label>Issue Date</label>
+
+                <label class="form-label">
+                    Issue Date <span class="text-danger">*</span>
+                </label>
 
                 <input asp-for="IssueDate"
                        type="date"
                        class="form-control" />
+
+                <span asp-validation-for="IssueDate"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Due Date -->
             <div class="mb-3">
-                <label>Due Date</label>
+
+                <label class="form-label">
+                    Due Date <span class="text-danger">*</span>
+                </label>
 
                 <input asp-for="DueDate"
                        type="date"
                        class="form-control" />
+
+                <span asp-validation-for="DueDate"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Status -->
             <div class="mb-3">
-                <label>Status</label>
 
-                <input asp-for="Status"
-                       class="form-control"/>
+                <label class="form-label">
+                    Status <span class="text-danger">*</span>
+                </label>
+
+                <select asp-for="Status"
+                        class="form-control">
+
+                    <option value="">Select Status</option>
+                    <option value="Issued">Issued</option>
+                    <option value="Returned">Returned</option>
+                    <option value="Overdue">Overdue</option>
+
+                </select>
+
+                <span asp-validation-for="Status"
+                      class="text-danger"></span>
+
             </div>
 
             <button type="submit"
@@ -77,3 +154,8 @@
 
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

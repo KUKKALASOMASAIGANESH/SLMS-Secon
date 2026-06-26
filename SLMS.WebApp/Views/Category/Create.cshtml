@@ -3,7 +3,29 @@
 @{
     ViewData["Title"] = "Create Category";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-3">
 
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Category"
+               asp-action="Index">
+                Categories
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active">
+            Create
+        </li>
+
+    </ol>
+</nav>
 <div class="card shadow-sm">
     <div class="card-body">
 
@@ -13,11 +35,15 @@
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <form asp-action="Create" method="post">
-
             <div class="mb-3">
-                <label asp-for="Name" class="form-label"></label>
+                <label asp-for="Name" class="form-label">
+                    Category Name <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+
+                <span asp-validation-for="Name"
+                      class="text-danger"></span>
             </div>
 
             <div class="mb-3">

@@ -3,7 +3,29 @@
 @{
     ViewData["Title"] = "Category Details";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-3">
 
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Category"
+               asp-action="Index">
+                Categories
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active">
+            Details
+        </li>
+
+    </ol>
+</nav>
 <div class="card shadow-sm">
     <div class="card-body">
 

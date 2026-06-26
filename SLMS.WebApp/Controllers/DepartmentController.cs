@@ -16,18 +16,31 @@ public class DepartmentController : Controller
         _service = service;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
         try
         {
-            var data =
+            var departments =
                 await _service.GetAllAsync();
+
+            int pageSize = 5;
+
+            var data = departments
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages =
+                (int)Math.Ceiling(
+                    departments.Count / (double)pageSize);
 
             return View(data);
         }
         catch (Exception ex)
         {
-            TempData["Error"] = ex.ToString();
+            TempData["Error"] = ex.Message;
 
             return View(new List<DepartmentViewModel>());
         }

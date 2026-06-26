@@ -4,6 +4,31 @@
     ViewData["Title"] = "Edit Resource";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded shadow-sm mb-3">
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="LibraryResource"
+               asp-action="Index">
+                Library Resources
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+            Edit Resource
+        </li>
+
+    </ol>
+</nav>
+
 <div class="card shadow-sm">
     <div class="card-body">
 
@@ -14,8 +39,16 @@
 
             <input asp-for="Id" type="hidden" />
 
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
+
+            <!-- Category -->
             <div class="mb-3">
-                <label>Category</label>
+
+                <label class="form-label">
+                    Category <span class="text-danger">*</span>
+                </label>
 
                 <select asp-for="CategoryId"
                         asp-items="Model.CategoryList"
@@ -26,11 +59,18 @@
                     </option>
 
                 </select>
+
+                <span asp-validation-for="CategoryId"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Shelf -->
             <div class="mb-3">
 
-                <label>Shelf</label>
+                <label class="form-label">
+                    Shelf <span class="text-danger">*</span>
+                </label>
 
                 <select asp-for="ShelfId"
                         asp-items="Model.Shelves"
@@ -42,49 +82,117 @@
 
                 </select>
 
+                <span asp-validation-for="ShelfId"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Resource Type -->
             <div class="mb-3">
-                <label>Resource Type</label>
+
+                <label class="form-label">
+                    Resource Type <span class="text-danger">*</span>
+                </label>
 
                 <select asp-for="ResourceType"
                         class="form-control">
 
-                    <option value="Book">Book</option>
-                    <option value="Journal">Journal</option>
-                    <option value="Magazine">Magazine</option>
+                    <option value="">
+                        Select Type
+                    </option>
+
+                    <option value="Book">
+                        Book
+                    </option>
+
+                    <option value="Journal">
+                        Journal
+                    </option>
+
+                    <option value="Magazine">
+                        Magazine
+                    </option>
 
                 </select>
+
+                <span asp-validation-for="ResourceType"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Title -->
             <div class="mb-3">
-                <label>Title</label>
+
+                <label class="form-label">
+                    Title <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Title"
                        class="form-control" />
+
+                <span asp-validation-for="Title"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Author -->
             <div class="mb-3">
-                <label>Author</label>
+
+                <label class="form-label">
+                    Author <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Author"
                        class="form-control" />
+
+                <span asp-validation-for="Author"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Publisher -->
             <div class="mb-3">
-                <label>Publisher</label>
+
+                <label class="form-label">
+                    Publisher <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="Publisher"
                        class="form-control" />
+
+                <span asp-validation-for="Publisher"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- ISBN -->
             <div class="mb-3">
-                <label>ISBN</label>
+
+                <label class="form-label">
+                    ISBN <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="ISBN"
                        class="form-control" />
+
+                <span asp-validation-for="ISBN"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Publication Year -->
             <div class="mb-3">
-                <label>Publication Year</label>
+
+                <label class="form-label">
+                    Publication Year <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="PublicationYear"
                        class="form-control" />
+
+                <span asp-validation-for="PublicationYear"
+                      class="text-danger"></span>
+
             </div>
 
             <button type="submit"
@@ -101,3 +209,8 @@
 
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -4,35 +4,123 @@
     ViewData["Title"] = "Category Management";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+            Categories
+        </li>
+    </ol>
+</nav>
+
 <div class="card shadow-sm">
     <div class="card-body">
 
         <div class="d-flex justify-content-between mb-3">
+
             <h3>Category Management</h3>
 
             <a asp-action="Create"
                class="btn btn-primary">
                 Add Category
             </a>
+
         </div>
 
-        <div class="mb-3">
-            <input type="text"
-                   id="searchBox"
-                   class="form-control"
-                   placeholder="Search Category..."
-                   onkeyup="searchCategory()" />
+        <!-- Search + Refresh + Sort -->
+        <div class="row mb-3 align-items-center">
+
+            <div class="col-md-7">
+
+                <input type="text"
+                       id="searchBox"
+                       class="form-control"
+                       placeholder="🔍 Search Category..."
+                       onkeyup="searchCategory()" />
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button type="button"
+                        class="btn btn-outline-secondary w-100"
+                        onclick="refreshSearch()">
+
+                    🔄 Refresh
+
+                </button>
+
+            </div>
+
+            <div class="col-md-3 text-end">
+
+                <div class="dropdown">
+
+                    <button class="btn btn-outline-primary dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown">
+
+                        Sort By
+
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <a class="dropdown-item"
+                               href="#"
+                               onclick="sortCategory('asc')">
+
+                                A - Z
+
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               href="#"
+                               onclick="sortCategory('desc')">
+
+                                Z - A
+
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
         </div>
 
         <table class="table table-bordered table-striped table-hover">
 
             <thead>
+
                 <tr>
-                    <th>ID</th>
-                    <th>Category Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
+
+                    <th>
+                        Category Name
+                    </th>
+
+                    <th>
+                        Description
+                    </th>
+
+                    <th width="220">
+                        Actions
+                    </th>
+
                 </tr>
+
             </thead>
 
             <tbody>
@@ -42,8 +130,9 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Id</td>
+
                             <td>@item.Name</td>
+
                             <td>@item.Description</td>
 
                             <td>
@@ -74,16 +163,55 @@
                 else
                 {
                     <tr>
-                        <td colspan="4"
+
+                        <td colspan="3"
                             class="text-center">
+
                             No Categories Found
+
                         </td>
+
                     </tr>
                 }
 
             </tbody>
 
         </table>
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage - 1)">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@i">
+                            @i
+                        </a>
+
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@(ViewBag.CurrentPage + 1)">
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
 
     </div>
 </div>
@@ -91,8 +219,7 @@
 @section Scripts
 {
     <script>
-
-        function deleteCategory(id)
+                function deleteCategory(id)
         {
             Swal.fire({
                 title: 'Delete Category?',
@@ -117,19 +244,24 @@
         {
             let input =
                 document.getElementById("searchBox")
-                        .value
-                        .toLowerCase();
+                    .value
+                    .toLowerCase();
 
             let rows =
                 document.querySelectorAll("tbody tr");
 
             rows.forEach(row =>
             {
-                let categoryName =
+                let category =
+                    row.cells[0]?.innerText.toLowerCase();
+
+                let description =
                     row.cells[1]?.innerText.toLowerCase();
 
-                if (categoryName &&
-                    categoryName.includes(input))
+                if (
+                    (category && category.includes(input)) ||
+                    (description && description.includes(input))
+                )
                 {
                     row.style.display = "";
                 }
@@ -138,6 +270,44 @@
                     row.style.display = "none";
                 }
             });
+        }
+
+        function refreshSearch()
+        {
+            document.getElementById("searchBox").value = "";
+
+            let rows =
+                document.querySelectorAll("tbody tr");
+
+            rows.forEach(row =>
+            {
+                row.style.display = "";
+            });
+        }
+
+        function sortCategory(order)
+        {
+            let tbody =
+                document.querySelector("tbody");
+
+            let rows =
+                Array.from(tbody.querySelectorAll("tr"));
+
+            rows.sort(function (a, b)
+            {
+                let x =
+                    a.cells[0].innerText.toLowerCase();
+
+                let y =
+                    b.cells[0].innerText.toLowerCase();
+
+                return order === "asc"
+                    ? x.localeCompare(y)
+                    : y.localeCompare(x);
+            });
+
+            rows.forEach(row =>
+                tbody.appendChild(row));
         }
 
     </script>

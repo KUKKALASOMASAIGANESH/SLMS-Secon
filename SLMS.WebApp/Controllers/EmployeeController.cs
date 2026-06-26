@@ -21,14 +21,27 @@ public class EmployeeController : Controller
         _departmentService = departmentService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
         try
         {
             var employees =
                 await _service.GetAllAsync();
 
-            return View(employees);
+            int pageSize = 7;
+
+            var data = employees
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages =
+                (int)Math.Ceiling(
+                    employees.Count / (double)pageSize);
+
+            return View(data);
         }
         catch (Exception)
         {
@@ -39,7 +52,7 @@ public class EmployeeController : Controller
         }
     }
 
-   
+
 
     [HttpGet]
     public async Task<IActionResult> Create()

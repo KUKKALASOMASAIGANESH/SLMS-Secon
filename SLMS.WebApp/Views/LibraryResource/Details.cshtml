@@ -3,7 +3,30 @@
 @{
     ViewData["Title"] = "Resource Details";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded shadow-sm mb-3">
 
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="LibraryResource"
+               asp-action="Index">
+                Library Resources
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+            Resource Details
+        </li>
+
+    </ol>
+</nav>
 <div class="card shadow-sm">
     <div class="card-body">
 

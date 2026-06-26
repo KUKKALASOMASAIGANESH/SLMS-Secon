@@ -15,12 +15,37 @@ public class CategoryController : Controller
         _service = service;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        var categories = await _service.GetAllAsync();
+        try
+        {
+            var categories =
+                await _service.GetAllAsync();
 
-        return View(categories);
+            int pageSize = 7;
+
+            var data = categories
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages =
+                (int)Math.Ceiling(
+                    categories.Count / (double)pageSize);
+
+            return View(data);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "Unable to load categories.";
+
+            return View(new List<CategoryViewModel>());
+        }
     }
+
 
     public IActionResult Create()
     {

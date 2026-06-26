@@ -4,30 +4,132 @@
     ViewData["Title"] = "Book Issue Management";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded shadow-sm mb-3">
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+            Book Issues
+        </li>
+
+    </ol>
+</nav>
+
 <div class="card shadow-sm">
     <div class="card-body">
 
         <div class="d-flex justify-content-between mb-3">
+
             <h3>Issue Book Management</h3>
 
             <a asp-action="Create"
                class="btn btn-primary">
                 Issue Book
             </a>
+
         </div>
 
-        <table class="table table-bordered table-striped">
+        <!-- Search + Refresh + Sort -->
+
+        <div class="row mb-3 align-items-center">
+
+            <div class="col-md-7">
+
+                <input type="text"
+                       id="searchBox"
+                       class="form-control"
+                       placeholder="🔍 Search Book Issue..."
+                       onkeyup="searchIssue()" />
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button type="button"
+                        class="btn btn-outline-secondary w-100"
+                        onclick="refreshSearch()">
+
+                    🔄 Refresh
+
+                </button>
+
+            </div>
+
+            <div class="col-md-3 text-end">
+
+                <div class="dropdown">
+
+                    <button class="btn btn-outline-primary dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown">
+
+                        Sort By
+
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+
+                            <a class="dropdown-item"
+                               href="#"
+                               onclick="sortIssue('asc')">
+
+                                A - Z
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a class="dropdown-item"
+                               href="#"
+                               onclick="sortIssue('desc')">
+
+                                Z - A
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
 
             <thead>
+
                 <tr>
-                    <th>ID</th>
+
                     <th>Book Title</th>
-                    <th>Employee Name /Employee Id</th>
+
+                    <th>Employee Name</th>
+
                     <th>Issue Date</th>
+
                     <th>Due Date</th>
+
                     <th>Status</th>
-                    <th>Actions</th>
+
+                    <th width="220">
+                        Actions
+                    </th>
+
                 </tr>
+
             </thead>
 
             <tbody>
@@ -37,42 +139,63 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Id</td>
+
                             <td>@item.BookTitle</td>
+
                             <td>@item.EmployeeName</td>
+
                             <td>@item.IssueDate.ToShortDateString()</td>
-                            <td>@(item.DueDate.HasValue? item.DueDate.Value.ToShortDateString() : "")</td>
+
+                            <td>
+                                @(item.DueDate.HasValue
+                                                        ? item.DueDate.Value.ToShortDateString()
+                                                        : "")
+                    </td>
+
                             <td>@item.Status</td>
 
                             <td>
+
                                 <a asp-action="Details"
                                    asp-route-id="@item.Id"
                                    class="btn btn-info btn-sm">
+
                                     Details
+
                                 </a>
 
                                 <a asp-action="Edit"
                                    asp-route-id="@item.Id"
                                    class="btn btn-warning btn-sm">
+
                                     Edit
+
                                 </a>
 
-                                <a asp-action="Delete"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-danger btn-sm">
+                                <a href="#"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="deleteIssue(@item.Id)">
+
                                     Delete
+
                                 </a>
+
                             </td>
+
                         </tr>
-                    }
+                                }
                 }
                 else
                 {
                     <tr>
-                        <td colspan="7"
+
+                        <td colspan="6"
                             class="text-center">
+
                             No Book Issues Found
+
                         </td>
+
                     </tr>
                 }
 
@@ -81,10 +204,12 @@
         </table>
 
     </div>
+
 </div>
 @section Scripts
 {
     <script>
+
         function deleteIssue(id)
         {
             Swal.fire({
@@ -95,16 +220,76 @@
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Yes, Delete'
-            }).then((result) => {
-
+            }).then((result) =>
+            {
                 if (result.isConfirmed)
                 {
                     window.location.href =
                         '/BookIssue/Delete/' + id;
                 }
-
             });
         }
+
+        function searchIssue()
+        {
+            let input =
+                document.getElementById("searchBox")
+                    .value
+                    .toLowerCase();
+
+            let rows =
+                document.querySelectorAll("tbody tr");
+
+            rows.forEach(row =>
+            {
+                let text =
+                    row.innerText.toLowerCase();
+
+                row.style.display =
+                    text.includes(input)
+                    ? ""
+                    : "none";
+            });
+        }
+
+        function refreshSearch()
+        {
+            document.getElementById("searchBox").value = "";
+
+            let rows =
+                document.querySelectorAll("tbody tr");
+
+            rows.forEach(row =>
+            {
+                row.style.display = "";
+            });
+        }
+
+        function sortIssue(order)
+        {
+            let tbody =
+                document.querySelector("tbody");
+
+            let rows =
+                Array.from(tbody.querySelectorAll("tr"));
+
+            rows.sort(function (a, b)
+            {
+                let x =
+                    a.cells[0].innerText.toLowerCase();
+
+                let y =
+                    b.cells[0].innerText.toLowerCase();
+
+                return order === "asc"
+                    ? x.localeCompare(y)
+                    : y.localeCompare(x);
+            });
+
+            rows.forEach(row =>
+                tbody.appendChild(row));
+        }
+
     </script>
 
     @if (TempData["SuccessMessage"] != null)

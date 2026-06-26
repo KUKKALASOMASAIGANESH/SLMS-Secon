@@ -4,6 +4,31 @@
     ViewData["Title"] = "Edit Book Issue";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light p-2 rounded shadow-sm mb-3">
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a asp-controller="BookIssue"
+               asp-action="Index">
+                Book Issues
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active"
+            aria-current="page">
+            Edit Book Issue
+        </li>
+
+    </ol>
+</nav>
+
 <div class="card shadow-sm">
     <div class="card-body">
 
@@ -14,54 +39,97 @@
 
             <input asp-for="Id" type="hidden" />
 
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
+
+            <!-- Book Title -->
             <div class="mb-3">
-                <label>Book Title</label>
+
+                <label class="form-label">
+                    Book Title(Read Only)
+                </label>
+
                 <input asp-for="BookTitle"
                        class="form-control"
                        readonly />
+
             </div>
 
+            <!-- Employee -->
             <div class="mb-3">
-                <label>Employee Name</label>
+
+                <label class="form-label">
+                    Employee Name(Read Only)
+                </label>
+
                 <input asp-for="EmployeeName"
                        class="form-control"
                        readonly />
-            </div>
-            <div class="mb-3">
 
-                <input hidden asp-for="EmployeeId"
-                       class="form-control"
-                       readonly />
-            </div>
-            <div class="mb-3">
-
-                <input hidden asp-for="LibraryResourceId"
-                       class="form-control"
-                       readonly />
             </div>
 
+            <!-- Hidden Fields -->
+            <input type="hidden" asp-for="EmployeeId" />
+            <input type="hidden" asp-for="LibraryResourceId" />
+
+            <!-- Issue Date -->
             <div class="mb-3">
-                <label>Issue Date</label>
+
+                <label class="form-label">
+                    Issue Date(Read Only)
+                </label>
+
                 <input asp-for="IssueDate"
                        type="date"
                        class="form-control"
                        readonly />
+
             </div>
 
+            <!-- Due Date -->
             <div class="mb-3">
-                <label>Due Date</label>
+
+                <label class="form-label">
+                    Due Date <span class="text-danger">*</span>
+                </label>
+
                 <input asp-for="DueDate"
                        type="date"
                        class="form-control" />
+
+                <span asp-validation-for="DueDate"
+                      class="text-danger"></span>
+
             </div>
 
+            <!-- Status -->
             <div class="mb-3">
-                <label>Status</label>
-                <select asp-for="Status" class="form-control">
-                    <option value="Issued">Issued</option>
-                    <option value="Returned">Returned</option>
-                    <option value="Overdue">Overdue</option>
+
+                <label class="form-label">
+                    Status <span class="text-danger">*</span>
+                </label>
+
+                <select asp-for="Status"
+                        class="form-control">
+
+                    <option value="Issued">
+                        Issued
+                    </option>
+
+                    <option value="Returned">
+                        Returned
+                    </option>
+
+                    <option value="Overdue">
+                        Overdue
+                    </option>
+
                 </select>
+
+                <span asp-validation-for="Status"
+                      class="text-danger"></span>
+
             </div>
 
             <button type="submit"
@@ -78,3 +146,8 @@
 
     </div>
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
