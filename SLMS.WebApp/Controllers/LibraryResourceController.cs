@@ -26,12 +26,35 @@ public class LibraryResourceController : Controller
 
     [HttpGet]
     [Authorize(Roles = "Admin,Librarian,User")]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        var resources = await _service.GetAllAsync();
-        return View(resources);
-    }
+        try
+        {
+            var issues = await _service.GetAllAsync();
 
+            int pageSize = 7;
+
+            var data = issues
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages =
+                (int)Math.Ceiling(
+                    issues.Count / (double)pageSize);
+
+            return View(data);
+        }
+        catch (Exception)
+        {
+            TempData["Error"] =
+                "Unable to load book issues.";
+
+            return View(new List<BookIssueViewModel>());
+        }
+    }
     [HttpGet]
     [Authorize(Roles = "Admin,Librarian,User")]
     public async Task<IActionResult> Details(int id)

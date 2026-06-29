@@ -76,4 +76,15 @@ public class DepartmentService
 
         return response.IsSuccessStatusCode;
     }
+    public async Task<List<DepartmentViewModel>>
+SearchAsync(string keyword)
+    {
+        var response =
+            await _httpClient.GetFromJsonAsync<
+            ApiResponse<List<DepartmentViewModel>>>
+            ($"api/Department/search/{keyword}");
+
+        return response?.Data ??
+            new List<DepartmentViewModel>();
+    }
 }

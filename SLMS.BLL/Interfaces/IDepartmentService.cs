@@ -15,4 +15,6 @@ public interface IDepartmentService
     DepartmentUpdateDto dto);
 
     Task<bool> DeleteAsync(int id);
+    Task<IEnumerable<DepartmentResponseDto>>
+    SearchAsync(string keyword);
 }
