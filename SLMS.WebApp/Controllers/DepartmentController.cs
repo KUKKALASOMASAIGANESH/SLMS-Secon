@@ -174,4 +174,38 @@ public class DepartmentController : Controller
 
         return View(department);
     }
+    [HttpGet]
+    public async Task<IActionResult> Search(
+    string keyword,
+    int page = 1)
+    {
+        try
+        {
+            var departments =
+                await _service.SearchAsync(keyword);
+
+            int pageSize = 7;
+
+            var data = departments
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages =
+                (int)Math.Ceiling(
+                    departments.Count / (double)pageSize);
+
+            ViewBag.Search = keyword;
+
+            return View("Index", data);
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = ex.Message;
+
+            return View("Index",
+                new List<DepartmentViewModel>());
+        }
+    }
 }

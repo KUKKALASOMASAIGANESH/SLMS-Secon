@@ -46,4 +46,5 @@ public class EmployeeViewModel
     public int DepartmentId { get; set; }
 
     public List<SelectListItem> Departments { get; set; } = new();
+    public string? DepartmentName { get; set; }
 }
