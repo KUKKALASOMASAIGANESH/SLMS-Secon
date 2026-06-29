@@ -6,7 +6,7 @@ using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.WebAPI.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
