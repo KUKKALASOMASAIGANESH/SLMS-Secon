@@ -122,4 +122,14 @@ public class DepartmentService : IDepartmentService
 
         return true;
     }
+    public async Task<IEnumerable<DepartmentResponseDto>>
+    SearchAsync(string keyword)
+    {
+        var departments =
+            await _repository.SearchAsync(keyword);
+
+        return _mapper.Map<
+            IEnumerable<DepartmentResponseDto>>
+            (departments);
+    }
 }

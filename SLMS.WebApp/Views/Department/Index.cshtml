@@ -3,6 +3,22 @@
 @{
     ViewData["Title"] = "Departments";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+
+        <li class="breadcrumb-item">
+            <a asp-controller="Home"
+               asp-action="Index">
+                Dashboard
+            </a>
+        </li>
+
+        <li class="breadcrumb-item active">
+            Departments
+        </li>
+
+    </ol>
+</nav>
 
 @if (TempData["Success"] != null)
 {
@@ -32,6 +48,39 @@
             </a>
 
         </div>
+        <form asp-action="Search" method="get" class="mb-3">
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <input name="keyword"
+                           value="@ViewBag.Search"
+                           class="form-control"
+                           placeholder="Search Department..." />
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button class="btn btn-primary">
+                        Search
+                    </button>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        Clear
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
 
         @if (!Model.Any())
         {

@@ -87,6 +87,10 @@ DigitalContentRequestViewModel model)
     public async Task<IActionResult> CreateContent(
     AdminDigitalContentViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await _service.CreateContentAsync(model);
 
         return RedirectToAction(nameof(ManageContent));
@@ -171,6 +175,10 @@ DigitalContentRequestViewModel model)
     CreatePolicy(
     AdminPolicyViewModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
         await _service
             .CreatePolicyAsync(model);
 
