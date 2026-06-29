@@ -4,30 +4,76 @@
 
 <form asp-action="CreateContent">
 
+    <!-- Title -->
     <div class="mb-3">
-        <label>Title</label>
-        <input asp-for="Title" class="form-control" />
+
+        <label class="form-label">
+            Title <span class="text-danger">*</span>
+        </label>
+
+        <input asp-for="Title"
+               class="form-control" />
+
+        <span asp-validation-for="Title"
+              class="text-danger"></span>
+
     </div>
 
+    <!-- Content Type -->
     <div class="mb-3">
-        <label>Content Type</label>
-        <input asp-for="ContentType" class="form-control" />
+
+        <label class="form-label">
+            Content Type <span class="text-danger">*</span>
+        </label>
+
+        <input asp-for="ContentType"
+               class="form-control" />
+
+        <span asp-validation-for="ContentType"
+              class="text-danger"></span>
+
     </div>
 
+    <!-- Author -->
     <div class="mb-3">
-        <label>Author</label>
-        <input asp-for="Author" class="form-control" />
+
+        <label class="form-label">
+            Author <span class="text-danger">*</span>
+        </label>
+
+        <input asp-for="Author"
+               class="form-control" />
+
+        <span asp-validation-for="Author"
+              class="text-danger"></span>
+
     </div>
 
+    <!-- File Path -->
     <div class="mb-3">
-        <label>File Path</label>
-        <input asp-for="FilePath" class="form-control" />
+
+        <label class="form-label">
+            File Path <span class="text-danger">*</span>
+        </label>
+
+        <input asp-for="FilePath"
+               class="form-control" />
+
+        <span asp-validation-for="FilePath"
+              class="text-danger"></span>
+
     </div>
 
+    <!-- Description -->
     <div class="mb-3">
-        <label>Description</label>
+
+        <label class="form-label">
+            Description
+        </label>
+
         <textarea asp-for="Description"
                   class="form-control"></textarea>
+
     </div>
 
     <button type="submit"
@@ -36,3 +82,7 @@
     </button>
 
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
