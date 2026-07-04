@@ -498,17 +498,290 @@
         </div>
 
     </footer>
+    <!-- ================= AI Assistant ================= -->
+    <!-- AI Floating Button -->
+<button id="aiButton" class="btn btn-primary shadow-lg">
+    🤖
+</button>
 
+<!-- AI Chat -->
+<div id="aiChatBox" class="card shadow-lg">
+
+    <!-- Header -->
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+        <div>
+            <h6 class="mb-0">🤖 SECON AI Assistant</h6>
+            <small id="aiStatus">🟢 Online</small>
+        </div>
+
+        <button id="closeAI"
+                class="btn btn-light btn-sm">
+            ✕
+        </button>
+
+    </div>
+
+    <!-- Quick Questions -->
+    <div class="border-bottom p-2 bg-white">
+
+        <button class="btn btn-outline-primary btn-sm quickQuestion">
+            Dashboard
+        </button>
+
+        <button class="btn btn-outline-success btn-sm quickQuestion">
+            Employees
+        </button>
+
+        <button class="btn btn-outline-warning btn-sm quickQuestion">
+            Books
+        </button>
+
+        <button class="btn btn-outline-info btn-sm quickQuestion">
+            Departments
+        </button>
+
+        <button class="btn btn-outline-danger btn-sm quickQuestion">
+            Overdue
+        </button>
+
+        <button class="btn btn-outline-dark btn-sm quickQuestion">
+            Recommendation
+        </button>
+
+    </div>
+
+    <!-- Messages -->
+    <div id="chatMessages">
+
+        <div class="aiMessage">
+
+            👋 Hello <b>@User.Identity?.Name</b>
+
+            <br><br>
+
+            Welcome to SECON AI.
+
+            <br><br>
+
+            Ask me anything about
+
+            <br>
+
+            📚 Books
+
+            <br>
+
+            👨 Employees
+
+            <br>
+
+            🏢 Departments
+
+            <br>
+
+            📊 Dashboard
+
+            <br>
+
+            📈 Analytics
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer bg-white">
+
+        <div class="input-group">
+
+            <input
+                id="txtQuestion"
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                placeholder="Ask anything..." />
+
+            <button
+                id="btnSend"
+                class="btn btn-primary">
+
+                Send
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+  @* function sendQuestion() {
+
+    let question = $("#txtQuestion").val().trim();
+
+    if (question === "")
+    return;
+
+    // User Message
+    addUserMessage(question);
+
+    // Clear input immediately
+    $("#txtQuestion").val("");
+
+    // Keep typing enabled
+    $("#txtQuestion").focus();
+
+    // Show typing animation
+    showTyping();
+
+    $.ajax({
+
+    url: "/AI/Ask",
+
+    type: "POST",
+
+    data: {
+    question: question
+    },
+
+    success: function (data) {
+
+    hideTyping();
+
+    addAIMessage(data.answer);
+
+    $("#txtQuestion").focus();
+
+    },
+
+    error: function () {
+
+    hideTyping();
+
+    addAIMessage("⚠ Unable to contact AI Service.");
+
+    $("#txtQuestion").focus();
+
+    }
+
+    });
+
+    }
+    function addUserMessage(text) {
+
+    let time = new Date().toLocaleTimeString();
+
+    $("#chatMessages").append(`
+
+    <div class="text-end mb-3">
+
+        <div class="badge bg-primary p-3">
+
+            ${text}
+
+        </div>
+
+        <br>
+
+        <small>${time}</small>
+
+    </div>
+
+    `);
+
+    scrollChat();
+
+    }
+
+    function addAIMessage(text) {
+
+    let time = new Date().toLocaleTimeString();
+
+    $("#chatMessages").append(`
+
+    <div class="mb-3">
+
+        <div class="alert alert-light shadow-sm">
+
+            🤖 <strong>SECON AI</strong>
+
+            <hr>
+
+            ${text.replace(/\n/g, "<br>")}
+
+        </div>
+
+        <small>${time}</small>
+
+    </div>
+
+    `);
+
+    scrollChat();
+
+    }
+
+    function showTyping() {
+
+    $("#chatMessages").append(`
+
+    <div id="typing">
+
+        <div class="alert alert-secondary">
+
+            🤖 <strong>SECON AI</strong>
+
+            <hr>
+
+            <div class="typing">
+
+                <span></span>
+
+                <span></span>
+
+                <span></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    `);
+
+    scrollChat();
+
+    }
+
+    function hideTyping() {
+
+    $("#typing").remove();
+
+    } *@
+
+    @* function scrollChat() {
+
+    $("#chatMessages").stop().animate({
+
+    scrollTop: $("#chatMessages")[0].scrollHeight
+
+    }, 200);
+
+    } *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="~/js/site.js"
-            asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="~/js/ai-chat.js" asp-append-version="true"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+   
 
 </body>
 </html>
