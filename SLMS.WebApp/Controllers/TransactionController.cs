@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SLMS.Shared.DTOs.BookIssue;
 using SLMS.Shared.DTOs.BookReturn;
+using SLMS.Shared.DTOs.Employee;
 using SLMS.Shared.DTOs.Request;
 using SLMS.WebApp.Services.Transaction.Interfaces;
 using System.Net.Http.Json;
@@ -32,21 +33,15 @@ public class TransactionController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin,Librarian,User")]
+    [Authorize(Roles = "Admin,Librarian")]
     public async Task<IActionResult> ReturnBook()
     {
-        var employeeIdClaim = User.FindFirst("EmployeeId")?.Value;
+        var employees =
+            await _httpClient.GetFromJsonAsync<List<EmployeeResponseDto>>
+            ("api/Employee");
 
-        if (string.IsNullOrEmpty(employeeIdClaim))
-            return RedirectToAction("Login", "Auth");
-
-        var employeeId = int.Parse(employeeIdClaim);
-
-        var books = await _httpClient
-            .GetFromJsonAsync<List<BookIssueResponseDto>>(
-                $"api/BookIssue/employee/{employeeId}");
-
-        ViewBag.IssuedBooks = books ?? new List<BookIssueResponseDto>();
+        ViewBag.Employees =
+            employees ?? new List<EmployeeResponseDto>();
 
         return View(new BookReturnCreateDto
         {
@@ -76,6 +71,8 @@ public class TransactionController : Controller
 
         dto.ReturnedByUserId = int.Parse(userIdClaim);
 
+       
+
         var response = await _httpClient
             .PostAsJsonAsync("api/BookReturn", dto);
 
@@ -85,8 +82,18 @@ public class TransactionController : Controller
             return RedirectToAction(nameof(ReturnBook));
         }
 
-        TempData["Error"] =
-            await response.Content.ReadAsStringAsync();
+        var error =
+    await response.Content.ReadAsStringAsync();
+
+        TempData["Error"] = error;
+
+        // Reload employee list
+        var employees =
+            await _httpClient.GetFromJsonAsync<List<EmployeeResponseDto>>
+            ("api/Employee");
+
+        ViewBag.Employees =
+            employees ?? new List<EmployeeResponseDto>();
 
         return View(dto);
     }

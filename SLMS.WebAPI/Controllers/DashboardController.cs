@@ -27,4 +27,13 @@ public class DashboardController : ControllerBase
 
         return Ok(dashboard);
     }
+    [HttpGet("analytics")]
+    public async Task<IActionResult> GetAnalytics()
+    {
+        var result =
+            await _dashboardService.GetAnalyticsAsync();
+
+        return Ok(result);
+    }
+
 }

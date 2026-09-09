@@ -125,6 +125,11 @@ builder.Services.AddHttpClient<IShelfService, ShelfService>(client =>
     client.BaseAddress = apiBaseUrl;
 })
 .AddHttpMessageHandler<JwtDelegatingHandler>();
+builder.Services.AddHttpClient<AIChatService>(client =>
+{
+    client.BaseAddress = apiBaseUrl;
+})
+.AddHttpMessageHandler<JwtDelegatingHandler>();
 
 var app = builder.Build();
 

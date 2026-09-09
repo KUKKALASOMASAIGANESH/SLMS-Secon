@@ -56,11 +56,24 @@ public class BookReturnService
                 dto.ReturnDate,
                 DateTimeKind.Utc);
 
+
         var issue =
-     await _bookIssueRepository
-         .GetByIdAsync(dto.BookIssueId);
+    await _bookIssueRepository
+        .GetByIdAsync(dto.BookIssueId);
+
+        if (issue == null)
+        {
+            throw new Exception(
+                $"Book Issue not found. Received BookIssueId = {dto.BookIssueId}");
+        }
 
         decimal fine = 0;
+
+        /* var issue =
+      await _bookIssueRepository
+          .GetByIdAsync(dto.BookIssueId);
+
+         decimal fine = 0;*/
 
         if (issue != null &&
             dto.ReturnDate.Date >
@@ -77,6 +90,11 @@ public class BookReturnService
             _mapper.Map<BookReturn>(dto);
 
         entity.FineAmount = fine;
+
+        // Update Book Issue status
+        issue.Status = "Returned";
+
+        _bookIssueRepository.Update(issue);
 
         await _repository.AddAsync(entity);
 

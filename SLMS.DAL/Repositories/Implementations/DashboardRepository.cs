@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SLMS.DAL.Data;
 using SLMS.DAL.Repositories.Interfaces;
+using SLMS.Shared.DTOs;
 using SLMS.Shared.DTOs.Dashboard;
 
 namespace SLMS.DAL.Repositories.Implementations;
@@ -59,4 +60,53 @@ public class DashboardRepository : IDashboardRepository
 
         return dashboard;
     }
+    public async Task<DashboardAnalyticsDto> GetAnalyticsAsync()
+    {
+        DashboardAnalyticsDto analytics = new();
+
+        // Most Borrowed Book
+        analytics.MostBorrowedBook =
+            await _context.BookIssues
+                .GroupBy(x => x.LibraryResource.Title)
+                .OrderByDescending(x => x.Count())
+                .Select(x => x.Key)
+                .FirstOrDefaultAsync()
+                ?? "No Data";
+
+        // Least Borrowed Book
+        analytics.LeastBorrowedBook =
+            await (
+                from resource in _context.LibraryResources
+                join issue in _context.BookIssues
+                    on resource.Id equals issue.LibraryResourceId
+                    into issues
+                orderby issues.Count()
+                select resource.Title
+            ).FirstOrDefaultAsync()
+            ?? "No Data";
+
+        // Most Active Employee
+        analytics.MostActiveEmployee =
+            await _context.BookIssues
+                .GroupBy(x => x.Employee.FullName)
+                .OrderByDescending(x => x.Count())
+                .Select(x => x.Key)
+                .FirstOrDefaultAsync()
+                ?? "No Data";
+
+        // Most Active Department
+        analytics.MostActiveDepartment =
+            await _context.BookIssues
+                .GroupBy(x => x.Employee.Department.DepartmentName)
+                .OrderByDescending(x => x.Count())
+                .Select(x => x.Key)
+                .FirstOrDefaultAsync()
+                ?? "No Data";
+
+        analytics.Recommendation =
+            $"Purchase more books for {analytics.MostActiveDepartment} Department.";
+
+        return analytics;
+    }
+
 }

@@ -20,13 +20,25 @@ public class CustodyHistoryController : Controller
         _departmentService = departmentService;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
         try
         {
             var data = await _service.GetReportAsync();
 
-            return View(data);
+            int pageSize = 7;
+
+            var pagedData = data
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+
+            ViewBag.TotalPages =
+                (int)Math.Ceiling(data.Count() / (double)pageSize);
+
+            return View(pagedData);
         }
         catch (Exception)
         {

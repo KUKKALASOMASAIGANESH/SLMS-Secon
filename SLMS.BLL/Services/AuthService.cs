@@ -94,6 +94,7 @@ public class AuthService : IAuthService
             Success = true,
             Message = "Login successful",
             Token = token,
+            UserId = user.Id,
             Role = roleName,
             EmployeeId = user.EmployeeId
         };

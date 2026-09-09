@@ -6,7 +6,7 @@ using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.WebAPI.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,Librarian")]
 [ApiController]
 [Route("api/[controller]")]
 public class EmployeeController : ControllerBase
@@ -91,4 +91,25 @@ public class EmployeeController : ControllerBase
         return Ok(
             "Employee Deleted Successfully");
     }
+    // NEW SEARCH API
+    [HttpGet("search/{name}")]
+    public async Task<IActionResult> Search(string name)
+    {
+        var employees =
+            await _service.SearchByNameAsync(name);
+
+        var result = employees.Select(e => new EmployeeDto
+        {
+            Id = e.Id,
+            EmployeeNumber = e.EmployeeNumber,
+            FullName = e.FullName,
+            Email = e.Email,
+            Phone = e.Phone,
+            Designation = e.Designation,
+            DepartmentId = e.DepartmentId
+        });
+
+        return Ok(result);
+    }
+
 }

@@ -153,75 +153,92 @@
             $("#bookIssueId").empty();
 
             $("#bookIssueId").append(
-                '<option value="">Select Book</option>');
+                '<option value="">Select Book</option>'
+            );
 
-            if (employeeId === "")
+            $("#issueDate").val("");
+            $("#dueDate").val("");
+            $("#fineAmount").val(0);
+
+            if (employeeId === "") {
                 return;
+            }
 
             $.get(
                 '/Transaction/GetIssuedBooks?employeeId=' + employeeId,
-                function (data)
-                {
-                    data.forEach(function (item)
-                    {
+                function (data) {
+
+                    data.forEach(function (item) {
+
                         $("#bookIssueId").append(
                             `<option
                                 value="${item.id}"
                                 data-issuedate="${item.issueDate}"
                                 data-duedate="${item.dueDate}">
                                 ${item.bookTitle}
-                            </option>`);
+                            </option>`
+                        );
+
                     });
-                });
+
+                }
+            );
+
         });
 
-        $("#bookIssueId").change(function ()
-        {
-            let selected =
-                $(this).find(":selected");
 
-            $("#issueDate").val(
-                selected.data("issuedate"));
+        $("#bookIssueId").change(function () {
 
-            $("#dueDate").val(
-                selected.data("duedate"));
+            let selected = $(this).find(":selected");
 
+            let issueDate = selected.data("issuedate");
+            let dueDate = selected.data("duedate");
+
+            $("#issueDate").val(issueDate || "");
+            $("#dueDate").val(dueDate || "");
+
+            calculateFine();
+
+        });
+
+
+        $("#returnDate").change(function () {
             calculateFine();
         });
 
-        $("#returnDate").change(function ()
-        {
-            calculateFine();
-        });
 
-        function calculateFine()
-        {
-            if (!$("#dueDate").val() ||
-                !$("#returnDate").val())
-            {
+        function calculateFine() {
+
+            let dueDateValue = $("#dueDate").val();
+            let returnDateValue = $("#returnDate").val();
+
+            if (!dueDateValue || !returnDateValue) {
                 $("#fineAmount").val(0);
                 return;
             }
 
-            let dueDate =
-                new Date($("#dueDate").val());
+            let dueDate = new Date(dueDateValue);
+            let returnDate = new Date(returnDateValue);
 
-            let returnDate =
-                new Date($("#returnDate").val());
+            if (isNaN(dueDate.getTime()) ||
+                isNaN(returnDate.getTime())) {
 
-            let diff =
-                Math.ceil(
-                    (returnDate - dueDate)
-                    / (1000 * 60 * 60 * 24));
+                $("#fineAmount").val(0);
+                return;
+            }
 
-            if (diff > 0)
-            {
+            let diff = Math.ceil(
+                (returnDate - dueDate)
+                / (1000 * 60 * 60 * 24)
+            );
+
+            if (diff > 0) {
                 $("#fineAmount").val(diff * 10);
             }
-            else
-            {
+            else {
                 $("#fineAmount").val(0);
             }
+
         }
 
     </script>

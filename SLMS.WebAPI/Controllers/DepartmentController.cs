@@ -142,4 +142,17 @@ public class DepartmentController : ControllerBase
                 Message = "Department deleted successfully"
             });
     }
+    [HttpGet("search/{keyword}")]
+    public async Task<IActionResult> Search(string keyword)
+    {
+        var result =
+            await _service.SearchAsync(keyword);
+
+        return Ok(new ApiResponse<IEnumerable<DepartmentResponseDto>>
+        {
+            Success = true,
+            Message = "Departments retrieved successfully",
+            Data = result
+        });
+    }
 }

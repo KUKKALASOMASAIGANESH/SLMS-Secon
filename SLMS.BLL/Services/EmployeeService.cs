@@ -137,4 +137,9 @@ public class EmployeeService
 
         return true;
     }
+    public async Task<IEnumerable<Employee>>
+    SearchByNameAsync(string name)
+    {
+        return await _repository.SearchByNameAsync(name);
+    }
 }

@@ -5,22 +5,34 @@
 <form asp-action="CreatePolicy"
       method="post">
 
+    <!--PolicyTitle--> 
     <div class="mb-3">
 
-        <label>Title</label>
+        <label class="form-label">
+            Title<span class="text-danger">*</span>
+        </label>
 
         <input asp-for="PolicyTitle"
                class="form-control" />
 
+        <span asp-validation-for="PolicyTitle"
+              class="text-danger"></span>
+
     </div>
 
+    <!--PolicyContent-->
     <div class="mb-3">
 
-        <label>Content</label>
+        <label class="form-label">
+            Content<span class="text-danger">*</span>
+        </label>
 
         <textarea asp-for="PolicyContent"
                   class="form-control">
         </textarea>
+
+        <span asp-validation-for="PolicyContent"
+              class="text-danger"></span>
 
     </div>
 

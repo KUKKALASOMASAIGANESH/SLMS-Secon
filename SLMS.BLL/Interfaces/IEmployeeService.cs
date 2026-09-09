@@ -1,4 +1,5 @@
-﻿using SLMS.Shared.DTOs.Employee;
+﻿using SLMS.DOL.Entities;
+using SLMS.Shared.DTOs.Employee;
 
 namespace SLMS.BLL.Interfaces;
 
@@ -21,4 +22,6 @@ public interface IEmployeeService
 
     Task<bool>
         DeleteAsync(int id);
+    Task<IEnumerable<Employee>>
+    SearchByNameAsync(string name);
 }
