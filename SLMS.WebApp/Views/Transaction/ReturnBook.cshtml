@@ -1,53 +1,228 @@
 ﻿@model SLMS.Shared.DTOs.BookReturn.BookReturnCreateDto
-@using SLMS.Shared.DTOs.BookIssue
 
-@{
-    var issuedBooks =
-        ViewBag.IssuedBooks as List<BookIssueResponseDto>
-        ?? new List<BookIssueResponseDto>();
+<h2>Return Book</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
 }
 
-<form asp-action="ReturnBook" method="post">
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<form method="post">
 
     <div class="mb-3">
-        <label asp-for="BookIssueId" class="form-label">Issued Book</label>
+        <label class="form-label">
+            Employee Name
+        </label>
 
-        <select asp-for="BookIssueId" class="form-control">
-            <option value="">-- Select Book --</option>
+        <select id="employeeId"
+                class="form-select">
 
-            @foreach (var book in issuedBooks)
+            <option value="">
+                Select Employee
+            </option>
+
+            @foreach (var employee in ViewBag.Employees)
             {
-                <option value="@book.Id">
-                    @book.BookTitle
+                <option value="@employee.Id">
+                    @employee.FullName
                 </option>
             }
+
         </select>
-
-        <span asp-validation-for="BookIssueId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="ReturnDate" class="form-label"></label>
-        <input asp-for="ReturnDate" type="date" class="form-control" />
+        <label class="form-label">
+            Book Title
+        </label>
+
+        <select id="bookIssueId"
+                asp-for="BookIssueId"
+                class="form-select">
+
+            <option value="">
+                Select Book
+            </option>
+
+        </select>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Condition" class="form-label"></label>
-        <input asp-for="Condition" class="form-control" />
+        <label class="form-label">
+            Issue Date
+        </label>
+
+        <input id="issueDate"
+               class="form-control"
+               readonly />
     </div>
 
     <div class="mb-3">
-        <label asp-for="Remarks" class="form-label"></label>
-        <textarea asp-for="Remarks" class="form-control"></textarea>
+        <label class="form-label">
+            Due Date
+        </label>
+
+        <input id="dueDate"
+               class="form-control"
+               readonly />
     </div>
 
     <div class="mb-3">
-        <label asp-for="FineAmount" class="form-label"></label>
-        <input asp-for="FineAmount" class="form-control" />
+        <label class="form-label">
+            Return Date
+        </label>
+
+        <input asp-for="ReturnDate"
+               id="returnDate"
+               type="date"
+               class="form-control" />
     </div>
 
-    <button type="submit" class="btn btn-primary">
+    <div class="mb-3">
+        <label class="form-label">
+            Fine Amount
+        </label>
+
+        <input asp-for="FineAmount"
+               id="fineAmount"
+               class="form-control"
+               readonly />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Condition
+        </label>
+
+        <select asp-for="Condition"
+                class="form-select">
+
+            <option value="">
+                Select Condition
+            </option>
+
+            <option value="Good">
+                Good
+            </option>
+
+            <option value="Damaged">
+                Damaged
+            </option>
+
+            <option value="Lost">
+                Lost
+            </option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">
+            Remarks
+        </label>
+
+        <textarea asp-for="Remarks"
+                  class="form-control"
+                  rows="3"></textarea>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
         Return Book
     </button>
 
 </form>
+
+@section Scripts
+{
+    <script>
+
+        $("#employeeId").change(function () {
+
+            let employeeId = $(this).val();
+
+            $("#bookIssueId").empty();
+
+            $("#bookIssueId").append(
+                '<option value="">Select Book</option>');
+
+            if (employeeId === "")
+                return;
+
+            $.get(
+                '/Transaction/GetIssuedBooks?employeeId=' + employeeId,
+                function (data)
+                {
+                    data.forEach(function (item)
+                    {
+                        $("#bookIssueId").append(
+                            `<option
+                                value="${item.id}"
+                                data-issuedate="${item.issueDate}"
+                                data-duedate="${item.dueDate}">
+                                ${item.bookTitle}
+                            </option>`);
+                    });
+                });
+        });
+
+        $("#bookIssueId").change(function ()
+        {
+            let selected =
+                $(this).find(":selected");
+
+            $("#issueDate").val(
+                selected.data("issuedate"));
+
+            $("#dueDate").val(
+                selected.data("duedate"));
+
+            calculateFine();
+        });
+
+        $("#returnDate").change(function ()
+        {
+            calculateFine();
+        });
+
+        function calculateFine()
+        {
+            if (!$("#dueDate").val() ||
+                !$("#returnDate").val())
+            {
+                $("#fineAmount").val(0);
+                return;
+            }
+
+            let dueDate =
+                new Date($("#dueDate").val());
+
+            let returnDate =
+                new Date($("#returnDate").val());
+
+            let diff =
+                Math.ceil(
+                    (returnDate - dueDate)
+                    / (1000 * 60 * 60 * 24));
+
+            if (diff > 0)
+            {
+                $("#fineAmount").val(diff * 10);
+            }
+            else
+            {
+                $("#fineAmount").val(0);
+            }
+        }
+
+    </script>
+}
